@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@preact/signals": "^2.11.4",
     "preact": "^11.1.1"
   },
   "devDependencies": {
