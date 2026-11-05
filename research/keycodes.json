@@ -1,0 +1,4331 @@
+{
+ "_doc": "Every keymap slot / DKS action / MT key / macro-key etc. is a 3-byte action {type, code1, code2}. Tables extracted from page-f17bd796bc939422.js (pretty lines 828-1530: C,S,D,A,E,Z,B,R; picker categories `e1` ~16717; picker keyboards full_keyboard(_JIS).json modules 82109/73569). Name decoding is function T() (~1322), code computation N() (~1369).",
+ "actionTypes": {
+  "0": {
+   "name": "none / transparent? (UNVERIFIED; empty slot written as 0,0,0)"
+  },
+  "16": {
+   "name": "keyboard",
+   "code1": "HID modifier bitmask: 0x01 LCtrl,0x02 LShift,0x04 LAlt,0x08 LGui,0x10 RCtrl,0x20 RShift,0x40 RAlt,0x80 RGui",
+   "code2": "HID keyboard usage (page 0x07). A bare modifier key is {16, mask, 0}. Combos (modifier+key) are {16, mask, usage}."
+  },
+  "32": {
+   "name": "mouse button",
+   "code1": "button mask 1=L 2=R 4=M 8=Forward 16=Back",
+   "code2": 0
+  },
+  "33": {
+   "name": "mouse wheel",
+   "code1": 0,
+   "code2": "1=up, 255=down (signed int8)"
+  },
+  "48": {
+   "name": "consumer (HID page 0x0C)",
+   "code1": "usage low byte",
+   "code2": "usage high byte"
+  },
+  "64": {
+   "name": "system control",
+   "code1": "1=Power 2=Sleep 4=WakeUp"
+  },
+  "112": {
+   "name": "macro",
+   "code1": "macro index 0..15 (M1..M16)",
+   "code2": "macro mode/repeat (copied from macro item; UNVERIFIED semantics)"
+  },
+  "144": {
+   "name": "DKS",
+   "code1": "DKS slot 0..31 (cmd 0xA2/0xA3)",
+   "code2": 0
+  },
+  "145": {
+   "name": "TGL (toggle)",
+   "code1": "TGL slot 0..31 (cmd 0xA6/0xA7)",
+   "code2": 0
+  },
+  "146": {
+   "name": "MT (mod-tap / hold-tap)",
+   "code1": "MT slot 0..31 (cmd 0xA4/0xA5)",
+   "code2": "hold time in 10 ms units (default 100ms -> 10)"
+  },
+  "147": {
+   "name": "RS (rappy-snappy / last-input priority pair)",
+   "code1": "MT slot (pair uses 2 consecutive-ish slots)",
+   "code2": "partner key index"
+  },
+  "148": {
+   "name": "SOCD",
+   "code1": "MT slot",
+   "code2": "partner key index"
+  },
+  "149": {
+   "name": "OKS",
+   "code1": "MT slot",
+   "code2": "partner key index (UNVERIFIED)"
+  },
+  "150": {
+   "name": "TD (tap dance; only offered for types 120-122)",
+   "code1": "TD slot (cmd 0xB0/0xB1)",
+   "code2": "time in 10 ms units"
+  },
+  "240": {
+   "name": "special / vendor function",
+   "code1": "function id (see special)",
+   "code2": "parameter"
+  },
+  "255": {
+   "name": "read-back value treated as empty in getKeyInfos (code -1)"
+  }
+ },
+ "modifierBits": {
+  "1": "LCtrl",
+  "2": "LShift",
+  "4": "LAlt",
+  "8": "LGui/Win",
+  "16": "RCtrl",
+  "32": "RShift",
+  "64": "RAlt",
+  "128": "RGui"
+ },
+ "fnLayerKeys": "{240,255,n}: FN key; picker offers n = 4*profileIndex + 0..3 (profile 0: FN..FN3, profile 1: FN4..FN7, ...). Labels FN, FN1..FN15. {240,254,0} = FN_M.",
+ "hidKeyboard_ANSI_labels": [
+  {
+   "usage": 41,
+   "label": "Esc"
+  },
+  {
+   "usage": 58,
+   "label": "F1"
+  },
+  {
+   "usage": 59,
+   "label": "F2"
+  },
+  {
+   "usage": 60,
+   "label": "F3"
+  },
+  {
+   "usage": 61,
+   "label": "F4"
+  },
+  {
+   "usage": 62,
+   "label": "F5"
+  },
+  {
+   "usage": 63,
+   "label": "F6"
+  },
+  {
+   "usage": 64,
+   "label": "F7"
+  },
+  {
+   "usage": 65,
+   "label": "F8"
+  },
+  {
+   "usage": 66,
+   "label": "F9"
+  },
+  {
+   "usage": 67,
+   "label": "F10"
+  },
+  {
+   "usage": 68,
+   "label": "F11"
+  },
+  {
+   "usage": 69,
+   "label": "F12"
+  },
+  {
+   "usage": 70,
+   "label": "Print"
+  },
+  {
+   "usage": 71,
+   "label": "Scroll"
+  },
+  {
+   "usage": 72,
+   "label": "Pause"
+  },
+  {
+   "usage": 53,
+   "label": "~ `"
+  },
+  {
+   "usage": 30,
+   "label": "! 1"
+  },
+  {
+   "usage": 31,
+   "label": "@ 2"
+  },
+  {
+   "usage": 32,
+   "label": "# 3"
+  },
+  {
+   "usage": 33,
+   "label": "$ 4"
+  },
+  {
+   "usage": 34,
+   "label": "% 5"
+  },
+  {
+   "usage": 35,
+   "label": "^ 6"
+  },
+  {
+   "usage": 36,
+   "label": "& 7"
+  },
+  {
+   "usage": 37,
+   "label": "* 8"
+  },
+  {
+   "usage": 38,
+   "label": "( 9"
+  },
+  {
+   "usage": 39,
+   "label": ") 0"
+  },
+  {
+   "usage": 45,
+   "label": "_ -"
+  },
+  {
+   "usage": 46,
+   "label": "+ ="
+  },
+  {
+   "usage": 42,
+   "label": "Back"
+  },
+  {
+   "usage": 73,
+   "label": "Ins"
+  },
+  {
+   "usage": 76,
+   "label": "Del"
+  },
+  {
+   "usage": 74,
+   "label": "Home"
+  },
+  {
+   "usage": 83,
+   "label": "Num Lock"
+  },
+  {
+   "usage": 84,
+   "label": "Num /"
+  },
+  {
+   "usage": 85,
+   "label": "Num *"
+  },
+  {
+   "usage": 86,
+   "label": "Num -"
+  },
+  {
+   "usage": 43,
+   "label": "Tab"
+  },
+  {
+   "usage": 20,
+   "label": "Q"
+  },
+  {
+   "usage": 26,
+   "label": "W"
+  },
+  {
+   "usage": 8,
+   "label": "E"
+  },
+  {
+   "usage": 21,
+   "label": "R"
+  },
+  {
+   "usage": 23,
+   "label": "T"
+  },
+  {
+   "usage": 28,
+   "label": "Y"
+  },
+  {
+   "usage": 24,
+   "label": "U"
+  },
+  {
+   "usage": 12,
+   "label": "I"
+  },
+  {
+   "usage": 18,
+   "label": "O"
+  },
+  {
+   "usage": 19,
+   "label": "P"
+  },
+  {
+   "usage": 47,
+   "label": "{ ["
+  },
+  {
+   "usage": 48,
+   "label": "} ]"
+  },
+  {
+   "usage": 49,
+   "label": "| \\"
+  },
+  {
+   "usage": 77,
+   "label": "End"
+  },
+  {
+   "usage": 75,
+   "label": "PgUp"
+  },
+  {
+   "usage": 78,
+   "label": "PgDn"
+  },
+  {
+   "usage": 95,
+   "label": "Num 7"
+  },
+  {
+   "usage": 96,
+   "label": "Num 8"
+  },
+  {
+   "usage": 97,
+   "label": "Num 9"
+  },
+  {
+   "usage": 87,
+   "label": "Num +"
+  },
+  {
+   "usage": 57,
+   "label": "Caps"
+  },
+  {
+   "usage": 4,
+   "label": "A"
+  },
+  {
+   "usage": 22,
+   "label": "S"
+  },
+  {
+   "usage": 7,
+   "label": "D"
+  },
+  {
+   "usage": 9,
+   "label": "F"
+  },
+  {
+   "usage": 10,
+   "label": "G"
+  },
+  {
+   "usage": 11,
+   "label": "H"
+  },
+  {
+   "usage": 13,
+   "label": "J"
+  },
+  {
+   "usage": 14,
+   "label": "K"
+  },
+  {
+   "usage": 15,
+   "label": "L"
+  },
+  {
+   "usage": 51,
+   "label": ": ;"
+  },
+  {
+   "usage": 52,
+   "label": "\" '"
+  },
+  {
+   "usage": 40,
+   "label": "Enter"
+  },
+  {
+   "usage": 92,
+   "label": "Num 4"
+  },
+  {
+   "usage": 93,
+   "label": "Num 5"
+  },
+  {
+   "usage": 94,
+   "label": "Num 6"
+  },
+  {
+   "usage": 29,
+   "label": "Z"
+  },
+  {
+   "usage": 27,
+   "label": "X"
+  },
+  {
+   "usage": 6,
+   "label": "C"
+  },
+  {
+   "usage": 25,
+   "label": "V"
+  },
+  {
+   "usage": 5,
+   "label": "B"
+  },
+  {
+   "usage": 17,
+   "label": "N"
+  },
+  {
+   "usage": 16,
+   "label": "M"
+  },
+  {
+   "usage": 54,
+   "label": "< ,"
+  },
+  {
+   "usage": 55,
+   "label": "> ."
+  },
+  {
+   "usage": 56,
+   "label": "? /"
+  },
+  {
+   "usage": 82,
+   "label": "↑"
+  },
+  {
+   "usage": 89,
+   "label": "Num 1"
+  },
+  {
+   "usage": 90,
+   "label": "Num 2"
+  },
+  {
+   "usage": 91,
+   "label": "Num 3"
+  },
+  {
+   "usage": 88,
+   "label": "Num Enter"
+  },
+  {
+   "usage": 44,
+   "label": "Space"
+  },
+  {
+   "usage": 255,
+   "label": "FN"
+  },
+  {
+   "usage": 101,
+   "label": "Menu"
+  },
+  {
+   "usage": 80,
+   "label": "←"
+  },
+  {
+   "usage": 81,
+   "label": "↓"
+  },
+  {
+   "usage": 79,
+   "label": "→"
+  },
+  {
+   "usage": 98,
+   "label": "Num 0"
+  },
+  {
+   "usage": 99,
+   "label": "Num ."
+  },
+  {
+   "usage": 104,
+   "label": "F13"
+  },
+  {
+   "usage": 105,
+   "label": "F14"
+  },
+  {
+   "usage": 106,
+   "label": "F15"
+  },
+  {
+   "usage": 107,
+   "label": "F16"
+  },
+  {
+   "usage": 108,
+   "label": "F17"
+  },
+  {
+   "usage": 109,
+   "label": "F18"
+  },
+  {
+   "usage": 110,
+   "label": "F19"
+  },
+  {
+   "usage": 111,
+   "label": "F20"
+  },
+  {
+   "usage": 112,
+   "label": "F21"
+  },
+  {
+   "usage": 113,
+   "label": "F22"
+  },
+  {
+   "usage": 114,
+   "label": "F23"
+  },
+  {
+   "usage": 115,
+   "label": "F24"
+  },
+  {
+   "usage": 50,
+   "label": "] }"
+  },
+  {
+   "usage": 100,
+   "label": "NUBS"
+  },
+  {
+   "usage": 135,
+   "label": "\\ _"
+  },
+  {
+   "usage": 136,
+   "label": "KANA"
+  },
+  {
+   "usage": 137,
+   "label": "¥ |"
+  },
+  {
+   "usage": 139,
+   "label": "無変換"
+  },
+  {
+   "usage": 138,
+   "label": "変換"
+  }
+ ],
+ "hidKeyboard_JIS_labels_types112_124": [
+  {
+   "usage": 41,
+   "label": "ESC"
+  },
+  {
+   "usage": 58,
+   "label": "F1"
+  },
+  {
+   "usage": 59,
+   "label": "F2"
+  },
+  {
+   "usage": 60,
+   "label": "F3"
+  },
+  {
+   "usage": 61,
+   "label": "F4"
+  },
+  {
+   "usage": 62,
+   "label": "F5"
+  },
+  {
+   "usage": 63,
+   "label": "F6"
+  },
+  {
+   "usage": 64,
+   "label": "F7"
+  },
+  {
+   "usage": 65,
+   "label": "F8"
+  },
+  {
+   "usage": 66,
+   "label": "F9"
+  },
+  {
+   "usage": 67,
+   "label": "F10"
+  },
+  {
+   "usage": 68,
+   "label": "F11"
+  },
+  {
+   "usage": 69,
+   "label": "F12"
+  },
+  {
+   "usage": 70,
+   "label": "Print"
+  },
+  {
+   "usage": 71,
+   "label": "Scroll"
+  },
+  {
+   "usage": 72,
+   "label": "Pause"
+  },
+  {
+   "usage": 53,
+   "label": "E/J"
+  },
+  {
+   "usage": 30,
+   "label": "1 !"
+  },
+  {
+   "usage": 31,
+   "label": "2 \""
+  },
+  {
+   "usage": 32,
+   "label": "3 #"
+  },
+  {
+   "usage": 33,
+   "label": "4 $"
+  },
+  {
+   "usage": 34,
+   "label": "5 %"
+  },
+  {
+   "usage": 35,
+   "label": "6 &"
+  },
+  {
+   "usage": 36,
+   "label": "7 '"
+  },
+  {
+   "usage": 37,
+   "label": "8 ("
+  },
+  {
+   "usage": 38,
+   "label": "9 )"
+  },
+  {
+   "usage": 39,
+   "label": "0 "
+  },
+  {
+   "usage": 45,
+   "label": "- ="
+  },
+  {
+   "usage": 46,
+   "label": "^ ~"
+  },
+  {
+   "usage": 42,
+   "label": "Back"
+  },
+  {
+   "usage": 73,
+   "label": "Ins"
+  },
+  {
+   "usage": 76,
+   "label": "Del"
+  },
+  {
+   "usage": 74,
+   "label": "Home"
+  },
+  {
+   "usage": 83,
+   "label": "Num Lock"
+  },
+  {
+   "usage": 84,
+   "label": "Num /"
+  },
+  {
+   "usage": 85,
+   "label": "Num *"
+  },
+  {
+   "usage": 86,
+   "label": "Num -"
+  },
+  {
+   "usage": 43,
+   "label": "Tab"
+  },
+  {
+   "usage": 20,
+   "label": "Q"
+  },
+  {
+   "usage": 26,
+   "label": "W"
+  },
+  {
+   "usage": 8,
+   "label": "E"
+  },
+  {
+   "usage": 21,
+   "label": "R"
+  },
+  {
+   "usage": 23,
+   "label": "T"
+  },
+  {
+   "usage": 28,
+   "label": "Y"
+  },
+  {
+   "usage": 24,
+   "label": "U"
+  },
+  {
+   "usage": 12,
+   "label": "I"
+  },
+  {
+   "usage": 18,
+   "label": "O"
+  },
+  {
+   "usage": 19,
+   "label": "P"
+  },
+  {
+   "usage": 47,
+   "label": "@ `"
+  },
+  {
+   "usage": 48,
+   "label": "[ {"
+  },
+  {
+   "usage": 49,
+   "label": "| \\"
+  },
+  {
+   "usage": 77,
+   "label": "End"
+  },
+  {
+   "usage": 75,
+   "label": "PgUp"
+  },
+  {
+   "usage": 78,
+   "label": "PgDn"
+  },
+  {
+   "usage": 95,
+   "label": "Num 7"
+  },
+  {
+   "usage": 96,
+   "label": "Num 8"
+  },
+  {
+   "usage": 97,
+   "label": "Num 9"
+  },
+  {
+   "usage": 87,
+   "label": "Num +"
+  },
+  {
+   "usage": 57,
+   "label": "Caps"
+  },
+  {
+   "usage": 4,
+   "label": "A"
+  },
+  {
+   "usage": 22,
+   "label": "S"
+  },
+  {
+   "usage": 7,
+   "label": "D"
+  },
+  {
+   "usage": 9,
+   "label": "F"
+  },
+  {
+   "usage": 10,
+   "label": "G"
+  },
+  {
+   "usage": 11,
+   "label": "H"
+  },
+  {
+   "usage": 13,
+   "label": "J"
+  },
+  {
+   "usage": 14,
+   "label": "K"
+  },
+  {
+   "usage": 15,
+   "label": "L"
+  },
+  {
+   "usage": 51,
+   "label": "; +"
+  },
+  {
+   "usage": 52,
+   "label": ": *"
+  },
+  {
+   "usage": 40,
+   "label": "Enter"
+  },
+  {
+   "usage": 92,
+   "label": "Num 4"
+  },
+  {
+   "usage": 93,
+   "label": "Num 5"
+  },
+  {
+   "usage": 94,
+   "label": "Num 6"
+  },
+  {
+   "usage": 29,
+   "label": "Z"
+  },
+  {
+   "usage": 27,
+   "label": "X"
+  },
+  {
+   "usage": 6,
+   "label": "C"
+  },
+  {
+   "usage": 25,
+   "label": "V"
+  },
+  {
+   "usage": 5,
+   "label": "B"
+  },
+  {
+   "usage": 17,
+   "label": "N"
+  },
+  {
+   "usage": 16,
+   "label": "M"
+  },
+  {
+   "usage": 54,
+   "label": ", <"
+  },
+  {
+   "usage": 55,
+   "label": ". >"
+  },
+  {
+   "usage": 56,
+   "label": "/ ?"
+  },
+  {
+   "usage": 82,
+   "label": "↑"
+  },
+  {
+   "usage": 89,
+   "label": "Num 1"
+  },
+  {
+   "usage": 90,
+   "label": "Num 2"
+  },
+  {
+   "usage": 91,
+   "label": "Num 3"
+  },
+  {
+   "usage": 88,
+   "label": "Num Enter"
+  },
+  {
+   "usage": 44,
+   "label": "Space"
+  },
+  {
+   "usage": 255,
+   "label": "FN"
+  },
+  {
+   "usage": 101,
+   "label": "Menu"
+  },
+  {
+   "usage": 80,
+   "label": "←"
+  },
+  {
+   "usage": 81,
+   "label": "↓"
+  },
+  {
+   "usage": 79,
+   "label": "→"
+  },
+  {
+   "usage": 98,
+   "label": "Num 0"
+  },
+  {
+   "usage": 99,
+   "label": "Num ."
+  },
+  {
+   "usage": 104,
+   "label": "F13"
+  },
+  {
+   "usage": 105,
+   "label": "F14"
+  },
+  {
+   "usage": 106,
+   "label": "F15"
+  },
+  {
+   "usage": 107,
+   "label": "F16"
+  },
+  {
+   "usage": 108,
+   "label": "F17"
+  },
+  {
+   "usage": 109,
+   "label": "F18"
+  },
+  {
+   "usage": 110,
+   "label": "F19"
+  },
+  {
+   "usage": 111,
+   "label": "F20"
+  },
+  {
+   "usage": 112,
+   "label": "F21"
+  },
+  {
+   "usage": 113,
+   "label": "F22"
+  },
+  {
+   "usage": 114,
+   "label": "F23"
+  },
+  {
+   "usage": 115,
+   "label": "F24"
+  },
+  {
+   "usage": 50,
+   "label": "] }"
+  },
+  {
+   "usage": 100,
+   "label": "NUBS"
+  },
+  {
+   "usage": 135,
+   "label": "\\ _"
+  },
+  {
+   "usage": 136,
+   "label": "KANA"
+  },
+  {
+   "usage": 137,
+   "label": "¥ |"
+  },
+  {
+   "usage": 139,
+   "label": "無変換"
+  },
+  {
+   "usage": 138,
+   "label": "変換"
+  }
+ ],
+ "special_type240": [
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 0,
+   "label": "FN"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 1,
+   "label": "FN1"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 2,
+   "label": "FN2"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 3,
+   "label": "FN3"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 4,
+   "label": "FN4"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 5,
+   "label": "FN5"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 6,
+   "label": "FN6"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 7,
+   "label": "FN7"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 8,
+   "label": "FN8"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 9,
+   "label": "FN9"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 10,
+   "label": "FN10"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 11,
+   "label": "FN11"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 12,
+   "label": "FN12"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 13,
+   "label": "FN13"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 14,
+   "label": "FN14"
+  },
+  {
+   "type": 240,
+   "code1": 255,
+   "code2": 15,
+   "label": "FN15"
+  },
+  {
+   "type": 240,
+   "code1": 254,
+   "code2": 0,
+   "label": "FN_M"
+  },
+  {
+   "type": 240,
+   "code1": 1,
+   "code2": 0,
+   "label": "KB_LOCK"
+  },
+  {
+   "type": 240,
+   "code1": 2,
+   "code2": 0,
+   "label": "WinLock"
+  },
+  {
+   "type": 240,
+   "code1": 3,
+   "code2": 0,
+   "label": "WASD Change"
+  },
+  {
+   "type": 240,
+   "code1": 4,
+   "code2": 0,
+   "label": "WinOS"
+  },
+  {
+   "type": 240,
+   "code1": 5,
+   "code2": 0,
+   "label": "MacOS"
+  },
+  {
+   "type": 240,
+   "code1": 6,
+   "code2": 0,
+   "label": "Win/Mac"
+  },
+  {
+   "type": 240,
+   "code1": 7,
+   "code2": 0,
+   "label": "Boot"
+  },
+  {
+   "type": 240,
+   "code1": 8,
+   "code2": 0,
+   "label": "Reset"
+  },
+  {
+   "type": 240,
+   "code1": 9,
+   "code2": 0,
+   "label": "Wheel"
+  },
+  {
+   "type": 240,
+   "code1": 16,
+   "code2": 0,
+   "label": "Side Bright +"
+  },
+  {
+   "type": 240,
+   "code1": 17,
+   "code2": 0,
+   "label": "Side Bright -"
+  },
+  {
+   "type": 240,
+   "code1": 18,
+   "code2": 0,
+   "label": "Side Speed +"
+  },
+  {
+   "type": 240,
+   "code1": 19,
+   "code2": 0,
+   "label": "Side Speed Loop"
+  },
+  {
+   "type": 240,
+   "code1": 20,
+   "code2": 0,
+   "label": "Side SW"
+  },
+  {
+   "type": 240,
+   "code1": 21,
+   "code2": 0,
+   "label": "Side Color"
+  },
+  {
+   "type": 240,
+   "code1": 66,
+   "code2": 0,
+   "label": "RF ADV"
+  },
+  {
+   "type": 240,
+   "code1": 31,
+   "code2": 0,
+   "label": "RF 2.4G"
+  },
+  {
+   "type": 240,
+   "code1": 31,
+   "code2": 1,
+   "label": "BT1"
+  },
+  {
+   "type": 240,
+   "code1": 31,
+   "code2": 2,
+   "label": "BT2"
+  },
+  {
+   "type": 240,
+   "code1": 31,
+   "code2": 3,
+   "label": "BT3"
+  },
+  {
+   "type": 240,
+   "code1": 31,
+   "code2": 4,
+   "label": "USB"
+  },
+  {
+   "type": 240,
+   "code1": 46,
+   "code2": 0,
+   "label": "RGB Mode+"
+  },
+  {
+   "type": 240,
+   "code1": 47,
+   "code2": 0,
+   "label": "RGB Mode-"
+  },
+  {
+   "type": 240,
+   "code1": 48,
+   "code2": 0,
+   "label": "RGB Mode"
+  },
+  {
+   "type": 240,
+   "code1": 49,
+   "code2": 0,
+   "label": "RGB Test"
+  },
+  {
+   "type": 240,
+   "code1": 50,
+   "code2": 0,
+   "label": "Bright+"
+  },
+  {
+   "type": 240,
+   "code1": 51,
+   "code2": 0,
+   "label": "Bright-"
+  },
+  {
+   "type": 240,
+   "code1": 52,
+   "code2": 0,
+   "label": "Bright"
+  },
+  {
+   "type": 240,
+   "code1": 53,
+   "code2": 0,
+   "label": "Bright Off"
+  },
+  {
+   "type": 240,
+   "code1": 54,
+   "code2": 0,
+   "label": "Speed+"
+  },
+  {
+   "type": 240,
+   "code1": 55,
+   "code2": 0,
+   "label": "Speed-"
+  },
+  {
+   "type": 240,
+   "code1": 56,
+   "code2": 0,
+   "label": "Speed"
+  },
+  {
+   "type": 240,
+   "code1": 57,
+   "code2": 0,
+   "label": "Light Left"
+  },
+  {
+   "type": 240,
+   "code1": 58,
+   "code2": 0,
+   "label": "Light Right"
+  },
+  {
+   "type": 240,
+   "code1": 59,
+   "code2": 0,
+   "label": "Light Trend"
+  },
+  {
+   "type": 240,
+   "code1": 60,
+   "code2": 0,
+   "label": "Color-"
+  },
+  {
+   "type": 240,
+   "code1": 61,
+   "code2": 0,
+   "label": "Color+"
+  },
+  {
+   "type": 240,
+   "code1": 62,
+   "code2": 0,
+   "label": "Color"
+  },
+  {
+   "type": 240,
+   "code1": 80,
+   "code2": 0,
+   "label": "ShiftGRV"
+  },
+  {
+   "type": 240,
+   "code1": 81,
+   "code2": 0,
+   "label": "Search"
+  },
+  {
+   "type": 240,
+   "code1": 82,
+   "code2": 0,
+   "label": "Sleep"
+  },
+  {
+   "type": 240,
+   "code1": 83,
+   "code2": 0,
+   "label": "PrtALL"
+  },
+  {
+   "type": 240,
+   "code1": 84,
+   "code2": 0,
+   "label": "PrtArea"
+  },
+  {
+   "type": 240,
+   "code1": 85,
+   "code2": 0,
+   "label": "PrtArea"
+  },
+  {
+   "type": 240,
+   "code1": 86,
+   "code2": 0,
+   "label": "PrtALL"
+  },
+  {
+   "type": 240,
+   "code1": 64,
+   "code2": 0,
+   "label": "LINK_SW"
+  },
+  {
+   "type": 240,
+   "code1": 160,
+   "code2": 0,
+   "label": "N/ALL"
+  },
+  {
+   "type": 240,
+   "code1": 97,
+   "code2": 0,
+   "label": "Profile"
+  },
+  {
+   "type": 240,
+   "code1": 98,
+   "code2": 0,
+   "label": "F1"
+  },
+  {
+   "type": 240,
+   "code1": 99,
+   "code2": 0,
+   "label": "F2"
+  },
+  {
+   "type": 240,
+   "code1": 100,
+   "code2": 0,
+   "label": "F3"
+  },
+  {
+   "type": 240,
+   "code1": 101,
+   "code2": 0,
+   "label": "F4"
+  },
+  {
+   "type": 240,
+   "code1": 71,
+   "code2": 0,
+   "label": "Mission Control"
+  },
+  {
+   "type": 240,
+   "code1": 69,
+   "code2": 0,
+   "label": "Launch Pad"
+  },
+  {
+   "type": 240,
+   "code1": 24,
+   "code2": 0,
+   "label": "Home"
+  },
+  {
+   "type": 240,
+   "code1": 23,
+   "code2": 0,
+   "label": "End"
+  },
+  {
+   "type": 240,
+   "code1": 22,
+   "code2": 0,
+   "label": "PgDn"
+  },
+  {
+   "type": 240,
+   "code1": 26,
+   "code2": 0,
+   "label": "Ins"
+  },
+  {
+   "type": 240,
+   "code1": 11,
+   "code2": 0,
+   "label": "Space"
+  },
+  {
+   "type": 240,
+   "code1": 70,
+   "code2": 0,
+   "label": "File Explorer"
+  },
+  {
+   "type": 240,
+   "code1": 45,
+   "code2": 0,
+   "label": "Sleep mode"
+  },
+  {
+   "type": 240,
+   "code1": 250,
+   "code2": 0,
+   "label": "Shift"
+  },
+  {
+   "type": 240,
+   "code1": 250,
+   "code2": 1,
+   "label": "profile 1"
+  },
+  {
+   "type": 240,
+   "code1": 250,
+   "code2": 2,
+   "label": "profile 2"
+  },
+  {
+   "type": 240,
+   "code1": 250,
+   "code2": 3,
+   "label": "profile 3"
+  },
+  {
+   "type": 240,
+   "code1": 250,
+   "code2": 4,
+   "label": "profile 4"
+  },
+  {
+   "type": 240,
+   "code1": 89,
+   "code2": 0,
+   "label": "Web Driver"
+  }
+ ],
+ "consumer_type48": [
+  {
+   "type": 48,
+   "code1": 131,
+   "code2": 1,
+   "usage": "0x0183",
+   "label": "Player"
+  },
+  {
+   "type": 48,
+   "code1": 233,
+   "code2": 0,
+   "usage": "0x00E9",
+   "label": "Vol+"
+  },
+  {
+   "type": 48,
+   "code1": 234,
+   "code2": 0,
+   "usage": "0x00EA",
+   "label": "Vol-"
+  },
+  {
+   "type": 48,
+   "code1": 226,
+   "code2": 0,
+   "usage": "0x00E2",
+   "label": "Mute"
+  },
+  {
+   "type": 48,
+   "code1": 205,
+   "code2": 0,
+   "usage": "0x00CD",
+   "label": "Play"
+  },
+  {
+   "type": 48,
+   "code1": 183,
+   "code2": 0,
+   "usage": "0x00B7",
+   "label": "Stop"
+  },
+  {
+   "type": 48,
+   "code1": 182,
+   "code2": 0,
+   "usage": "0x00B6",
+   "label": "Prev"
+  },
+  {
+   "type": 48,
+   "code1": 181,
+   "code2": 0,
+   "usage": "0x00B5",
+   "label": "Next"
+  },
+  {
+   "type": 48,
+   "code1": 131,
+   "code2": 0,
+   "usage": "0x0083",
+   "label": "Multimedia"
+  },
+  {
+   "type": 48,
+   "code1": 111,
+   "code2": 0,
+   "usage": "0x006F",
+   "label": "Screen Bright+"
+  },
+  {
+   "type": 48,
+   "code1": 112,
+   "code2": 0,
+   "usage": "0x0070",
+   "label": "Screen Bright-"
+  },
+  {
+   "type": 48,
+   "code1": 35,
+   "code2": 2,
+   "usage": "0x0223",
+   "label": "Web Home"
+  },
+  {
+   "type": 48,
+   "code1": 39,
+   "code2": 2,
+   "usage": "0x0227",
+   "label": "Web Refresh"
+  },
+  {
+   "type": 48,
+   "code1": 38,
+   "code2": 2,
+   "usage": "0x0226",
+   "label": "Web Stop"
+  },
+  {
+   "type": 48,
+   "code1": 37,
+   "code2": 2,
+   "usage": "0x0225",
+   "label": "Web Forward"
+  },
+  {
+   "type": 48,
+   "code1": 36,
+   "code2": 2,
+   "usage": "0x0224",
+   "label": "Web Back"
+  },
+  {
+   "type": 48,
+   "code1": 42,
+   "code2": 2,
+   "usage": "0x022A",
+   "label": "Web Favorites"
+  },
+  {
+   "type": 48,
+   "code1": 33,
+   "code2": 2,
+   "usage": "0x0221",
+   "label": "Web Search"
+  },
+  {
+   "type": 48,
+   "code1": 146,
+   "code2": 1,
+   "usage": "0x0192",
+   "label": "Calc"
+  },
+  {
+   "type": 48,
+   "code1": 148,
+   "code2": 1,
+   "usage": "0x0194",
+   "label": "Pc"
+  },
+  {
+   "type": 48,
+   "code1": 138,
+   "code2": 1,
+   "usage": "0x018A",
+   "label": "Email"
+  },
+  {
+   "type": 48,
+   "code1": 207,
+   "code2": 0,
+   "usage": "0x00CF",
+   "label": "Siri"
+  },
+  {
+   "type": 48,
+   "code1": 160,
+   "code2": 2,
+   "usage": "0x02A0",
+   "label": "Launch pad"
+  },
+  {
+   "type": 48,
+   "code1": 159,
+   "code2": 2,
+   "usage": "0x029F",
+   "label": "Show Window"
+  }
+ ],
+ "mouse_type32_33": [
+  {
+   "type": 32,
+   "code1": 1,
+   "code2": 0,
+   "name": "Mouse Left"
+  },
+  {
+   "type": 32,
+   "code1": 2,
+   "code2": 0,
+   "name": "Mouse Right"
+  },
+  {
+   "type": 32,
+   "code1": 4,
+   "code2": 0,
+   "name": "Mouse Middle"
+  },
+  {
+   "type": 33,
+   "code1": 0,
+   "code2": 1,
+   "name": "Mouse Up"
+  },
+  {
+   "type": 33,
+   "code1": 0,
+   "code2": 255,
+   "name": "Mouse Down"
+  },
+  {
+   "type": 32,
+   "code1": 8,
+   "code2": 0,
+   "name": "Mouse Forwad"
+  },
+  {
+   "type": 32,
+   "code1": 16,
+   "code2": 0,
+   "name": "Mouse Back"
+  }
+ ],
+ "system_type64": [
+  {
+   "type": 64,
+   "code1": 1,
+   "code2": 0,
+   "label": "Power"
+  },
+  {
+   "type": 64,
+   "code1": 2,
+   "code2": 0,
+   "label": "Sleep"
+  },
+  {
+   "type": 64,
+   "code1": 4,
+   "code2": 0,
+   "label": "WakeUp"
+  }
+ ],
+ "pickerCategories": {
+  "basic_ANSI": {
+   "source": "full_keyboard.json (module 82109)",
+   "keys": [
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 41,
+     "label": "ESC"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 58,
+     "label": "F1"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 59,
+     "label": "F2"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 60,
+     "label": "F3"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 61,
+     "label": "F4"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 62,
+     "label": "F5"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 63,
+     "label": "F6"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 64,
+     "label": "F7"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 65,
+     "label": "F8"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 66,
+     "label": "F9"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 67,
+     "label": "F10"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 68,
+     "label": "F11"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 69,
+     "label": "F12"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 70,
+     "label": "PRT"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 71,
+     "label": "SCR"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 72,
+     "label": "PAU"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 53,
+     "label": "` ~"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 30,
+     "label": "! 1"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 31,
+     "label": "@ 2"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 32,
+     "label": "# 3"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 33,
+     "label": "$ 4"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 34,
+     "label": "% 5"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 35,
+     "label": "^ 6"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 36,
+     "label": "& 7"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 37,
+     "label": "* 8"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 38,
+     "label": "( 9"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 39,
+     "label": ") 0"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 45,
+     "label": "_ -"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 46,
+     "label": "+ ="
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 46,
+     "label": "¥ |"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 42,
+     "label": "BACK"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 73,
+     "label": "INS"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 74,
+     "label": "HOM"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 75,
+     "label": "PGUP"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 83,
+     "label": "NUM"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 84,
+     "label": "/"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 85,
+     "label": "*"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 86,
+     "label": "-"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 43,
+     "label": "TAB"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 20,
+     "label": "Q"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 26,
+     "label": "W"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 8,
+     "label": "E"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 21,
+     "label": "R"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 23,
+     "label": "T"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 28,
+     "label": "Y"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 24,
+     "label": "U"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 12,
+     "label": "I"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 18,
+     "label": "O"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 19,
+     "label": "P"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 47,
+     "label": "[ {"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 48,
+     "label": "} ]"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 49,
+     "label": "\\ |"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 76,
+     "label": "DEL"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 77,
+     "label": "END"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 78,
+     "label": "PGDN"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 95,
+     "label": "7"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 96,
+     "label": "8"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 97,
+     "label": "9"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 87,
+     "label": "+"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 57,
+     "label": "CAPS"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 4,
+     "label": "A"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 22,
+     "label": "S"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 7,
+     "label": "D"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 9,
+     "label": "F"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 10,
+     "label": "G"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 11,
+     "label": "H"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 13,
+     "label": "J"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 14,
+     "label": "K"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 15,
+     "label": "L"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 51,
+     "label": ", ;"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 52,
+     "label": "' \""
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 40,
+     "label": "ENTER"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 92,
+     "label": "4"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 93,
+     "label": "5"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 94,
+     "label": "6"
+    },
+    {
+     "type": 16,
+     "code1": 2,
+     "code2": 0,
+     "label": "SHIFT"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 50,
+     "label": "\\ |"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 29,
+     "label": "Z"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 27,
+     "label": "X"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 6,
+     "label": "C"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 25,
+     "label": "V"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 5,
+     "label": "B"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 17,
+     "label": "N"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 16,
+     "label": "M"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 54,
+     "label": ", <"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 55,
+     "label": ". >"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 56,
+     "label": "/ ?"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 56,
+     "label": "\\"
+    },
+    {
+     "type": 16,
+     "code1": 32,
+     "code2": 0,
+     "label": "SHIFT"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 82,
+     "label": "↑"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 89,
+     "label": "1"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 90,
+     "label": "2"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 91,
+     "label": "3"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 88,
+     "label": "ENTER"
+    },
+    {
+     "type": 16,
+     "code1": 1,
+     "code2": 0,
+     "label": "CTRL"
+    },
+    {
+     "type": 16,
+     "code1": 8,
+     "code2": 0,
+     "label": "WIN"
+    },
+    {
+     "type": 16,
+     "code1": 4,
+     "code2": 0,
+     "label": "ALT"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 44,
+     "label": "SPACE"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 1,
+     "label": "FN1"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 2,
+     "label": "FN2"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 3,
+     "label": "FN3"
+    },
+    {
+     "type": 16,
+     "code1": 64,
+     "code2": 0,
+     "label": "ALT"
+    },
+    {
+     "type": 16,
+     "code1": 128,
+     "code2": 0,
+     "label": "WIN"
+    },
+    {
+     "type": 16,
+     "code1": 16,
+     "code2": 0,
+     "label": "CTRL"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 80,
+     "label": "←"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 81,
+     "label": "↓"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 79,
+     "label": "→"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 98,
+     "label": "0"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 99,
+     "label": "."
+    }
+   ],
+   "macLabels": [
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 41,
+     "label": "Esc"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 58,
+     "label": "F1"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 59,
+     "label": "F2"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 60,
+     "label": "F3"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 61,
+     "label": "F4"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 62,
+     "label": "F5"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 63,
+     "label": "F6"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 64,
+     "label": "F7"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 65,
+     "label": "F8"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 66,
+     "label": "F9"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 67,
+     "label": "F10"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 68,
+     "label": "F11"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 69,
+     "label": "F12"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 70,
+     "label": "Prtsc"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 71,
+     "label": "Scrl"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 72,
+     "label": "Pause"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 53,
+     "label": "~"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 30,
+     "label": "1"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 31,
+     "label": "2"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 32,
+     "label": "3"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 33,
+     "label": "4"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 34,
+     "label": "5"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 35,
+     "label": "6"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 36,
+     "label": "7"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 37,
+     "label": "8"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 38,
+     "label": "9"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 39,
+     "label": "0"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 45,
+     "label": "-"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 46,
+     "label": "+"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 42,
+     "label": "Back"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 73,
+     "label": "Ins"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 74,
+     "label": "Home"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 75,
+     "label": "PgUp"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 83,
+     "label": "NumLock"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 84,
+     "label": "Num /"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 85,
+     "label": "Num *"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 86,
+     "label": "Num -"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 43,
+     "label": "Tap"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 20,
+     "label": "Q"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 26,
+     "label": "W"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 8,
+     "label": "E"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 21,
+     "label": "R"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 23,
+     "label": "T"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 28,
+     "label": "Y"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 24,
+     "label": "U"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 12,
+     "label": "I"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 18,
+     "label": "O"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 19,
+     "label": "P"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 47,
+     "label": "["
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 48,
+     "label": "]"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 49,
+     "label": "\\"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 76,
+     "label": "Del"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 77,
+     "label": "End"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 78,
+     "label": "PgDn"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 95,
+     "label": "Num 7"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 96,
+     "label": "Num 8"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 97,
+     "label": "Num 9"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 87,
+     "label": "Num +"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 57,
+     "label": "Caps"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 4,
+     "label": "A"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 22,
+     "label": "S"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 7,
+     "label": "D"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 9,
+     "label": "F"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 10,
+     "label": "G"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 11,
+     "label": "H"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 13,
+     "label": "J"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 14,
+     "label": "K"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 15,
+     "label": "L"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 51,
+     "label": ";"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 52,
+     "label": "'"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 40,
+     "label": "Enter"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 92,
+     "label": "Num 4"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 93,
+     "label": "Num 5"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 94,
+     "label": "Num 6"
+    },
+    {
+     "type": 16,
+     "code1": 2,
+     "code2": 0,
+     "label": "Shift"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 29,
+     "label": "Z"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 27,
+     "label": "X"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 6,
+     "label": "C"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 25,
+     "label": "V"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 5,
+     "label": "B"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 17,
+     "label": "N"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 16,
+     "label": "M"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 54,
+     "label": "<"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 55,
+     "label": ">"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 56,
+     "label": "?"
+    },
+    {
+     "type": 16,
+     "code1": 32,
+     "code2": 0,
+     "label": "Shift"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 82,
+     "label": "Up"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 89,
+     "label": "Num 1"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 90,
+     "label": "Num 2"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 91,
+     "label": "Num 3"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 88,
+     "label": "Num Enter"
+    },
+    {
+     "type": 16,
+     "code1": 1,
+     "code2": 0,
+     "label": "Ctrl"
+    },
+    {
+     "type": 16,
+     "code1": 4,
+     "code2": 0,
+     "label": "Option"
+    },
+    {
+     "type": 16,
+     "code1": 8,
+     "code2": 0,
+     "label": "Command"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 44,
+     "label": "Space"
+    },
+    {
+     "type": 16,
+     "code1": 64,
+     "code2": 0,
+     "label": "Alt"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 1,
+     "label": "Fn"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 101,
+     "label": "App"
+    },
+    {
+     "type": 16,
+     "code1": 16,
+     "code2": 0,
+     "label": "Ctrl"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 80,
+     "label": "Left"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 81,
+     "label": "Down"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 79,
+     "label": "Right"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 98,
+     "label": "Num 0"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 99,
+     "label": "Num ."
+    }
+   ]
+  },
+  "basic_JIS": {
+   "source": "full_keyboard_JIS.json (module 73569), used when deviceType==112",
+   "keys": [
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 41,
+     "label": "ESC"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 58,
+     "label": "F1"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 59,
+     "label": "F2"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 60,
+     "label": "F3"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 61,
+     "label": "F4"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 62,
+     "label": "F5"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 63,
+     "label": "F6"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 64,
+     "label": "F7"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 65,
+     "label": "F8"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 66,
+     "label": "F9"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 67,
+     "label": "F10"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 68,
+     "label": "F11"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 69,
+     "label": "F12"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 70,
+     "label": "PRT"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 71,
+     "label": "SCR"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 72,
+     "label": "PAU"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 53,
+     "label": "E/J"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 30,
+     "label": "! 1"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 31,
+     "label": "@ 2"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 32,
+     "label": "# 3"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 33,
+     "label": "$ 4"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 34,
+     "label": "% 5"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 35,
+     "label": "^ 6"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 36,
+     "label": "& 7"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 37,
+     "label": "* 8"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 38,
+     "label": "( 9"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 39,
+     "label": ") 0"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 45,
+     "label": "_ -"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 46,
+     "label": "^ ~"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 137,
+     "label": "¥ |"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 42,
+     "label": "BACK"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 73,
+     "label": "INS"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 74,
+     "label": "HOM"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 75,
+     "label": "PGUP"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 83,
+     "label": "NUM"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 84,
+     "label": "/"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 85,
+     "label": "*"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 86,
+     "label": "-"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 43,
+     "label": "TAB"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 20,
+     "label": "Q"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 26,
+     "label": "W"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 8,
+     "label": "E"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 21,
+     "label": "R"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 23,
+     "label": "T"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 28,
+     "label": "Y"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 24,
+     "label": "U"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 12,
+     "label": "I"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 18,
+     "label": "O"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 19,
+     "label": "P"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 47,
+     "label": "@ `"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 48,
+     "label": "[ {"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 76,
+     "label": "DEL"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 77,
+     "label": "END"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 78,
+     "label": "PGDN"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 95,
+     "label": "7"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 96,
+     "label": "8"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 97,
+     "label": "9"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 87,
+     "label": "+"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 57,
+     "label": "CAPS"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 4,
+     "label": "A"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 22,
+     "label": "S"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 7,
+     "label": "D"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 9,
+     "label": "F"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 10,
+     "label": "G"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 11,
+     "label": "H"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 13,
+     "label": "J"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 14,
+     "label": "K"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 15,
+     "label": "L"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 51,
+     "label": ", ;"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 52,
+     "label": "' \""
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 50,
+     "label": "}\n]"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 40,
+     "label": "ENTER"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 92,
+     "label": "4"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 93,
+     "label": "5"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 94,
+     "label": "6"
+    },
+    {
+     "type": 16,
+     "code1": 2,
+     "code2": 0,
+     "label": "SHIFT"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 29,
+     "label": "Z"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 27,
+     "label": "X"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 6,
+     "label": "C"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 25,
+     "label": "V"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 5,
+     "label": "B"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 17,
+     "label": "N"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 16,
+     "label": "M"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 54,
+     "label": ", <"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 55,
+     "label": ". >"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 56,
+     "label": "/ ?"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 135,
+     "label": "\\ _"
+    },
+    {
+     "type": 16,
+     "code1": 32,
+     "code2": 0,
+     "label": "SHIFT"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 82,
+     "label": "↑"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 89,
+     "label": "1"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 90,
+     "label": "2"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 91,
+     "label": "3"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 88,
+     "label": "ENTER"
+    },
+    {
+     "type": 16,
+     "code1": 1,
+     "code2": 0,
+     "label": "CTRL"
+    },
+    {
+     "type": 16,
+     "code1": 8,
+     "code2": 0,
+     "label": "WIN"
+    },
+    {
+     "type": 16,
+     "code1": 4,
+     "code2": 0,
+     "label": "ALT"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 139,
+     "label": "無変換"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 44,
+     "label": "SPACE"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 138,
+     "label": "変換"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 136,
+     "label": "KANA"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 1,
+     "label": "FN1"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 2,
+     "label": "FN2"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 3,
+     "label": "FN3"
+    },
+    {
+     "type": 16,
+     "code1": 64,
+     "code2": 0,
+     "label": "ALT"
+    },
+    {
+     "type": 16,
+     "code1": 128,
+     "code2": 0,
+     "label": "WIN"
+    },
+    {
+     "type": 16,
+     "code1": 16,
+     "code2": 0,
+     "label": "CTRL"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 80,
+     "label": "←"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 81,
+     "label": "↓"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 79,
+     "label": "→"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 98,
+     "label": "0"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 99,
+     "label": "."
+    }
+   ]
+  },
+  "extra_keys": [
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 104,
+    "name": "F13"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 105,
+    "name": "F14"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 106,
+    "name": "F15"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 107,
+    "name": "F16"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 108,
+    "name": "F17"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 109,
+    "name": "F18"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 110,
+    "name": "F19"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 111,
+    "name": "F20"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 112,
+    "name": "F21"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 113,
+    "name": "F22"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 114,
+    "name": "F23"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 115,
+    "name": "F24"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 50,
+    "name": "NUHS"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 100,
+    "name": "NUBS"
+   },
+   {
+    "type": 16,
+    "code1": 0,
+    "code2": 135,
+    "name": "Ro"
+   }
+  ],
+  "media": [
+   {
+    "type": 48,
+    "code1": 131,
+    "code2": 1,
+    "name": "Player"
+   },
+   {
+    "type": 48,
+    "code1": 233,
+    "code2": 0,
+    "name": "Vol+"
+   },
+   {
+    "type": 48,
+    "code1": 234,
+    "code2": 0,
+    "name": "Vol-"
+   },
+   {
+    "type": 48,
+    "code1": 226,
+    "code2": 0,
+    "name": "Mute"
+   },
+   {
+    "type": 48,
+    "code1": 205,
+    "code2": 0,
+    "name": "Play"
+   },
+   {
+    "type": 48,
+    "code1": 183,
+    "code2": 0,
+    "name": "Stop"
+   },
+   {
+    "type": 48,
+    "code1": 111,
+    "code2": 0,
+    "name": "Screen Bright+"
+   },
+   {
+    "type": 48,
+    "code1": 112,
+    "code2": 0,
+    "name": "Screen Bright-"
+   },
+   {
+    "type": 48,
+    "code1": 182,
+    "code2": 0,
+    "name": "Prev"
+   },
+   {
+    "type": 48,
+    "code1": 181,
+    "code2": 0,
+    "name": "Next"
+   },
+   {
+    "type": 48,
+    "code1": 35,
+    "code2": 2,
+    "name": "Web Home"
+   },
+   {
+    "type": 48,
+    "code1": 39,
+    "code2": 2,
+    "name": "Web Refresh"
+   },
+   {
+    "type": 48,
+    "code1": 38,
+    "code2": 2,
+    "name": "Web Stop"
+   },
+   {
+    "type": 48,
+    "code1": 36,
+    "code2": 2,
+    "name": "Web Back"
+   },
+   {
+    "type": 48,
+    "code1": 37,
+    "code2": 2,
+    "name": "Web Forward"
+   },
+   {
+    "type": 48,
+    "code1": 42,
+    "code2": 2,
+    "name": "Web Favs"
+   },
+   {
+    "type": 48,
+    "code1": 33,
+    "code2": 2,
+    "name": "Web Search"
+   },
+   {
+    "type": 48,
+    "code1": 148,
+    "code2": 1,
+    "name": "Pc"
+   },
+   {
+    "type": 48,
+    "code1": 146,
+    "code2": 1,
+    "name": "Calc"
+   },
+   {
+    "type": 48,
+    "code1": 138,
+    "code2": 1,
+    "name": "Email"
+   },
+   {
+    "type": 240,
+    "code1": 69,
+    "code2": 0,
+    "name": "Launch Pad"
+   },
+   {
+    "type": 48,
+    "code1": 159,
+    "code2": 2,
+    "name": "Show Window"
+   }
+  ],
+  "lighting": [
+   {
+    "type": 240,
+    "code1": 46,
+    "code2": 0,
+    "name": "RGB Mode+"
+   },
+   {
+    "type": 240,
+    "code1": 47,
+    "code2": 0,
+    "name": "RGB Mode-"
+   },
+   {
+    "type": 240,
+    "code1": 53,
+    "code2": 0,
+    "name": "Bright Off"
+   },
+   {
+    "type": 240,
+    "code1": 51,
+    "code2": 0,
+    "name": "Bright-"
+   },
+   {
+    "type": 240,
+    "code1": 50,
+    "code2": 0,
+    "name": "Bright+"
+   },
+   {
+    "type": 240,
+    "code1": 54,
+    "code2": 0,
+    "name": "Speed+"
+   },
+   {
+    "type": 240,
+    "code1": 55,
+    "code2": 0,
+    "name": "Speed-"
+   },
+   {
+    "type": 240,
+    "code1": 60,
+    "code2": 0,
+    "name": "Color-"
+   },
+   {
+    "type": 240,
+    "code1": 61,
+    "code2": 0,
+    "name": "Color+"
+   }
+  ],
+  "special": {
+   "note": "filtered per profile: FN keys only those with code2 in [4p,4p+3]; 'E/J' only for type 112",
+   "keys": [
+    {
+     "type": 240,
+     "code1": 1,
+     "code2": 0,
+     "name": "Lock"
+    },
+    {
+     "type": 240,
+     "code1": 2,
+     "code2": 0,
+     "name": "WinLock"
+    },
+    {
+     "type": 240,
+     "code1": 8,
+     "code2": 0,
+     "name": "Reset"
+    },
+    {
+     "type": 240,
+     "code1": 4,
+     "code2": 0,
+     "name": "WinOS"
+    },
+    {
+     "type": 240,
+     "code1": 5,
+     "code2": 0,
+     "name": "MacOS"
+    },
+    {
+     "type": 240,
+     "code1": 210,
+     "code2": 0,
+     "name": "Sleep mode"
+    },
+    {
+     "type": 16,
+     "code1": 0,
+     "code2": 53,
+     "name": "E/J"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 0,
+     "name": "FN0"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 1,
+     "name": "FN1"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 2,
+     "name": "FN2"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 3,
+     "name": "FN3"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 4,
+     "name": "FN4"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 5,
+     "name": "FN5"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 6,
+     "name": "FN6"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 7,
+     "name": "FN7"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 8,
+     "name": "FN8"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 9,
+     "name": "FN9"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 10,
+     "name": "FN10"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 11,
+     "name": "FN11"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 12,
+     "name": "FN12"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 13,
+     "name": "FN13"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 14,
+     "name": "FN14"
+    },
+    {
+     "type": 240,
+     "code1": 255,
+     "code2": 15,
+     "name": "FN15"
+    }
+   ]
+  },
+  "mouse": [
+   {
+    "type": 32,
+    "code1": 1,
+    "code2": 0,
+    "name": "Mouse Left"
+   },
+   {
+    "type": 32,
+    "code1": 2,
+    "code2": 0,
+    "name": "Mouse Right"
+   },
+   {
+    "type": 32,
+    "code1": 4,
+    "code2": 0,
+    "name": "Mouse Middle"
+   },
+   {
+    "type": 33,
+    "code1": 0,
+    "code2": 1,
+    "name": "Mouse Up"
+   },
+   {
+    "type": 33,
+    "code1": 0,
+    "code2": 255,
+    "name": "Mouse Down"
+   },
+   {
+    "type": 32,
+    "code1": 8,
+    "code2": 0,
+    "name": "Mouse Forwad"
+   },
+   {
+    "type": 32,
+    "code1": 16,
+    "code2": 0,
+    "name": "Mouse Back"
+   }
+  ]
+ },
+ "macroEncoding": {
+  "webCodeToHid": {
+   "Digit1": 30,
+   "Digit2": 31,
+   "Digit3": 32,
+   "Digit4": 33,
+   "Digit5": 34,
+   "Digit6": 35,
+   "Digit7": 36,
+   "Digit8": 37,
+   "Digit9": 38,
+   "Digit0": 39,
+   "KeyA": 4,
+   "KeyB": 5,
+   "KeyC": 6,
+   "KeyD": 7,
+   "KeyE": 8,
+   "KeyF": 9,
+   "KeyG": 10,
+   "KeyH": 11,
+   "KeyI": 12,
+   "KeyJ": 13,
+   "KeyK": 14,
+   "KeyL": 15,
+   "KeyM": 16,
+   "KeyN": 17,
+   "KeyO": 18,
+   "KeyP": 19,
+   "KeyQ": 20,
+   "KeyR": 21,
+   "KeyS": 22,
+   "KeyT": 23,
+   "KeyU": 24,
+   "KeyV": 25,
+   "KeyW": 26,
+   "KeyX": 27,
+   "KeyY": 28,
+   "KeyZ": 29,
+   "Comma": 54,
+   "Period": 55,
+   "Semicolon": 51,
+   "Quote": 52,
+   "BracketLeft": 47,
+   "BracketRight": 48,
+   "Backspace": 42,
+   "Backquote": 53,
+   "Slash": 56,
+   "Backslash": 49,
+   "Minus": 45,
+   "Equal": 46,
+   "IntlRo": 135,
+   "IntlYen": 137,
+   "AltLeft": 226,
+   "AltRight": 230,
+   "CapsLock": 57,
+   "ControlLeft": 224,
+   "ControlRight": 228,
+   "MetaLeft": 227,
+   "MetaRight": 231,
+   "OSLeft": 227,
+   "OSRight": 231,
+   "ShiftLeft": 225,
+   "ShiftRight": 229,
+   "ContextMenu": 101,
+   "Enter": 40,
+   "Space": 44,
+   "Tab": 43,
+   "Delete": 76,
+   "End": 77,
+   "Help": 117,
+   "Home": 74,
+   "Insert": 73,
+   "PageDown": 78,
+   "PageUp": 75,
+   "ArrowDown": 81,
+   "ArrowLeft": 80,
+   "ArrowRight": 79,
+   "ArrowUp": 82,
+   "Escape": 41,
+   "PrintScreen": 70,
+   "ScrollLock": 71,
+   "AudioVolumeUp": 169,
+   "AudioVolumeDown": 170,
+   "AudioVolumeMute": 168,
+   "Pause": 72,
+   "F1": 58,
+   "F2": 59,
+   "F3": 60,
+   "F4": 61,
+   "F5": 62,
+   "F6": 63,
+   "F7": 64,
+   "F8": 65,
+   "F9": 66,
+   "F10": 67,
+   "F11": 68,
+   "F12": 69,
+   "F13": 104,
+   "F14": 105,
+   "F15": 106,
+   "F16": 107,
+   "F17": 108,
+   "F18": 109,
+   "F19": 110,
+   "F20": 111,
+   "F21": 112,
+   "F22": 113,
+   "F23": 114,
+   "F24": 115,
+   "NUHS": 50,
+   "NUBS": 100,
+   "RO": 135,
+   "NumLock": 83,
+   "Numpad0": 98,
+   "Numpad1": 89,
+   "Numpad2": 90,
+   "Numpad3": 91,
+   "Numpad4": 92,
+   "Numpad5": 93,
+   "Numpad6": 94,
+   "Numpad7": 95,
+   "Numpad8": 96,
+   "Numpad9": 97,
+   "NumpadAdd": 87,
+   "NumpadComma": 54,
+   "NumpadDecimal": 99,
+   "NumpadDivide": 84,
+   "NumpadEnter": 88,
+   "NumpadEqual": 103,
+   "NumpadMultiply": 85,
+   "NumpadSubtract": 86
+  },
+  "mouseWebCodes": {
+   "0": "Mouse L-Button",
+   "1": "Mouse M-Button",
+   "2": "Mouse R-Button",
+   "3": "Mouse Backward",
+   "4": "Mouse Forward"
+  },
+  "note": "In macros a key is stored as a raw HID usage byte; modifiers (224..231) are stored as bitmask 1<<(usage&15) with kind=1. See PROTOCOL.md macros."
+ }
+}

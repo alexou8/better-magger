@@ -1,0 +1,3582 @@
+{
+ "_doc": "Lighting lives in the 64-byte per-profile 'func' block (read cmd 0x05 / write cmd 0x06 at offset 64*profile). Effect list from the layout JSON (lighting.effect). Same list for K68, K68_JIS, K68_Ultra_UK, K60, K60_1: true. Flags say which controls the UI enables for that effect; `direction` = which direction-control set (0 none,1 left/right,2 up/down,3 spread/gather,4 cw/ccw).",
+ "funcBlockLightingBytes": {
+  "8": "effect id (0..22)",
+  "9": "brightness (UI slider 0..100 step 1, written raw; brightness 'off' toggle writes 0)",
+  "10": "speed stored INVERTED: byte = 4 - uiSpeed, uiSpeed 0..4 (marks 1..4)",
+  "11": "direction (0/1, meaning depends on effect, see directionValues)",
+  "12": "color mode: 0 = single user color (bytes 14..16), 1 = multicolor/rainbow (UI 'singleColor' = !byte12)",
+  "13": "unknown/unused (UNVERIFIED)",
+  "14": "R",
+  "15": "G",
+  "16": "B",
+  "35": "lightSleep: sleep timeout in units of 30 s (UI options 2=1min, 20=10min, 30=15min, 60=30min); UI clamps <2 to 2",
+  "36": "lightSleep2: 1 = never sleep (UI writes byte35=0, byte36=1); 0 otherwise"
+ },
+ "directionValues": {
+  "6 (Wave)": {
+   "0": "right",
+   "1": "left"
+  },
+  "7 (Up and down waves)": {
+   "0": "down",
+   "1": "up"
+  },
+  "8 (Fountain)": {
+   "0": "spread outward (ks.png)",
+   "1": "gather inward (jh.png)"
+  },
+  "10 (Spin)": {
+   "0": "counter-clockwise (nsz.png)",
+   "1": "clockwise (ssz.png)"
+  }
+ },
+ "effects": [
+  {
+   "id": 0,
+   "name": "Custom",
+   "nameCN": "自定义",
+   "lang": "200",
+   "brightness": true,
+   "speed": false,
+   "direction": 0,
+   "color": false,
+   "palette": true
+  },
+  {
+   "id": 1,
+   "name": "Spectrum",
+   "nameCN": "光谱",
+   "lang": "201",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": false,
+   "palette": false
+  },
+  {
+   "id": 2,
+   "name": "Ladder",
+   "nameCN": "阶梯",
+   "lang": "202",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 3,
+   "name": "Static",
+   "nameCN": "静态",
+   "lang": "203",
+   "brightness": true,
+   "speed": false,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 4,
+   "name": "Breathe",
+   "nameCN": "呼吸",
+   "lang": "204",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 5,
+   "name": "Flowers",
+   "nameCN": "百花",
+   "lang": "205",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": false,
+   "palette": false
+  },
+  {
+   "id": 6,
+   "name": "Wave",
+   "nameCN": "波浪",
+   "lang": "206",
+   "brightness": true,
+   "speed": true,
+   "direction": 1,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 7,
+   "name": "Up and down waves",
+   "nameCN": "上下波浪",
+   "lang": "207",
+   "brightness": true,
+   "speed": true,
+   "direction": 2,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 8,
+   "name": "Fountain",
+   "nameCN": "喷泉",
+   "lang": "208",
+   "brightness": true,
+   "speed": true,
+   "direction": 3,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 9,
+   "name": "Galaxy",
+   "nameCN": "银河",
+   "lang": "209",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 10,
+   "name": "Spin",
+   "nameCN": "旋转",
+   "lang": "210",
+   "brightness": true,
+   "speed": true,
+   "direction": 4,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 11,
+   "name": "Tide",
+   "nameCN": "潮汐",
+   "lang": "211",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 12,
+   "name": "Swing",
+   "nameCN": "摆动模式",
+   "lang": "212",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 13,
+   "name": "Ripples",
+   "nameCN": "涟漪",
+   "lang": "213",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 14,
+   "name": "Steady on Ripple",
+   "nameCN": "常亮涟漪",
+   "lang": "214",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 15,
+   "name": "Single order",
+   "nameCN": "单点",
+   "lang": "215",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 16,
+   "name": "Palace",
+   "nameCN": "宫格",
+   "lang": "216",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 17,
+   "name": "Piano",
+   "nameCN": "钢琴",
+   "lang": "217",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 18,
+   "name": "Streamer",
+   "nameCN": "流光",
+   "lang": "218",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 19,
+   "name": "Rain",
+   "nameCN": "落雨",
+   "lang": "219",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 20,
+   "name": "Starlight",
+   "nameCN": "星光",
+   "lang": "220",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 21,
+   "name": "Fireworks",
+   "nameCN": "烟花",
+   "lang": "221",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  },
+  {
+   "id": 22,
+   "name": "Wave zone",
+   "nameCN": "波带",
+   "lang": "222",
+   "brightness": true,
+   "speed": true,
+   "direction": 0,
+   "color": true,
+   "palette": true
+  }
+ ],
+ "effects_K80_types120_121": [
+  {
+   "id": 1,
+   "name": "Spectrum",
+   "brightness": true,
+   "speed": true,
+   "color": false
+  },
+  {
+   "id": 3,
+   "name": "Static",
+   "brightness": true,
+   "speed": false,
+   "color": true
+  },
+  {
+   "id": 4,
+   "name": "Breathe",
+   "brightness": true,
+   "speed": true,
+   "color": true
+  }
+ ],
+ "perKey": {
+  "customEffectId": 0,
+  "storage": "cmd 0x0A read / 0x0B write, 512 bytes per profile at offset 512*profile, 128 keys x [R,G,B] (only 384 bytes used); key index = protocol key index",
+  "singleKeyWrite": "cmd 0x0B, len 3, offset 512*profile + 3*keyIndex, data [R,G,B]",
+  "liveColors": "cmd 0xDE reads 384 bytes (128 x RGB) of the CURRENT rendered LED colors; the site polls it every 300 ms while on the light tab and effect != 0"
+ },
+ "palettePresets": {
+  "note": "UI 'Preset' dropdown (17015) writes these per-key color sets with setKeyColors(profile). key_code matched against default-keymap code to find the slot. For type 112 one extra slot (index 53) gets a preset-specific color.",
+  "options": {
+   "0": "Custom Theme",
+   "1": "Rainbow Color Spectrum",
+   "2": "Miami Vice",
+   "3": "Cyberpunk",
+   "4": "Halloween",
+   "5": "Christmas"
+  },
+  "data": {
+   "key_light88": {
+    "name": "自定义",
+    "keys": [
+     {
+      "key_name": "F1",
+      "key_code": 58,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "F2",
+      "key_code": 59,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "F3",
+      "key_code": 60,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "F4",
+      "key_code": 61,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "F5",
+      "key_code": 62,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "F6",
+      "key_code": 63,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "F7",
+      "key_code": 64,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "F8",
+      "key_code": 65,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "F9",
+      "key_code": 66,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "F10",
+      "key_code": 67,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "F11",
+      "key_code": 68,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "F12",
+      "key_code": 69,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Print",
+      "key_code": 70,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "ScLk",
+      "key_code": 71,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Pause",
+      "key_code": 72,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Esc",
+      "key_code": 41,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "1",
+      "key_code": 30,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "2",
+      "key_code": 31,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "3",
+      "key_code": 32,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "4",
+      "key_code": 33,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "5",
+      "key_code": 34,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "6",
+      "key_code": 35,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "7",
+      "key_code": 36,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "8",
+      "key_code": 37,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "9",
+      "key_code": 38,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "0",
+      "key_code": 39,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "-",
+      "key_code": 45,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "=",
+      "key_code": 46,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "|",
+      "key_code": 137,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Backspace",
+      "key_code": 42,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Ins",
+      "key_code": 73,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Home",
+      "key_code": 74,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "PgUp",
+      "key_code": 75,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Tab",
+      "key_code": 43,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Q",
+      "key_code": 20,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "W",
+      "key_code": 26,
+      "rgb": "#FFFFFF"
+     },
+     {
+      "key_name": "E",
+      "key_code": 8,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "R",
+      "key_code": 21,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "T",
+      "key_code": 23,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Y",
+      "key_code": 28,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "U",
+      "key_code": 24,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "I",
+      "key_code": 12,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "O",
+      "key_code": 18,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "P",
+      "key_code": 19,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "[",
+      "key_code": 47,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "]",
+      "key_code": 48,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 49,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Del",
+      "key_code": 76,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "End",
+      "key_code": 77,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "PgDn",
+      "key_code": 78,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Caps",
+      "key_code": 57,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "A",
+      "key_code": 4,
+      "rgb": "#FFFFFF"
+     },
+     {
+      "key_name": "S",
+      "key_code": 22,
+      "rgb": "#FFFFFF"
+     },
+     {
+      "key_name": "D",
+      "key_code": 7,
+      "rgb": "#FFFFFF"
+     },
+     {
+      "key_name": "F",
+      "key_code": 9,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "G",
+      "key_code": 10,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "H",
+      "key_code": 11,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "J",
+      "key_code": 13,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "K",
+      "key_code": 14,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "L",
+      "key_code": 15,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": ";",
+      "key_code": 51,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "'",
+      "key_code": 52,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Enter",
+      "key_code": 40,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 50,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 225,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Z",
+      "key_code": 29,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "X",
+      "key_code": 27,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "C",
+      "key_code": 6,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "V",
+      "key_code": 25,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "B",
+      "key_code": 5,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "N",
+      "key_code": 17,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "M",
+      "key_code": 16,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": ",",
+      "key_code": 54,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": ".",
+      "key_code": 55,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "/",
+      "key_code": 56,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 135,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 229,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "↑",
+      "key_code": 82,
+      "rgb": "#FFFFFF"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 224,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Win",
+      "key_code": 227,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 226,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "無変換",
+      "key_code": 139,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Space",
+      "key_code": 44,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "変換",
+      "key_code": 138,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "KANA",
+      "key_code": 136,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 230,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Fn",
+      "key_code": 255,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 228,
+      "rgb": "#000000"
+     },
+     {
+      "key_name": "←",
+      "key_code": 80,
+      "rgb": "#FFFFFF"
+     },
+     {
+      "key_name": "↓",
+      "key_code": 81,
+      "rgb": "#FFFFFF"
+     },
+     {
+      "key_name": "→",
+      "key_code": 79,
+      "rgb": "#FFFFFF"
+     }
+    ]
+   },
+   "key_light1": {
+    "name": "彩虹色谱",
+    "keys": [
+     {
+      "key_name": "F1",
+      "key_code": 58,
+      "rgb": "#B9068C"
+     },
+     {
+      "key_name": "F2",
+      "key_code": 59,
+      "rgb": "#6007BA"
+     },
+     {
+      "key_name": "F3",
+      "key_code": 60,
+      "rgb": "#0606B9"
+     },
+     {
+      "key_name": "F4",
+      "key_code": 61,
+      "rgb": "#007FFF"
+     },
+     {
+      "key_name": "F5",
+      "key_code": 62,
+      "rgb": "#06B9B9"
+     },
+     {
+      "key_name": "F6",
+      "key_code": 63,
+      "rgb": "#06B9B9"
+     },
+     {
+      "key_name": "F7",
+      "key_code": 64,
+      "rgb": "#06B906"
+     },
+     {
+      "key_name": "F8",
+      "key_code": 65,
+      "rgb": "#5FB906"
+     },
+     {
+      "key_name": "F9",
+      "key_code": 66,
+      "rgb": "#A3B906"
+     },
+     {
+      "key_name": "F10",
+      "key_code": 67,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "F11",
+      "key_code": 68,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "F12",
+      "key_code": 69,
+      "rgb": "#B95F06"
+     },
+     {
+      "key_name": "Print",
+      "key_code": 70,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "ScLk",
+      "key_code": 71,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "Pause",
+      "key_code": 72,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "Esc",
+      "key_code": 41,
+      "rgb": "#B9068C"
+     },
+     {
+      "key_name": "`",
+      "key_code": 53,
+      "rgb": "#B9068C"
+     },
+     {
+      "key_name": "1",
+      "key_code": 30,
+      "rgb": "#6007BA"
+     },
+     {
+      "key_name": "2",
+      "key_code": 31,
+      "rgb": "#0606B9"
+     },
+     {
+      "key_name": "3",
+      "key_code": 32,
+      "rgb": "#007FFF"
+     },
+     {
+      "key_name": "4",
+      "key_code": 33,
+      "rgb": "#06B9B9"
+     },
+     {
+      "key_name": "5",
+      "key_code": 34,
+      "rgb": "#06B9B9"
+     },
+     {
+      "key_name": "6",
+      "key_code": 35,
+      "rgb": "#06B906"
+     },
+     {
+      "key_name": "7",
+      "key_code": 36,
+      "rgb": "#5FB906"
+     },
+     {
+      "key_name": "8",
+      "key_code": 37,
+      "rgb": "#A3B906"
+     },
+     {
+      "key_name": "9",
+      "key_code": 38,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "0",
+      "key_code": 39,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "-",
+      "key_code": 45,
+      "rgb": "#B95F06"
+     },
+     {
+      "key_name": "=",
+      "key_code": 46,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "|",
+      "key_code": 137,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "Backspace",
+      "key_code": 42,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "Ins",
+      "key_code": 73,
+      "rgb": "#B80505"
+     },
+     {
+      "key_name": "Home",
+      "key_code": 74,
+      "rgb": "#B80505"
+     },
+     {
+      "key_name": "PgUp",
+      "key_code": 75,
+      "rgb": "#B80505"
+     },
+     {
+      "key_name": "Tab",
+      "key_code": 43,
+      "rgb": "#B9068C"
+     },
+     {
+      "key_name": "Q",
+      "key_code": 20,
+      "rgb": "#6007BA"
+     },
+     {
+      "key_name": "W",
+      "key_code": 26,
+      "rgb": "#0606B9"
+     },
+     {
+      "key_name": "E",
+      "key_code": 8,
+      "rgb": "#007FFF"
+     },
+     {
+      "key_name": "R",
+      "key_code": 21,
+      "rgb": "#06B9B9"
+     },
+     {
+      "key_name": "T",
+      "key_code": 23,
+      "rgb": "#06B95F"
+     },
+     {
+      "key_name": "Y",
+      "key_code": 28,
+      "rgb": "#06B906"
+     },
+     {
+      "key_name": "U",
+      "key_code": 24,
+      "rgb": "#5FB906"
+     },
+     {
+      "key_name": "I",
+      "key_code": 12,
+      "rgb": "#A3B906"
+     },
+     {
+      "key_name": "O",
+      "key_code": 18,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "P",
+      "key_code": 19,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "[",
+      "key_code": 47,
+      "rgb": "#B95F06"
+     },
+     {
+      "key_name": "]",
+      "key_code": 48,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 49,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "Del",
+      "key_code": 76,
+      "rgb": "#B80505"
+     },
+     {
+      "key_name": "End",
+      "key_code": 77,
+      "rgb": "#B80505"
+     },
+     {
+      "key_name": "PgDn",
+      "key_code": 78,
+      "rgb": "#B80505"
+     },
+     {
+      "key_name": "Caps",
+      "key_code": 57,
+      "rgb": "#B9068C"
+     },
+     {
+      "key_name": "A",
+      "key_code": 4,
+      "rgb": "#6007BA"
+     },
+     {
+      "key_name": "S",
+      "key_code": 22,
+      "rgb": "#0606B9"
+     },
+     {
+      "key_name": "D",
+      "key_code": 7,
+      "rgb": "#007FFF"
+     },
+     {
+      "key_name": "F",
+      "key_code": 9,
+      "rgb": "#06B9B9"
+     },
+     {
+      "key_name": "G",
+      "key_code": 10,
+      "rgb": "#06B95F"
+     },
+     {
+      "key_name": "H",
+      "key_code": 11,
+      "rgb": "#06B906"
+     },
+     {
+      "key_name": "J",
+      "key_code": 13,
+      "rgb": "#5FB906"
+     },
+     {
+      "key_name": "K",
+      "key_code": 14,
+      "rgb": "#A3B906"
+     },
+     {
+      "key_name": "L",
+      "key_code": 15,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": ";",
+      "key_code": 51,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "&apos;",
+      "key_code": 52,
+      "rgb": "#B95F06"
+     },
+     {
+      "key_name": "Enter",
+      "key_code": 40,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 50,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 225,
+      "rgb": "#B9068C"
+     },
+     {
+      "key_name": "Z",
+      "key_code": 29,
+      "rgb": "#6007BA"
+     },
+     {
+      "key_name": "X",
+      "key_code": 27,
+      "rgb": "#0606B9"
+     },
+     {
+      "key_name": "C",
+      "key_code": 6,
+      "rgb": "#007FFF"
+     },
+     {
+      "key_name": "V",
+      "key_code": 25,
+      "rgb": "#06B9B9"
+     },
+     {
+      "key_name": "B",
+      "key_code": 5,
+      "rgb": "#06B95F"
+     },
+     {
+      "key_name": "N",
+      "key_code": 17,
+      "rgb": "#06B906"
+     },
+     {
+      "key_name": "M",
+      "key_code": 16,
+      "rgb": "#5FB906"
+     },
+     {
+      "key_name": ",",
+      "key_code": 54,
+      "rgb": "#A3B906"
+     },
+     {
+      "key_name": ".",
+      "key_code": 55,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "/",
+      "key_code": 56,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 135,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 229,
+      "rgb": "#B95F06"
+     },
+     {
+      "key_name": "↑",
+      "key_code": 82,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 224,
+      "rgb": "#B9068C"
+     },
+     {
+      "key_name": "Win",
+      "key_code": 227,
+      "rgb": "#B9068C"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 226,
+      "rgb": "#6007BA"
+     },
+     {
+      "key_name": "無変換",
+      "key_code": 139,
+      "rgb": "#6007BA"
+     },
+     {
+      "key_name": "Space",
+      "key_code": 44,
+      "rgb": "#06B95F"
+     },
+     {
+      "key_name": "変換",
+      "key_code": 138,
+      "rgb": "#06B95F"
+     },
+     {
+      "key_name": "KANA",
+      "key_code": 136,
+      "rgb": "#A3B906"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 230,
+      "rgb": "#A3B906"
+     },
+     {
+      "key_name": "Fn",
+      "key_code": 255,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 228,
+      "rgb": "#B98F06"
+     },
+     {
+      "key_name": "←",
+      "key_code": 80,
+      "rgb": "#B95F06"
+     },
+     {
+      "key_name": "↓",
+      "key_code": 81,
+      "rgb": "#B92F06"
+     },
+     {
+      "key_name": "→",
+      "key_code": 79,
+      "rgb": "#B80505"
+     }
+    ]
+   },
+   "key_light2": {
+    "name": "迈阿密",
+    "keys": [
+     {
+      "key_name": "F1",
+      "key_code": 58,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "F2",
+      "key_code": 59,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "F3",
+      "key_code": 60,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "F4",
+      "key_code": 61,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "F5",
+      "key_code": 62,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "F6",
+      "key_code": 63,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "F7",
+      "key_code": 64,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "F8",
+      "key_code": 65,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "F9",
+      "key_code": 66,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "F10",
+      "key_code": 67,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "F11",
+      "key_code": 68,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "F12",
+      "key_code": 69,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "Print",
+      "key_code": 70,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "ScLk",
+      "key_code": 71,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "Pause",
+      "key_code": 72,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "Esc",
+      "key_code": 41,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "`",
+      "key_code": 53,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "1",
+      "key_code": 30,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "2",
+      "key_code": 31,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "3",
+      "key_code": 32,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "4",
+      "key_code": 33,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "5",
+      "key_code": 34,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "6",
+      "key_code": 35,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "7",
+      "key_code": 36,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "8",
+      "key_code": 37,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "9",
+      "key_code": 38,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "0",
+      "key_code": 39,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "-",
+      "key_code": 45,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "=",
+      "key_code": 46,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "|",
+      "key_code": 137,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "Backspace",
+      "key_code": 42,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "Ins",
+      "key_code": 73,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "Home",
+      "key_code": 74,
+      "rgb": "#FF3E94"
+     },
+     {
+      "key_name": "PgUp",
+      "key_code": 75,
+      "rgb": "#7707ba"
+     },
+     {
+      "key_name": "Tab",
+      "key_code": 43,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Q",
+      "key_code": 20,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "W",
+      "key_code": 26,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "E",
+      "key_code": 8,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "R",
+      "key_code": 21,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "T",
+      "key_code": 23,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "Y",
+      "key_code": 28,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "U",
+      "key_code": 24,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "I",
+      "key_code": 12,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "O",
+      "key_code": 18,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "P",
+      "key_code": 19,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "[",
+      "key_code": 47,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "]",
+      "key_code": 48,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 49,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Del",
+      "key_code": 76,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "End",
+      "key_code": 77,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "PgDn",
+      "key_code": 78,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Caps",
+      "key_code": 57,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "A",
+      "key_code": 4,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "S",
+      "key_code": 22,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "D",
+      "key_code": 7,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "F",
+      "key_code": 9,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "G",
+      "key_code": 10,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "H",
+      "key_code": 11,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "J",
+      "key_code": 13,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "K",
+      "key_code": 14,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "L",
+      "key_code": 15,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": ";",
+      "key_code": 51,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "&apos;",
+      "key_code": 52,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "Enter",
+      "key_code": 40,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 50,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 225,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Z",
+      "key_code": 29,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "X",
+      "key_code": 27,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "C",
+      "key_code": 6,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "V",
+      "key_code": 25,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "B",
+      "key_code": 5,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "N",
+      "key_code": 17,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "M",
+      "key_code": 16,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": ",",
+      "key_code": 54,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": ".",
+      "key_code": 55,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "/",
+      "key_code": 56,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 135,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 229,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "↑",
+      "key_code": 82,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 224,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Win",
+      "key_code": 227,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 226,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "無変換",
+      "key_code": 139,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Space",
+      "key_code": 44,
+      "rgb": "#19D1E0"
+     },
+     {
+      "key_name": "変換",
+      "key_code": 138,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "KANA",
+      "key_code": 136,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 230,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Fn",
+      "key_code": 255,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 228,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "←",
+      "key_code": 80,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "↓",
+      "key_code": 81,
+      "rgb": "#7707BA"
+     },
+     {
+      "key_name": "→",
+      "key_code": 79,
+      "rgb": "#7707BA"
+     }
+    ]
+   },
+   "key_light3": {
+    "name": "赛博朋克",
+    "keys": [
+     {
+      "key_name": "F1",
+      "key_code": 58,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F2",
+      "key_code": 59,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F3",
+      "key_code": 60,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F4",
+      "key_code": 61,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F5",
+      "key_code": 62,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F6",
+      "key_code": 63,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F7",
+      "key_code": 64,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F8",
+      "key_code": 65,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F9",
+      "key_code": 66,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F10",
+      "key_code": 67,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F11",
+      "key_code": 68,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F12",
+      "key_code": 69,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "Print",
+      "key_code": 70,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "ScLk",
+      "key_code": 71,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "Pause",
+      "key_code": 72,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "Esc",
+      "key_code": 41,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "`",
+      "key_code": 53,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "1",
+      "key_code": 30,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "2",
+      "key_code": 31,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "3",
+      "key_code": 32,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "4",
+      "key_code": 33,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "5",
+      "key_code": 34,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "6",
+      "key_code": 35,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "7",
+      "key_code": 36,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "8",
+      "key_code": 37,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "9",
+      "key_code": 38,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "0",
+      "key_code": 39,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "-",
+      "key_code": 45,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "=",
+      "key_code": 46,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "|",
+      "key_code": 137,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "Backspace",
+      "key_code": 42,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "Ins",
+      "key_code": 73,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "Home",
+      "key_code": 74,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "PgUp",
+      "key_code": 75,
+      "rgb": "#ffed0a"
+     },
+     {
+      "key_name": "Tab",
+      "key_code": 43,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Q",
+      "key_code": 20,
+      "rgb": "#FC2276"
+     },
+     {
+      "key_name": "W",
+      "key_code": 26,
+      "rgb": "#FC2276"
+     },
+     {
+      "key_name": "E",
+      "key_code": 8,
+      "rgb": "#FC2276"
+     },
+     {
+      "key_name": "R",
+      "key_code": 21,
+      "rgb": "#FC2276"
+     },
+     {
+      "key_name": "T",
+      "key_code": 23,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Y",
+      "key_code": 28,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "U",
+      "key_code": 24,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "I",
+      "key_code": 12,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "O",
+      "key_code": 18,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "P",
+      "key_code": 19,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "[",
+      "key_code": 47,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "]",
+      "key_code": 48,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 49,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Del",
+      "key_code": 76,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "End",
+      "key_code": 77,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "PgDn",
+      "key_code": 78,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Caps",
+      "key_code": 57,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "A",
+      "key_code": 4,
+      "rgb": "#FC2276"
+     },
+     {
+      "key_name": "S",
+      "key_code": 22,
+      "rgb": "#FC2276"
+     },
+     {
+      "key_name": "D",
+      "key_code": 7,
+      "rgb": "#FC2276"
+     },
+     {
+      "key_name": "F",
+      "key_code": 9,
+      "rgb": "#FC2276"
+     },
+     {
+      "key_name": "G",
+      "key_code": 10,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "H",
+      "key_code": 11,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "J",
+      "key_code": 13,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "K",
+      "key_code": 14,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "L",
+      "key_code": 15,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": ";",
+      "key_code": 51,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "&apos;",
+      "key_code": 52,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Enter",
+      "key_code": 40,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 50,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 225,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Z",
+      "key_code": 29,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "X",
+      "key_code": 27,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "C",
+      "key_code": 6,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "V",
+      "key_code": 25,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "B",
+      "key_code": 5,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "N",
+      "key_code": 17,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "M",
+      "key_code": 16,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": ",",
+      "key_code": 54,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": ".",
+      "key_code": 55,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "/",
+      "key_code": 56,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 135,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 229,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "↑",
+      "key_code": 82,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 224,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Win",
+      "key_code": 227,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 226,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "無変換",
+      "key_code": 139,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Space",
+      "key_code": 44,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "変換",
+      "key_code": 138,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "KANA",
+      "key_code": 136,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 230,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Fn",
+      "key_code": 255,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 228,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "←",
+      "key_code": 80,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "↓",
+      "key_code": 81,
+      "rgb": "#FFED0A"
+     },
+     {
+      "key_name": "→",
+      "key_code": 79,
+      "rgb": "#FFED0A"
+     }
+    ]
+   },
+   "key_light4": {
+    "name": "战地风云",
+    "keys": [
+     {
+      "key_name": "F1",
+      "key_code": 58,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F2",
+      "key_code": 59,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F3",
+      "key_code": 60,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F4",
+      "key_code": 61,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F5",
+      "key_code": 62,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F6",
+      "key_code": 63,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F7",
+      "key_code": 64,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F8",
+      "key_code": 65,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F9",
+      "key_code": 66,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F10",
+      "key_code": 67,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F11",
+      "key_code": 68,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F12",
+      "key_code": 69,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "Print",
+      "key_code": 70,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "ScLk",
+      "key_code": 71,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "Pause",
+      "key_code": 72,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "Esc",
+      "key_code": 41,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "`",
+      "key_code": 53,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "1",
+      "key_code": 30,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "2",
+      "key_code": 31,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "3",
+      "key_code": 32,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "4",
+      "key_code": 33,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "5",
+      "key_code": 34,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "6",
+      "key_code": 35,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "7",
+      "key_code": 36,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "8",
+      "key_code": 37,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "9",
+      "key_code": 38,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "0",
+      "key_code": 39,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "-",
+      "key_code": 45,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "=",
+      "key_code": 46,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "|",
+      "key_code": 137,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Backspace",
+      "key_code": 42,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Ins",
+      "key_code": 73,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Home",
+      "key_code": 74,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "PgUp",
+      "key_code": 75,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Tab",
+      "key_code": 43,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Q",
+      "key_code": 20,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "W",
+      "key_code": 26,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "E",
+      "key_code": 8,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "R",
+      "key_code": 21,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "T",
+      "key_code": 23,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Y",
+      "key_code": 28,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "U",
+      "key_code": 24,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "I",
+      "key_code": 12,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "O",
+      "key_code": 18,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "P",
+      "key_code": 19,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "[",
+      "key_code": 47,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "]",
+      "key_code": 48,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 49,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Del",
+      "key_code": 76,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "End",
+      "key_code": 77,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "PgDn",
+      "key_code": 78,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Caps",
+      "key_code": 57,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "A",
+      "key_code": 4,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "S",
+      "key_code": 22,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "D",
+      "key_code": 7,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "F",
+      "key_code": 9,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "G",
+      "key_code": 10,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "H",
+      "key_code": 11,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "J",
+      "key_code": 13,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "K",
+      "key_code": 14,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "L",
+      "key_code": 15,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": ";",
+      "key_code": 51,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "&apos;",
+      "key_code": 52,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Enter",
+      "key_code": 40,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 50,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 225,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Z",
+      "key_code": 29,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "X",
+      "key_code": 27,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "C",
+      "key_code": 6,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "V",
+      "key_code": 25,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "B",
+      "key_code": 5,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "N",
+      "key_code": 17,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "M",
+      "key_code": 16,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": ",",
+      "key_code": 54,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": ".",
+      "key_code": 55,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "/",
+      "key_code": 56,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 135,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 229,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "↑",
+      "key_code": 82,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 224,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Win",
+      "key_code": 227,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 226,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "無変換",
+      "key_code": 139,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Space",
+      "key_code": 44,
+      "rgb": "#00F0FF"
+     },
+     {
+      "key_name": "変換",
+      "key_code": 138,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "KANA",
+      "key_code": 136,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 230,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Fn",
+      "key_code": 255,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 228,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "←",
+      "key_code": 80,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "↓",
+      "key_code": 81,
+      "rgb": "#F2792B"
+     },
+     {
+      "key_name": "→",
+      "key_code": 79,
+      "rgb": "#F2792B"
+     }
+    ]
+   },
+   "key_light5": {
+    "name": "情人节",
+    "keys": [
+     {
+      "key_name": "F1",
+      "key_code": 58,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "F2",
+      "key_code": 59,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "F3",
+      "key_code": 60,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "F4",
+      "key_code": 61,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "F5",
+      "key_code": 62,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "F6",
+      "key_code": 63,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "F7",
+      "key_code": 64,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "F8",
+      "key_code": 65,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "F9",
+      "key_code": 66,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "F10",
+      "key_code": 67,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "F11",
+      "key_code": 68,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "F12",
+      "key_code": 69,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Print",
+      "key_code": 70,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "ScLk",
+      "key_code": 71,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Pause",
+      "key_code": 72,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Esc",
+      "key_code": 41,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "`",
+      "key_code": 53,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "1",
+      "key_code": 30,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "2",
+      "key_code": 31,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "3",
+      "key_code": 32,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "4",
+      "key_code": 33,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "5",
+      "key_code": 34,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "6",
+      "key_code": 35,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "7",
+      "key_code": 36,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "8",
+      "key_code": 37,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "9",
+      "key_code": 38,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "0",
+      "key_code": 39,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "-",
+      "key_code": 45,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "=",
+      "key_code": 46,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "|",
+      "key_code": 137,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "Backspace",
+      "key_code": 42,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Ins",
+      "key_code": 73,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Home",
+      "key_code": 74,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "PgUp",
+      "key_code": 75,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Tab",
+      "key_code": 43,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Q",
+      "key_code": 20,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "W",
+      "key_code": 26,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "E",
+      "key_code": 8,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "R",
+      "key_code": 21,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "T",
+      "key_code": 23,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "Y",
+      "key_code": 28,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "U",
+      "key_code": 24,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "I",
+      "key_code": 12,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "O",
+      "key_code": 18,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "P",
+      "key_code": 19,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "[",
+      "key_code": 47,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "]",
+      "key_code": 48,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 49,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Del",
+      "key_code": 76,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "End",
+      "key_code": 77,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "PgDn",
+      "key_code": 78,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Caps",
+      "key_code": 57,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "A",
+      "key_code": 4,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "S",
+      "key_code": 22,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "D",
+      "key_code": 7,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "F",
+      "key_code": 9,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "G",
+      "key_code": 10,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "H",
+      "key_code": 11,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "J",
+      "key_code": 13,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "K",
+      "key_code": 14,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "L",
+      "key_code": 15,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": ";",
+      "key_code": 51,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "&apos;",
+      "key_code": 52,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "Enter",
+      "key_code": 40,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 50,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 225,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Z",
+      "key_code": 29,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "X",
+      "key_code": 27,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "C",
+      "key_code": 6,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "V",
+      "key_code": 25,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "B",
+      "key_code": 5,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "N",
+      "key_code": 17,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "M",
+      "key_code": 16,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": ",",
+      "key_code": 54,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": ".",
+      "key_code": 55,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "/",
+      "key_code": 56,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 135,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 229,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "↑",
+      "key_code": 82,
+      "rgb": "#FFC5C5"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 224,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Win",
+      "key_code": 227,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 226,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "無変換",
+      "key_code": 139,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Space",
+      "key_code": 44,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "変換",
+      "key_code": 138,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "KANA",
+      "key_code": 136,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 230,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Fn",
+      "key_code": 255,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 228,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "←",
+      "key_code": 80,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "↓",
+      "key_code": 81,
+      "rgb": "#EF5E5E"
+     },
+     {
+      "key_name": "→",
+      "key_code": 79,
+      "rgb": "#EF5E5E"
+     }
+    ]
+   },
+   "key_light6": {
+    "name": "Solo Leveling",
+    "keys": [
+     {
+      "key_name": "F1",
+      "key_code": 58,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "F2",
+      "key_code": 59,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "F3",
+      "key_code": 60,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "F4",
+      "key_code": 61,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "F5",
+      "key_code": 62,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "F6",
+      "key_code": 63,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "F7",
+      "key_code": 64,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "F8",
+      "key_code": 65,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "F9",
+      "key_code": 66,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "F10",
+      "key_code": 67,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "F11",
+      "key_code": 68,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "F12",
+      "key_code": 69,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Print",
+      "key_code": 70,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "ScLk",
+      "key_code": 71,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Pause",
+      "key_code": 72,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Esc",
+      "key_code": 41,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "`",
+      "key_code": 53,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "1",
+      "key_code": 30,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "2",
+      "key_code": 31,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "3",
+      "key_code": 32,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "4",
+      "key_code": 33,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "5",
+      "key_code": 34,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "6",
+      "key_code": 35,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "7",
+      "key_code": 36,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "8",
+      "key_code": 37,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "9",
+      "key_code": 38,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "0",
+      "key_code": 39,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "-",
+      "key_code": 45,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "=",
+      "key_code": 46,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "|",
+      "key_code": 137,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Backspace",
+      "key_code": 42,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Ins",
+      "key_code": 73,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Home",
+      "key_code": 74,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "PgUp",
+      "key_code": 75,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Tab",
+      "key_code": 43,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "Q",
+      "key_code": 20,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "W",
+      "key_code": 26,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "E",
+      "key_code": 8,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "R",
+      "key_code": 21,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "T",
+      "key_code": 23,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "Y",
+      "key_code": 28,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "U",
+      "key_code": 24,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "I",
+      "key_code": 12,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "O",
+      "key_code": 18,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "P",
+      "key_code": 19,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "[",
+      "key_code": 47,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "]",
+      "key_code": 48,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 49,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Del",
+      "key_code": 76,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "End",
+      "key_code": 77,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "PgDn",
+      "key_code": 78,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Caps",
+      "key_code": 57,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "A",
+      "key_code": 4,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "S",
+      "key_code": 22,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "D",
+      "key_code": 7,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "F",
+      "key_code": 9,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "G",
+      "key_code": 10,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "H",
+      "key_code": 11,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "J",
+      "key_code": 13,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "K",
+      "key_code": 14,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "L",
+      "key_code": 15,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": ";",
+      "key_code": 51,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "&apos;",
+      "key_code": 52,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Enter",
+      "key_code": 40,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 50,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 225,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "Z",
+      "key_code": 29,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "X",
+      "key_code": 27,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "C",
+      "key_code": 6,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "V",
+      "key_code": 25,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "B",
+      "key_code": 5,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "N",
+      "key_code": 17,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "M",
+      "key_code": 16,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": ",",
+      "key_code": 54,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": ".",
+      "key_code": 55,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "/",
+      "key_code": 56,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "\\",
+      "key_code": 135,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Shift",
+      "key_code": 229,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "↑",
+      "key_code": 82,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 224,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "Win",
+      "key_code": 227,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 226,
+      "rgb": "#ff1e6e"
+     },
+     {
+      "key_name": "無変換",
+      "key_code": 139,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "Space",
+      "key_code": 44,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "変換",
+      "key_code": 138,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "KANA",
+      "key_code": 136,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "Alt",
+      "key_code": 230,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "Fn",
+      "key_code": 255,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "Ctrl",
+      "key_code": 228,
+      "rgb": "#0096ff"
+     },
+     {
+      "key_name": "←",
+      "key_code": 80,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "↓",
+      "key_code": 81,
+      "rgb": "#960096"
+     },
+     {
+      "key_name": "→",
+      "key_code": 79,
+      "rgb": "#960096"
+     }
+    ]
+   }
+  }
+ },
+ "unsolicited": "Input report byte0=0xA1 (profile change) and 0xA3 (OS-mode change) carry the light bytes at [8..16] in the same layout as the func block."
+}

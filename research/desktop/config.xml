@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<device.info>
+		<keyboard name="Luminkey Driver" device_type="101" device_info="luminkey" img_connected="" img_disconnected="">
+		</keyboard>
+	</device.info>
+	<language.info default_lan="2052">
+		<lan value="2052" />
+		<lan value="1033" />
+	</language.info>
+	<software name="Luminkey Driver" version="1.0.2.9">
+		<website url="www.luminkey.com"/>
+		<store url=""/>
+		<upgrade url=""/>
+		<copyright info="Copyright © 2024 luminkey"/>
+	</software>
+</config>

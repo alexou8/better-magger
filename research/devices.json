@@ -1,0 +1,4147 @@
+{
+  "_doc": "VID/PID -> device descriptor, from page-f17bd796bc939422.js const `en` (~pretty line 13268). Each model has 2 PIDs: the normal-mode keyboard PID (filter usagePage 0x0001 usage 0x0000; this is the one you configure) and a second PID (filter usagePage 0xFF00 usage 0x0001) which the app treats as firmware-update/bootloader mode (connecting to it sets updateMode=true and does not configure; see bootloaderModePIDs). PIDs 0x3250 and 0xA026 are shared (2.4G dongles?) and disambiguated by HIDDevice.productName. features are derived from deviceType gating in the official code (see PROTOCOL.md section 'Per-device differences').",
+  "vendorId": "0x19F5",
+  "bootloaderModePIDs": [
+    "0xFF17",
+    "0xFF39",
+    "0xFF7C",
+    "0xFF7D",
+    "0xFF7F",
+    "0xFF73",
+    "0xFF46",
+    "0xAF05",
+    "0xAF06",
+    "0xAF13",
+    "0xAF1E",
+    "0xAF1F",
+    "0xAF2A",
+    "0xFF87",
+    "0x8A20"
+  ],
+  "notSavedForAutoReconnectPIDs": [
+    "0xFF17",
+    "0xFF39",
+    "0xFE00",
+    "0xFF7C",
+    "0xFF7D",
+    "0xFF87",
+    "0xFF7F",
+    "0xFF73",
+    "0xFF46",
+    "0xAF05",
+    "0xAF06",
+    "0xAF13",
+    "0xAF1E",
+    "0xAF1F",
+    "0xAF2A"
+  ],
+  "hidFilters": [
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFE24",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFF17",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFE25",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFF39",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0x3635",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFE00",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0x3250",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFC64",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFF7C",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFC65",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFF7D",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFC67",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFF87",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFC66",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFF7F",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFC63",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFF73",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFC60",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFF46",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFB37",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xAF05",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFB38",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xAF06",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFB3F",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xAF13",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFB48",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xAF1E",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFB49",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xAF1F",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xFB54",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xAF2A",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xA026",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0x8A20",
+      "usagePage": "0xFF00",
+      "usage": 1
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0xA028",
+      "usagePage": "0x1",
+      "usage": 0
+    },
+    {
+      "vendorId": "0x19F5",
+      "productId": "0x8A1F",
+      "usagePage": "0xFF00",
+      "usage": 1
+    }
+  ],
+  "devices": {
+    "0x19F5_0xFE24": {
+      "id": 1,
+      "type": 101,
+      "fwVersion": 116,
+      "name": "K68",
+      "layout": "K68",
+      "updateFile": "update_68_116.bin",
+      "model": "Magger68 (original)",
+      "modelEvidence": "firmware list oS: vid_pid 0x19F5_0xFE24 title \"Magger68\"",
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.02,
+        "travelRawPerMm": 50,
+        "switchMaxTravelRaw_default": 170,
+        "minActuationRaw": 4,
+        "deadzoneMaxRaw": 25,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": "not offered (precision bits forced 0)",
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron White Pro Switch",
+            "fullTravelRaw": 175
+          },
+          {
+            "value": 1,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 170
+          },
+          {
+            "value": 2,
+            "name": "Gateron Jade Switch",
+            "fullTravelRaw": 165
+          },
+          {
+            "value": 3,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 165
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFF17": {
+      "id": 1,
+      "type": 101,
+      "fwVersion": 116,
+      "name": "K68",
+      "layout": "K68",
+      "updateFile": "update_68_116.bin",
+      "model": "Magger68 (original)",
+      "modelEvidence": "firmware list oS: vid_pid 0x19F5_0xFE24 title \"Magger68\"",
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.02,
+        "travelRawPerMm": 50,
+        "switchMaxTravelRaw_default": 170,
+        "minActuationRaw": 4,
+        "deadzoneMaxRaw": 25,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": "not offered (precision bits forced 0)",
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron White Pro Switch",
+            "fullTravelRaw": 175
+          },
+          {
+            "value": 1,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 170
+          },
+          {
+            "value": 2,
+            "name": "Gateron Jade Switch",
+            "fullTravelRaw": 165
+          },
+          {
+            "value": 3,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 165
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFE25": {
+      "id": 2,
+      "type": 102,
+      "fwVersion": 113,
+      "name": "K68",
+      "layout": "K68",
+      "updateFile": "update_68Pro_113.bin",
+      "model": "Magger68 Pro",
+      "modelEvidence": "firmware list oS: vid_pid 0x19F5_0xFE25 title \"Magger68 Pro\"",
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.02,
+        "travelRawPerMm": 50,
+        "switchMaxTravelRaw_default": 170,
+        "minActuationRaw": 4,
+        "deadzoneMaxRaw": 25,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": "not offered (precision bits forced 0)",
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron White Pro Switch",
+            "fullTravelRaw": 175
+          },
+          {
+            "value": 1,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 170
+          },
+          {
+            "value": 2,
+            "name": "Gateron Jade Switch",
+            "fullTravelRaw": 165
+          },
+          {
+            "value": 3,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 165
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFF39": {
+      "id": 2,
+      "type": 102,
+      "fwVersion": 113,
+      "name": "K68",
+      "layout": "K68",
+      "updateFile": "update_68Pro_113.bin",
+      "model": "Magger68 Pro",
+      "modelEvidence": "firmware list oS: vid_pid 0x19F5_0xFE25 title \"Magger68 Pro\"",
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.02,
+        "travelRawPerMm": 50,
+        "switchMaxTravelRaw_default": 170,
+        "minActuationRaw": 4,
+        "deadzoneMaxRaw": 25,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": "not offered (precision bits forced 0)",
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron White Pro Switch",
+            "fullTravelRaw": 175
+          },
+          {
+            "value": 1,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 170
+          },
+          {
+            "value": 2,
+            "name": "Gateron Jade Switch",
+            "fullTravelRaw": 165
+          },
+          {
+            "value": 3,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 165
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0x3635": {
+      "id": 120,
+      "type": 120,
+      "fwVersion": 100,
+      "name": "K80",
+      "layout": "K80",
+      "updateFile": "",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": null,
+        "travelRawPerMm": null,
+        "switchMaxTravelRaw_default": null,
+        "minActuationRaw": null,
+        "deadzoneMaxRaw": null,
+        "rtPressReleaseMaxRaw_precision0": null,
+        "rtPrecisionModes": "not offered (precision bits forced 0)",
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron White Pro Switch",
+            "fullTravelRaw": 175
+          },
+          {
+            "value": 1,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 170
+          },
+          {
+            "value": 2,
+            "name": "Gateron Jade Switch",
+            "fullTravelRaw": 165
+          },
+          {
+            "value": 3,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 165
+          }
+        ],
+        "tabs": [
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "macro",
+          "cb",
+          "td"
+        ],
+        "tapDance_combo": true,
+        "liveTravelDebugMode": false,
+        "calibration": "UNVERIFIED",
+        "perKeyRGB": true,
+        "lightingEffects": "K80.json: 1,3,4 only",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xFE00": {
+      "id": 120,
+      "type": 120,
+      "fwVersion": 100,
+      "name": "K80",
+      "layout": "K80",
+      "updateFile": "",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "second PID, usagePage 0xFF00 (not in bootloader list)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": null,
+        "travelRawPerMm": null,
+        "switchMaxTravelRaw_default": null,
+        "minActuationRaw": null,
+        "deadzoneMaxRaw": null,
+        "rtPressReleaseMaxRaw_precision0": null,
+        "rtPrecisionModes": "not offered (precision bits forced 0)",
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron White Pro Switch",
+            "fullTravelRaw": 175
+          },
+          {
+            "value": 1,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 170
+          },
+          {
+            "value": 2,
+            "name": "Gateron Jade Switch",
+            "fullTravelRaw": 165
+          },
+          {
+            "value": 3,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 165
+          }
+        ],
+        "tabs": [
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "macro",
+          "cb",
+          "td"
+        ],
+        "tapDance_combo": true,
+        "liveTravelDebugMode": false,
+        "calibration": "UNVERIFIED",
+        "perKeyRGB": true,
+        "lightingEffects": "K80.json: 1,3,4 only",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0x3250": [
+      {
+        "id": 121,
+        "type": 121,
+        "fwVersion": 100,
+        "name": "K80",
+        "layout": "K80",
+        "updateFile": "",
+        "productName": "LK80 2.4G",
+        "model": null,
+        "modelEvidence": null,
+        "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+        "hidFilter": {
+          "usagePage": 1,
+          "usage": 0
+        },
+        "features": {
+          "isMaggerFamily": false,
+          "profiles": 4,
+          "layers": 4,
+          "layerNames": [
+            "Main/Win (0)",
+            "FN1 (1)",
+            "Mac/FN2 (2)",
+            "FN3 (3)"
+          ],
+          "keySlots": 128,
+          "travelUnit_mm": null,
+          "travelRawPerMm": null,
+          "switchMaxTravelRaw_default": null,
+          "minActuationRaw": null,
+          "deadzoneMaxRaw": null,
+          "rtPressReleaseMaxRaw_precision0": null,
+          "rtPrecisionModes": "not offered (precision bits forced 0)",
+          "switchTypes": [
+            {
+              "value": 0,
+              "name": "Gateron White Pro Switch",
+              "fullTravelRaw": 175
+            },
+            {
+              "value": 1,
+              "name": "TTC King Magnetic",
+              "fullTravelRaw": 170
+            },
+            {
+              "value": 2,
+              "name": "Gateron Jade Switch",
+              "fullTravelRaw": 165
+            },
+            {
+              "value": 3,
+              "name": "Gateron Jade Pro Switch",
+              "fullTravelRaw": 165
+            }
+          ],
+          "tabs": [
+            "advance",
+            "remap",
+            "light",
+            "macro",
+            "setting"
+          ],
+          "advancedKeys": [
+            "macro",
+            "cb",
+            "td"
+          ],
+          "tapDance_combo": true,
+          "liveTravelDebugMode": false,
+          "calibration": "UNVERIFIED",
+          "perKeyRGB": true,
+          "lightingEffects": "K80.json: 1,3,4 only",
+          "reportRateOptionsHz": {
+            "1": 8000,
+            "2": 4000,
+            "3": 2000,
+            "4": 1000
+          },
+          "debounceOptions": {
+            "0": "low",
+            "1": "medium",
+            "2": "high"
+          },
+          "jisKeyNames": false,
+          "firmwareUpdate": false
+        }
+      },
+      {
+        "id": 21,
+        "type": 123,
+        "fwVersion": 100,
+        "name": "LK80-MK2",
+        "layout": "LK80",
+        "updateFile": "",
+        "productName": "LK80-MK2 2.4G",
+        "model": null,
+        "modelEvidence": null,
+        "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+        "hidFilter": {
+          "usagePage": 1,
+          "usage": 0
+        },
+        "features": {
+          "isMaggerFamily": false,
+          "profiles": 4,
+          "layers": 4,
+          "layerNames": [
+            "Main/Win (0)",
+            "FN1 (1)",
+            "Mac/FN2 (2)",
+            "FN3 (3)"
+          ],
+          "keySlots": 128,
+          "travelUnit_mm": null,
+          "travelRawPerMm": null,
+          "switchMaxTravelRaw_default": null,
+          "minActuationRaw": null,
+          "deadzoneMaxRaw": null,
+          "rtPressReleaseMaxRaw_precision0": null,
+          "rtPrecisionModes": "not offered (precision bits forced 0)",
+          "switchTypes": [
+            {
+              "value": 0,
+              "name": "Gateron White Pro Switch",
+              "fullTravelRaw": 175
+            },
+            {
+              "value": 1,
+              "name": "TTC King Magnetic",
+              "fullTravelRaw": 170
+            },
+            {
+              "value": 2,
+              "name": "Gateron Jade Switch",
+              "fullTravelRaw": 165
+            },
+            {
+              "value": 3,
+              "name": "Gateron Jade Pro Switch",
+              "fullTravelRaw": 165
+            }
+          ],
+          "tabs": [
+            "advance",
+            "remap",
+            "macro",
+            "setting"
+          ],
+          "advancedKeys": [
+            "macro"
+          ],
+          "tapDance_combo": false,
+          "liveTravelDebugMode": false,
+          "calibration": "UNVERIFIED",
+          "perKeyRGB": false,
+          "lightingEffects": "0..22 (see lighting.json)",
+          "reportRateOptionsHz": {
+            "1": 8000,
+            "2": 4000,
+            "3": 2000,
+            "4": 1000
+          },
+          "debounceOptions": {
+            "0": "low",
+            "1": "medium",
+            "2": "high"
+          },
+          "jisKeyNames": false,
+          "firmwareUpdate": false
+        }
+      },
+      {
+        "id": 20,
+        "type": 122,
+        "fwVersion": 105,
+        "name": "LK98-V2",
+        "layout": "LK98",
+        "updateFile": "update_LK98-V2_105.bin",
+        "productName": "LK98-V2 2.4G",
+        "model": null,
+        "modelEvidence": null,
+        "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+        "hidFilter": {
+          "usagePage": 1,
+          "usage": 0
+        },
+        "features": {
+          "isMaggerFamily": false,
+          "profiles": 4,
+          "layers": 4,
+          "layerNames": [
+            "Main/Win (0)",
+            "FN1 (1)",
+            "Mac/FN2 (2)",
+            "FN3 (3)"
+          ],
+          "keySlots": 128,
+          "travelUnit_mm": null,
+          "travelRawPerMm": null,
+          "switchMaxTravelRaw_default": null,
+          "minActuationRaw": null,
+          "deadzoneMaxRaw": null,
+          "rtPressReleaseMaxRaw_precision0": null,
+          "rtPrecisionModes": "not offered (precision bits forced 0)",
+          "switchTypes": [
+            {
+              "value": 0,
+              "name": "Gateron White Pro Switch",
+              "fullTravelRaw": 175
+            },
+            {
+              "value": 1,
+              "name": "TTC King Magnetic",
+              "fullTravelRaw": 170
+            },
+            {
+              "value": 2,
+              "name": "Gateron Jade Switch",
+              "fullTravelRaw": 165
+            },
+            {
+              "value": 3,
+              "name": "Gateron Jade Pro Switch",
+              "fullTravelRaw": 165
+            }
+          ],
+          "tabs": [
+            "advance",
+            "remap",
+            "light",
+            "macro",
+            "setting"
+          ],
+          "advancedKeys": [
+            "macro",
+            "cb",
+            "td"
+          ],
+          "tapDance_combo": true,
+          "liveTravelDebugMode": false,
+          "calibration": "UNVERIFIED",
+          "perKeyRGB": true,
+          "lightingEffects": "0..22 (see lighting.json)",
+          "reportRateOptionsHz": {
+            "1": 8000,
+            "2": 4000,
+            "3": 2000,
+            "4": 1000
+          },
+          "debounceOptions": {
+            "0": "low",
+            "1": "medium",
+            "2": "high"
+          },
+          "jisKeyNames": false,
+          "firmwareUpdate": true
+        }
+      },
+      {
+        "id": 20,
+        "type": 124,
+        "fwVersion": 105,
+        "name": "LK98-V2",
+        "layout": "LK98_uk",
+        "updateFile": "update_LK98-V2_105.bin",
+        "productName": "LK98-V2 UK 2.4G",
+        "model": null,
+        "modelEvidence": null,
+        "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+        "hidFilter": {
+          "usagePage": 1,
+          "usage": 0
+        },
+        "features": {
+          "isMaggerFamily": false,
+          "profiles": 4,
+          "layers": 4,
+          "layerNames": [
+            "Main/Win (0)",
+            "FN1 (1)",
+            "Mac/FN2 (2)",
+            "FN3 (3)"
+          ],
+          "keySlots": 128,
+          "travelUnit_mm": null,
+          "travelRawPerMm": null,
+          "switchMaxTravelRaw_default": null,
+          "minActuationRaw": null,
+          "deadzoneMaxRaw": null,
+          "rtPressReleaseMaxRaw_precision0": null,
+          "rtPrecisionModes": "not offered (precision bits forced 0)",
+          "switchTypes": [
+            {
+              "value": 0,
+              "name": "Gateron White Pro Switch",
+              "fullTravelRaw": 175
+            },
+            {
+              "value": 1,
+              "name": "TTC King Magnetic",
+              "fullTravelRaw": 170
+            },
+            {
+              "value": 2,
+              "name": "Gateron Jade Switch",
+              "fullTravelRaw": 165
+            },
+            {
+              "value": 3,
+              "name": "Gateron Jade Pro Switch",
+              "fullTravelRaw": 165
+            }
+          ],
+          "tabs": [
+            "advance",
+            "remap",
+            "light",
+            "macro",
+            "setting"
+          ],
+          "advancedKeys": [
+            "macro"
+          ],
+          "tapDance_combo": false,
+          "liveTravelDebugMode": false,
+          "calibration": "UNVERIFIED",
+          "perKeyRGB": true,
+          "lightingEffects": "0..22 (see lighting.json)",
+          "reportRateOptionsHz": {
+            "1": 8000,
+            "2": 4000,
+            "3": 2000,
+            "4": 1000
+          },
+          "debounceOptions": {
+            "0": "low",
+            "1": "medium",
+            "2": "high"
+          },
+          "jisKeyNames": true,
+          "firmwareUpdate": true
+        }
+      }
+    ],
+    "0x19F5_0xFC64": {
+      "id": 7,
+      "type": 107,
+      "fwVersion": 106,
+      "name": "K65",
+      "layout": "K65",
+      "updateFile": "update_LK65_106.bin",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "Wu Kong",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFF7C": {
+      "id": 7,
+      "type": 107,
+      "fwVersion": 106,
+      "name": "K65",
+      "layout": "K65",
+      "updateFile": "update_LK65_106.bin",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "Wu Kong",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFC65": {
+      "id": 8,
+      "type": 108,
+      "fwVersion": 107,
+      "name": "K75",
+      "layout": "K75",
+      "updateFile": "LK75_107.bin",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 2,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 3,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "Wu Kong",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFF7D": {
+      "id": 8,
+      "type": 108,
+      "fwVersion": 107,
+      "name": "K75",
+      "layout": "K75",
+      "updateFile": "LK75_107.bin",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 2,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 3,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "Wu Kong",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFC67": {
+      "id": 9,
+      "type": 109,
+      "fwVersion": 107,
+      "name": "K68",
+      "layout": "K68",
+      "updateFile": "Magger68Plus_107.bin",
+      "model": "Magger68 Plus",
+      "modelEvidence": "updateFile \"Magger68Plus_107.bin\"",
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 1,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "Focus",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFF87": {
+      "id": 9,
+      "type": 109,
+      "fwVersion": 107,
+      "name": "K68",
+      "layout": "K68",
+      "updateFile": "Magger68Plus_107.bin",
+      "model": "Magger68 Plus",
+      "modelEvidence": "updateFile \"Magger68Plus_107.bin\"",
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 1,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "Focus",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFC66": {
+      "id": 10,
+      "type": 110,
+      "fwVersion": 109,
+      "name": "K68",
+      "layout": "K68",
+      "updateFile": "Magger68Ultra_109.bin",
+      "model": "Magger68 Ultra",
+      "modelEvidence": "updateFile \"Magger68Ultra_109.bin\"",
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 1,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "Focus",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFF7F": {
+      "id": 10,
+      "type": 110,
+      "fwVersion": 109,
+      "name": "K68",
+      "layout": "K68",
+      "updateFile": "Magger68Ultra_109.bin",
+      "model": "Magger68 Ultra",
+      "modelEvidence": "updateFile \"Magger68Ultra_109.bin\"",
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 1,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "Focus",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFC63": {
+      "id": 11,
+      "type": 111,
+      "fwVersion": 100,
+      "name": "BLA75",
+      "layout": "BLA75",
+      "updateFile": "",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron Universal Switch",
+            "fullTravelRaw": 350
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xFF73": {
+      "id": 11,
+      "type": 111,
+      "fwVersion": 100,
+      "name": "BLA75",
+      "layout": "BLA75",
+      "updateFile": "",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron Universal Switch",
+            "fullTravelRaw": 350
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xFC60": {
+      "id": 12,
+      "type": 112,
+      "fwVersion": 109,
+      "name": "K68_JIS",
+      "layout": "K68_JIS",
+      "updateFile": "Magger68Ultra_JIS_109.bin",
+      "model": "Magger68 Ultra JIS",
+      "modelEvidence": "updateFile \"Magger68Ultra_JIS_109.bin\"",
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "Focus",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": true,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFF46": {
+      "id": 12,
+      "type": 112,
+      "fwVersion": 109,
+      "name": "K68_JIS",
+      "layout": "K68_JIS",
+      "updateFile": "Magger68Ultra_JIS_109.bin",
+      "model": "Magger68 Ultra JIS",
+      "modelEvidence": "updateFile \"Magger68Ultra_JIS_109.bin\"",
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "Focus",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": true,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFB37": {
+      "id": 14,
+      "type": 114,
+      "fwVersion": 100,
+      "name": "Magger 60",
+      "layout": "K60_1",
+      "updateFile": "",
+      "model": "Magger 60 (K60_1 layout variant)",
+      "modelEvidence": "name \"Magger 60\" in table; layout K60_1",
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xAF05": {
+      "id": 14,
+      "type": 114,
+      "fwVersion": 100,
+      "name": "Magger 60",
+      "layout": "K60_1",
+      "updateFile": "",
+      "model": "Magger 60 (K60_1 layout variant)",
+      "modelEvidence": "name \"Magger 60\" in table; layout K60_1",
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xFB38": {
+      "id": 15,
+      "type": 115,
+      "fwVersion": 100,
+      "name": "Magger 60",
+      "layout": "K60",
+      "updateFile": "",
+      "model": "Magger 60",
+      "modelEvidence": "name \"Magger 60\"",
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 1,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xAF06": {
+      "id": 15,
+      "type": 115,
+      "fwVersion": 100,
+      "name": "Magger 60",
+      "layout": "K60",
+      "updateFile": "",
+      "model": "Magger 60",
+      "modelEvidence": "name \"Magger 60\"",
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 1,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xFB3F": {
+      "id": 16,
+      "type": 116,
+      "fwVersion": 100,
+      "name": "BLA75",
+      "layout": "BLA75",
+      "updateFile": "",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": "1 (app forces profileIndex 0; types 116/117/118 are NOT in the 4-profile list at line ~14305 even though Magger 60 uses them -> UNVERIFIED, probably an oversight)",
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron Universal Switch",
+            "fullTravelRaw": 350
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xAF13": {
+      "id": 16,
+      "type": 116,
+      "fwVersion": 100,
+      "name": "BLA75",
+      "layout": "BLA75",
+      "updateFile": "",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": "1 (app forces profileIndex 0; types 116/117/118 are NOT in the 4-profile list at line ~14305 even though Magger 60 uses them -> UNVERIFIED, probably an oversight)",
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron Universal Switch",
+            "fullTravelRaw": 350
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xFB48": {
+      "id": 17,
+      "type": 117,
+      "fwVersion": 100,
+      "name": "Magger 60",
+      "layout": "K60",
+      "updateFile": "",
+      "model": "Magger 60",
+      "modelEvidence": "name \"Magger 60\"",
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": "1 (app forces profileIndex 0; types 116/117/118 are NOT in the 4-profile list at line ~14305 even though Magger 60 uses them -> UNVERIFIED, probably an oversight)",
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xAF1E": {
+      "id": 17,
+      "type": 117,
+      "fwVersion": 100,
+      "name": "Magger 60",
+      "layout": "K60",
+      "updateFile": "",
+      "model": "Magger 60",
+      "modelEvidence": "name \"Magger 60\"",
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": "1 (app forces profileIndex 0; types 116/117/118 are NOT in the 4-profile list at line ~14305 even though Magger 60 uses them -> UNVERIFIED, probably an oversight)",
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 3,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xFB49": {
+      "id": 18,
+      "type": 118,
+      "fwVersion": 104,
+      "name": "Magger 60",
+      "layout": "K60",
+      "updateFile": "update_Magger60_2404_104.bin",
+      "model": "Magger 60 (2404 revision)",
+      "modelEvidence": "updateFile \"update_Magger60_2404_104.bin\"",
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": "1 (app forces profileIndex 0; types 116/117/118 are NOT in the 4-profile list at line ~14305 even though Magger 60 uses them -> UNVERIFIED, probably an oversight)",
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 3,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xAF1F": {
+      "id": 18,
+      "type": 118,
+      "fwVersion": 104,
+      "name": "Magger 60",
+      "layout": "K60",
+      "updateFile": "update_Magger60_2404_104.bin",
+      "model": "Magger 60 (2404 revision)",
+      "modelEvidence": "updateFile \"update_Magger60_2404_104.bin\"",
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": true,
+        "profiles": "1 (app forces profileIndex 0; types 116/117/118 are NOT in the 4-profile list at line ~14305 even though Magger 60 uses them -> UNVERIFIED, probably an oversight)",
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "Gateron White Max Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 3,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 4,
+            "name": "MagLeap",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xFB54": {
+      "id": 19,
+      "type": 119,
+      "fwVersion": 100,
+      "name": "GLASS 80HE",
+      "layout": "K87",
+      "updateFile": "",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 3,
+            "name": "Focus",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xAF2A": {
+      "id": 19,
+      "type": 119,
+      "fwVersion": 100,
+      "name": "GLASS 80HE",
+      "layout": "K87",
+      "updateFile": "",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": 0.01,
+        "travelRawPerMm": 100,
+        "switchMaxTravelRaw_default": 340,
+        "minActuationRaw": 9,
+        "deadzoneMaxRaw": 50,
+        "rtPressReleaseMaxRaw_precision0": 220,
+        "rtPrecisionModes": {
+          "0": {
+            "step_mm": 0.01,
+            "rawPerMm": 100,
+            "maxRaw": 220
+          },
+          "1": {
+            "step_mm": 0.005,
+            "rawPerMm": 200,
+            "maxRaw": 500
+          },
+          "2": {
+            "step_mm": 0.001,
+            "rawPerMm": 1000,
+            "maxRaw": 500
+          }
+        },
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Magger Switch",
+            "fullTravelRaw": 340
+          },
+          {
+            "value": 1,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 2,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 330
+          },
+          {
+            "value": 3,
+            "name": "Focus",
+            "fullTravelRaw": 340
+          }
+        ],
+        "tabs": [
+          "travel",
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "rs",
+          "socd",
+          "dks",
+          "mt",
+          "tgl",
+          "oks",
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": true,
+        "calibration": true,
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": false
+      }
+    },
+    "0x19F5_0xA026": [
+      {
+        "id": 20,
+        "type": 122,
+        "fwVersion": 105,
+        "name": "LK98-V2",
+        "layout": "LK98",
+        "productName": "LK98-V2",
+        "updateFile": "update_LK98-V2_105.bin",
+        "model": null,
+        "modelEvidence": null,
+        "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+        "hidFilter": {
+          "usagePage": 1,
+          "usage": 0
+        },
+        "features": {
+          "isMaggerFamily": false,
+          "profiles": 4,
+          "layers": 4,
+          "layerNames": [
+            "Main/Win (0)",
+            "FN1 (1)",
+            "Mac/FN2 (2)",
+            "FN3 (3)"
+          ],
+          "keySlots": 128,
+          "travelUnit_mm": null,
+          "travelRawPerMm": null,
+          "switchMaxTravelRaw_default": null,
+          "minActuationRaw": null,
+          "deadzoneMaxRaw": null,
+          "rtPressReleaseMaxRaw_precision0": null,
+          "rtPrecisionModes": "not offered (precision bits forced 0)",
+          "switchTypes": [
+            {
+              "value": 0,
+              "name": "Gateron White Pro Switch",
+              "fullTravelRaw": 175
+            },
+            {
+              "value": 1,
+              "name": "TTC King Magnetic",
+              "fullTravelRaw": 170
+            },
+            {
+              "value": 2,
+              "name": "Gateron Jade Switch",
+              "fullTravelRaw": 165
+            },
+            {
+              "value": 3,
+              "name": "Gateron Jade Pro Switch",
+              "fullTravelRaw": 165
+            }
+          ],
+          "tabs": [
+            "advance",
+            "remap",
+            "light",
+            "macro",
+            "setting"
+          ],
+          "advancedKeys": [
+            "macro",
+            "cb",
+            "td"
+          ],
+          "tapDance_combo": true,
+          "liveTravelDebugMode": false,
+          "calibration": "UNVERIFIED",
+          "perKeyRGB": true,
+          "lightingEffects": "0..22 (see lighting.json)",
+          "reportRateOptionsHz": {
+            "1": 8000,
+            "2": 4000,
+            "3": 2000,
+            "4": 1000
+          },
+          "debounceOptions": {
+            "0": "low",
+            "1": "medium",
+            "2": "high"
+          },
+          "jisKeyNames": false,
+          "firmwareUpdate": true
+        }
+      },
+      {
+        "id": 20,
+        "type": 124,
+        "fwVersion": 105,
+        "name": "LK98-V2",
+        "layout": "LK98_uk",
+        "productName": "LK98-V2 UK",
+        "updateFile": "update_LK98-V2_105.bin",
+        "model": null,
+        "modelEvidence": null,
+        "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+        "hidFilter": {
+          "usagePage": 1,
+          "usage": 0
+        },
+        "features": {
+          "isMaggerFamily": false,
+          "profiles": 4,
+          "layers": 4,
+          "layerNames": [
+            "Main/Win (0)",
+            "FN1 (1)",
+            "Mac/FN2 (2)",
+            "FN3 (3)"
+          ],
+          "keySlots": 128,
+          "travelUnit_mm": null,
+          "travelRawPerMm": null,
+          "switchMaxTravelRaw_default": null,
+          "minActuationRaw": null,
+          "deadzoneMaxRaw": null,
+          "rtPressReleaseMaxRaw_precision0": null,
+          "rtPrecisionModes": "not offered (precision bits forced 0)",
+          "switchTypes": [
+            {
+              "value": 0,
+              "name": "Gateron White Pro Switch",
+              "fullTravelRaw": 175
+            },
+            {
+              "value": 1,
+              "name": "TTC King Magnetic",
+              "fullTravelRaw": 170
+            },
+            {
+              "value": 2,
+              "name": "Gateron Jade Switch",
+              "fullTravelRaw": 165
+            },
+            {
+              "value": 3,
+              "name": "Gateron Jade Pro Switch",
+              "fullTravelRaw": 165
+            }
+          ],
+          "tabs": [
+            "advance",
+            "remap",
+            "light",
+            "macro",
+            "setting"
+          ],
+          "advancedKeys": [
+            "macro"
+          ],
+          "tapDance_combo": false,
+          "liveTravelDebugMode": false,
+          "calibration": "UNVERIFIED",
+          "perKeyRGB": true,
+          "lightingEffects": "0..22 (see lighting.json)",
+          "reportRateOptionsHz": {
+            "1": 8000,
+            "2": 4000,
+            "3": 2000,
+            "4": 1000
+          },
+          "debounceOptions": {
+            "0": "low",
+            "1": "medium",
+            "2": "high"
+          },
+          "jisKeyNames": true,
+          "firmwareUpdate": true
+        }
+      }
+    ],
+    "0x19F5_0x8A20": {
+      "id": 20,
+      "type": 122,
+      "fwVersion": 105,
+      "name": "LK98-V2",
+      "layout": "LK98",
+      "updateFile": "update_LK98-V2_105.bin",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "bootloader/firmware-update mode (usagePage 0xFF00 usage 1)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": null,
+        "travelRawPerMm": null,
+        "switchMaxTravelRaw_default": null,
+        "minActuationRaw": null,
+        "deadzoneMaxRaw": null,
+        "rtPressReleaseMaxRaw_precision0": null,
+        "rtPrecisionModes": "not offered (precision bits forced 0)",
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron White Pro Switch",
+            "fullTravelRaw": 175
+          },
+          {
+            "value": 1,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 170
+          },
+          {
+            "value": 2,
+            "name": "Gateron Jade Switch",
+            "fullTravelRaw": 165
+          },
+          {
+            "value": 3,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 165
+          }
+        ],
+        "tabs": [
+          "advance",
+          "remap",
+          "light",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "macro",
+          "cb",
+          "td"
+        ],
+        "tapDance_combo": true,
+        "liveTravelDebugMode": false,
+        "calibration": "UNVERIFIED",
+        "perKeyRGB": true,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0xA028": {
+      "id": 21,
+      "type": 123,
+      "fwVersion": 100,
+      "name": "LK80-MK2",
+      "layout": "LK80",
+      "updateFile": "update_LK80_101.bin",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "normal keyboard/config mode (usagePage 0x0001 usage 0x0000)",
+      "hidFilter": {
+        "usagePage": 1,
+        "usage": 0
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": null,
+        "travelRawPerMm": null,
+        "switchMaxTravelRaw_default": null,
+        "minActuationRaw": null,
+        "deadzoneMaxRaw": null,
+        "rtPressReleaseMaxRaw_precision0": null,
+        "rtPrecisionModes": "not offered (precision bits forced 0)",
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron White Pro Switch",
+            "fullTravelRaw": 175
+          },
+          {
+            "value": 1,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 170
+          },
+          {
+            "value": 2,
+            "name": "Gateron Jade Switch",
+            "fullTravelRaw": 165
+          },
+          {
+            "value": 3,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 165
+          }
+        ],
+        "tabs": [
+          "advance",
+          "remap",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": false,
+        "calibration": "UNVERIFIED",
+        "perKeyRGB": false,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    },
+    "0x19F5_0x8A1F": {
+      "id": 21,
+      "type": 123,
+      "fwVersion": 100,
+      "name": "LK80-MK2",
+      "layout": "LK80",
+      "updateFile": "update_LK80_101.bin",
+      "model": null,
+      "modelEvidence": null,
+      "interfaceRole": "second PID, usagePage 0xFF00 (not in bootloader list)",
+      "hidFilter": {
+        "usagePage": 65280,
+        "usage": 1
+      },
+      "features": {
+        "isMaggerFamily": false,
+        "profiles": 4,
+        "layers": 4,
+        "layerNames": [
+          "Main/Win (0)",
+          "FN1 (1)",
+          "Mac/FN2 (2)",
+          "FN3 (3)"
+        ],
+        "keySlots": 128,
+        "travelUnit_mm": null,
+        "travelRawPerMm": null,
+        "switchMaxTravelRaw_default": null,
+        "minActuationRaw": null,
+        "deadzoneMaxRaw": null,
+        "rtPressReleaseMaxRaw_precision0": null,
+        "rtPrecisionModes": "not offered (precision bits forced 0)",
+        "switchTypes": [
+          {
+            "value": 0,
+            "name": "Gateron White Pro Switch",
+            "fullTravelRaw": 175
+          },
+          {
+            "value": 1,
+            "name": "TTC King Magnetic",
+            "fullTravelRaw": 170
+          },
+          {
+            "value": 2,
+            "name": "Gateron Jade Switch",
+            "fullTravelRaw": 165
+          },
+          {
+            "value": 3,
+            "name": "Gateron Jade Pro Switch",
+            "fullTravelRaw": 165
+          }
+        ],
+        "tabs": [
+          "advance",
+          "remap",
+          "macro",
+          "setting"
+        ],
+        "advancedKeys": [
+          "macro"
+        ],
+        "tapDance_combo": false,
+        "liveTravelDebugMode": false,
+        "calibration": "UNVERIFIED",
+        "perKeyRGB": false,
+        "lightingEffects": "0..22 (see lighting.json)",
+        "reportRateOptionsHz": {
+          "1": 8000,
+          "2": 4000,
+          "3": 2000,
+          "4": 1000
+        },
+        "debounceOptions": {
+          "0": "low",
+          "1": "medium",
+          "2": "high"
+        },
+        "jisKeyNames": false,
+        "firmwareUpdate": true
+      }
+    }
+  }
+}
