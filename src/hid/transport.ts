@@ -7,6 +7,8 @@ import { classifyReport, type InputKind } from '../core/protocol';
 
 export const DEFAULT_TIMEOUT_MS = 1500;
 const STALE_TTL_MS = 3000;
+/** Header bytes every reply carries before its payload (PROTOCOL.md §1.3). */
+const REPLY_HEADER_SIZE = 8;
 
 export type TransportEvent =
   | { kind: Exclude<InputKind, 'reply'>; report: Uint8Array }
@@ -138,6 +140,11 @@ export class HidTransport {
   };
 
   private handleReply(report: Uint8Array): void {
+    if (report.length < REPLY_HEADER_SIZE) {
+      // Cannot carry a reply header; let the request time out and retry instead of failing it.
+      console.debug(`Dropped ${report.length}-byte input report`);
+      return;
+    }
     const pending = this.pending;
     if (!pending) {
       console.debug('Dropped input report with no request pending', report.slice(0, 8));

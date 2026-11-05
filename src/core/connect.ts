@@ -15,6 +15,15 @@ const CONFIG_COLLECTIONS = [
 
 /** Sessions by HIDDevice, so re-connecting the same device first releases the old session. */
 const sessions = new Map<HIDDevice, KeyboardSession>();
+/** Opens in progress, so concurrent connects (picker + auto-reconnect) share one transport. */
+const opening = new Map<HIDDevice, Promise<KeyboardSession>>();
+
+/** device.open() was refused: almost always another tab or app holds the keyboard. */
+class DeviceBusyError extends Error {}
+
+const BUSY_MESSAGE =
+  'The keyboard is in use by another tab or app. Close other Better Magger tabs, the official LUMINKEY web driver ' +
+  'and the LUMINKEY desktop driver, then try again.';
 
 export function isWebHidSupported(): boolean {
   return typeof navigator !== 'undefined' && 'hid' in navigator && !!navigator.hid;
@@ -50,14 +59,24 @@ export async function requestKeyboard(): Promise<ConnectResult> {
 /** Silently reopens an already-authorised keyboard (the last used one if present); null if none. */
 export async function reconnectKnown(): Promise<ConnectResult | null> {
   if (!isWebHidSupported()) return null;
-  const known = (await navigator.hid.getDevices()).filter(isKnown);
+  let devices: HIDDevice[];
+  try {
+    devices = await navigator.hid.getDevices();
+  } catch (e) {
+    console.debug('navigator.hid.getDevices() failed', e);
+    return null;
+  }
+  const known = devices.filter(isKnown);
   if (known.length === 0) return null;
   const last = loadLastDevice();
   const preferred =
     known.find((d) => d.productId === last?.pid && d.productName === last.productName) ??
     known.find((d) => !findModelByBootPid(d.productId)) ??
     known[0];
-  return connectTo(sameProduct(known, preferred));
+  const interfaces = sameProduct(known, preferred);
+  // Mid re-enumeration (e.g. after a polling-rate change) only some interfaces may be back yet.
+  if (!interfaces.some(hasConfigInterface)) return null;
+  return connectTo(interfaces);
 }
 
 /** Fires when a LUMINKEY device is plugged in (for auto-reconnect). */
@@ -92,13 +111,25 @@ async function connectTo(interfaces: HIDDevice[]): Promise<ConnectResult> {
   if (boot) return { status: 'bootloader', modelName: boot.name };
   const model = findModel(device.productId, device.productName);
   if (!model) return { status: 'unsupported', productName: device.productName, pid: device.productId };
+  if (!hasConfigInterface(device)) {
+    return { status: 'error', message: `${model.name} did not expose its configuration interface. Unplug it, plug it back in and try again.` };
+  }
   try {
-    const session = await openDevice(device, model);
+    const session = await openDeviceOnce(device, model);
     saveLastDevice(device);
     return { status: 'connected', session };
   } catch (e) {
+    if (e instanceof DeviceBusyError) return { status: 'error', message: e.message };
     return { status: 'error', message: `Could not talk to ${model.name}: ${errorText(e)}` };
   }
+}
+
+function openDeviceOnce(device: HIDDevice, model: ModelRecord): Promise<KeyboardSession> {
+  const inFlight = opening.get(device);
+  if (inFlight) return inFlight;
+  const promise = openDevice(device, model).finally(() => opening.delete(device));
+  opening.set(device, promise);
+  return promise;
 }
 
 async function openDevice(device: HIDDevice, model: ModelRecord): Promise<KeyboardSession> {
@@ -106,7 +137,11 @@ async function openDevice(device: HIDDevice, model: ModelRecord): Promise<Keyboa
   sessions.delete(device);
   const transport = new HidTransport(device);
   try {
-    await transport.open();
+    try {
+      await transport.open();
+    } catch (e) {
+      throw isBusyError(e) ? new DeviceBusyError(BUSY_MESSAGE) : e;
+    }
     const layout = getLayoutDef(model.layoutId);
     const session = await openSession({ transport, model, layout, productName: device.productName, isDemo: false });
     sessions.set(device, session);
@@ -120,6 +155,12 @@ async function openDevice(device: HIDDevice, model: ModelRecord): Promise<Keyboa
   }
 }
 
+/** NotAllowedError ("Failed to open the device") / InvalidStateError from HIDDevice.open(). */
+function isBusyError(e: unknown): boolean {
+  const name = (e as { name?: unknown } | null)?.name;
+  return name === 'NotAllowedError' || name === 'InvalidStateError' || /failed to open/i.test(errorText(e));
+}
+
 function outputReportBytes(c: HIDCollectionInfo): number {
   const sizes = (c.outputReports ?? []).map((r) => (r.items ?? []).reduce((n, i) => n + (i.reportSize ?? 0) * (i.reportCount ?? 0), 0) / 8);
   return Math.max(0, ...sizes);
@@ -130,15 +171,25 @@ function outputReportBytes(c: HIDCollectionInfo): number {
  * output report. The official app just took `[0]` (PROTOCOL.md §7.13).
  */
 export function pickInterface(interfaces: HIDDevice[]): HIDDevice {
-  const score = (d: HIDDevice) =>
-    Math.max(
-      0,
-      ...d.collections.map((c) => {
-        const usageMatch = CONFIG_COLLECTIONS.some((u) => u.usagePage === c.usagePage && u.usage === c.usage);
-        return (usageMatch ? 1 : 0) + (outputReportBytes(c) === 64 ? 2 : 0);
-      }),
-    );
-  return interfaces.reduce((best, d) => (score(d) > score(best) ? d : best), interfaces[0]);
+  return interfaces.reduce((best, d) => (interfaceScore(d) > interfaceScore(best) ? d : best), interfaces[0]);
+}
+
+function interfaceScore(d: HIDDevice): number {
+  return Math.max(
+    0,
+    ...d.collections.map((c) => {
+      const usageMatch = CONFIG_COLLECTIONS.some((u) => u.usagePage === c.usagePage && u.usage === c.usage);
+      return (usageMatch ? 1 : 0) + (outputReportBytes(c) === 64 ? 2 : 0);
+    }),
+  );
+}
+
+/**
+ * False for an interface that only has other collections (e.g. the protected boot keyboard),
+ * which WebHID will not let us talk to. Devices that list no collections get the benefit of the doubt.
+ */
+export function hasConfigInterface(d: HIDDevice): boolean {
+  return d.collections.length === 0 || interfaceScore(d) > 0;
 }
 
 function loadLastDevice(): { pid: number; productName: string } | null {

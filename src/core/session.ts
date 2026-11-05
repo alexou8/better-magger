@@ -145,6 +145,11 @@ class Session implements KeyboardSession {
 
   async getActiveProfile(): Promise<number> {
     const [profile] = await this.readBytes(CMD.ACTIVE_PROFILE, 0, 32);
+    return this.clampProfile(profile);
+  }
+
+  /** Profiles the model does not offer fall back to 0, like the official getBase(). */
+  private clampProfile(profile: number): number {
     return profile < this.model.features.profiles ? profile : 0;
   }
 
@@ -201,12 +206,20 @@ class Session implements KeyboardSession {
       .sort((a, b) => Number(a.start === 0 && rateChanged) - Number(b.start === 0 && rateChanged));
     try {
       for (const { frame, start } of chunks) {
-        const mayDrop = rateChanged && start === 0;
-        await this.transport.request(frame, mayDrop ? { replyOptional: true, retries: 0 } : {});
+        if (!(rateChanged && start === 0)) {
+          await this.transport.request(frame);
+          continue;
+        }
+        try {
+          await this.transport.request(frame, { replyOptional: true, retries: 0 });
+        } catch (e) {
+          console.debug('Ignoring error after polling-rate change (keyboard re-enumerates)', e);
+        }
       }
     } catch (e) {
-      if (!rateChanged) throw e;
-      console.debug('Ignoring error after polling-rate change (keyboard re-enumerates)', e);
+      // Some chunks may have been applied: never reuse the cached copy for the next patch.
+      this.funcCache.delete(profile);
+      throw e;
     }
     this.funcCache.set(profile, { bytes: after, at: Date.now() });
   }
@@ -356,10 +369,10 @@ class Session implements KeyboardSession {
       }
       case 'profile':
         this.funcCache.clear();
-        return { kind: 'profileChanged', profile: r[2] };
+        return { kind: 'profileChanged', profile: this.clampProfile(r[2]) };
       case 'reset':
         this.funcCache.clear();
-        return { kind: 'resetDone', profile: r[2] };
+        return { kind: 'resetDone', profile: this.clampProfile(r[2]) };
       case 'osMode':
         this.funcCache.clear();
         return { kind: 'osModeChanged', mode: r[2] & 0x02 ? 'mac' : 'windows' };

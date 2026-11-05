@@ -120,6 +120,19 @@ describe('HidTransport', () => {
     expect(events.length).toBe(1); // input listener removed
   });
 
+  it('ignores empty or header-less input reports instead of taking them as the reply', async () => {
+    vi.spyOn(console, 'debug').mockImplementation(() => undefined);
+    const { transport } = setup((f, _n, dev) => {
+      for (const bytes of [new Uint8Array(0), Uint8Array.of(0xaa, 0x05)]) {
+        dev.dispatchEvent(Object.assign(new Event('inputreport'), { data: new DataView(bytes.buffer) }));
+      }
+      dev.input(reply(f, 0x42), 2);
+    });
+    await transport.open();
+    const r = await transport.request(encodeFrame(0x05, 0, 56));
+    expect(r[8]).toBe(0x42);
+  });
+
   it('ignores disconnect events of other devices', async () => {
     const { hid, transport, events } = setup(() => undefined);
     await transport.open();

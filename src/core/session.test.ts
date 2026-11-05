@@ -116,6 +116,17 @@ describe('func block read-modify-write', () => {
     expect(kb.table('func', 0)[4] & 0x0f).toBe(3);
   });
 
+  it('re-reads the func block after a failed write instead of patching a stale copy', async () => {
+    vi.spyOn(console, 'debug').mockImplementation(() => undefined);
+    const { session, kb } = await demo(0xfc67, 20);
+    expect((await session.readSettings(0)).debounce).toBe(0);
+    kb.dropNextReplies(2); // the keyboard applies the write but both replies are lost
+    await expect(session.writeSettings(0, { debounce: 2 })).rejects.toThrow(/did not answer/);
+    const s = await session.writeSettings(0, { lockWin: true });
+    expect(s).toMatchObject({ debounce: 2, lockWin: true });
+    expect(decodeSettings(kb.table('func', 0))).toEqual(s);
+  });
+
   it('rejects out-of-range profiles', async () => {
     const { session } = await demo();
     expect(() => session.readSettings(4)).toThrow(RangeError);
@@ -186,6 +197,14 @@ describe('events', () => {
     kb.injectBeforeNextReply(Uint8Array.of(0xa1, 0, 2, 0, 0, 0, 0, 0, 9, 9, 9));
     expect(await session.readKeymap(0, 0)).toEqual(expected);
     expect(events).toContainEqual({ kind: 'profileChanged', profile: 2 });
+  });
+
+  it('maps profile numbers the model does not have to profile 0', async () => {
+    const { session, kb, events, model } = await demo(0xfb3f); // BLA75 (FB3F): single profile
+    expect(model.features.profiles).toBe(1);
+    kb.injectBeforeNextReply(Uint8Array.of(0xa1, 0, 2));
+    await session.getActiveProfile();
+    expect(events).toContainEqual({ kind: 'profileChanged', profile: 0 });
   });
 
   it('streams live travel for layout keys while enabled', async () => {

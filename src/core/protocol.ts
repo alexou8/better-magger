@@ -139,7 +139,8 @@ export function findLinkMarker(r: Uint8Array): number {
 export function classifyReport(r: Uint8Array): InputKind {
   const event = EVENT_HEADERS[r[0]];
   if (event) return event;
-  if (r[0] === 0xaa && r[1] === 0xfa) return 'lighting';
+  // A dongle link report may itself start AA FA (FB 06 xx); the marker is the more specific match.
+  if (r[0] === 0xaa && r[1] === 0xfa) return findLinkMarker(r) >= 0 ? 'link' : 'lighting';
   if (r[0] === 0xaa || r[0] === FRAME_HEADER) return 'reply';
   return findLinkMarker(r) >= 0 ? 'link' : 'reply';
 }

@@ -77,6 +77,12 @@ describe('input report classification', () => {
     expect(classifyReport(r(0x55, 0x05))).toBe('reply');
     expect(classifyReport(r(0x00, 0x05))).toBe('reply');
   });
+
+  it('prefers the dongle link marker over the AA FA lighting header', () => {
+    expect(classifyReport(r(0xaa, 0xfa, 0xfb, 0x06, 0x00))).toBe('link');
+    expect(classifyReport(r(0xaa, 0xfa, 0xfb, 0x06, 0x01))).toBe('link');
+    expect(classifyReport(r(0xaa, 0xfa, 0x01))).toBe('lighting');
+  });
 });
 
 describe('firmware', () => {

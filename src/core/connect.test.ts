@@ -1,6 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { getLayoutDef } from '../data/layouts';
 import { findModel, findModelByBootPid } from '../data/models';
-import { openDemo, pickInterface, supportedModels } from './connect';
+import { openDemo, pickInterface, reconnectKnown, requestKeyboard, supportedModels } from './connect';
+import { MockHidDevice } from './mock';
 
 const iface = (name: string, usagePage: number, usage: number, outputBits: number) =>
   ({
@@ -41,5 +43,64 @@ describe('models', () => {
     expect(session.model.name).toBe('Magger68 Plus');
     expect((await session.readSettings(0)).lighting.brightness).toBe(80);
     await session.close();
+  });
+});
+
+describe('connecting real devices', () => {
+  const stubHid = (devices: () => Promise<HIDDevice[]>) => {
+    const hid = Object.assign(new EventTarget(), { getDevices: devices, requestDevice: devices });
+    vi.stubGlobal('navigator', { hid });
+  };
+  const plus = findModel(0xfc67)!;
+  const configCollection = { usagePage: 0x0001, usage: 0x0000, outputReports: [{ items: [{ reportSize: 8, reportCount: 64 }] }] };
+
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('explains a refused open() (keyboard held by another tab or app)', async () => {
+    const busy = {
+      vendorId: 0x19f5,
+      productId: plus.pid,
+      productName: 'Magger68 Plus',
+      opened: false,
+      collections: [configCollection],
+      open: () => Promise.reject(new DOMException('Failed to open the device.', 'NotAllowedError')),
+      close: () => Promise.resolve(),
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+    } as unknown as HIDDevice;
+    stubHid(async () => [busy]);
+    const r = await requestKeyboard();
+    expect(r.status).toBe('error');
+    expect(r.status === 'error' && r.message).toMatch(/in use by another tab or app/);
+  });
+
+  it('shares one session between concurrent connects to the same keyboard', async () => {
+    const device = new MockHidDevice(plus, getLayoutDef(plus.layoutId), { latencyMs: [0, 1], productName: 'Magger68 Plus' });
+    const open = vi.spyOn(device, 'open');
+    stubHid(async () => [device.asHidDevice()]);
+    const [a, b] = await Promise.all([reconnectKnown(), requestKeyboard()]);
+    expect(a?.status).toBe('connected');
+    expect(b.status).toBe('connected');
+    if (a?.status !== 'connected' || b.status !== 'connected') return;
+    expect(a.session).toBe(b.session);
+    expect(open).toHaveBeenCalledTimes(1);
+    await a.session.close();
+  });
+
+  it('waits for the config interface while the keyboard re-enumerates', async () => {
+    const bootKeyboard = {
+      vendorId: 0x19f5,
+      productId: plus.pid,
+      productName: 'Magger68 Plus',
+      collections: [{ usagePage: 0x0001, usage: 0x0006, outputReports: [{ items: [{ reportSize: 1, reportCount: 8 }] }] }],
+    } as unknown as HIDDevice;
+    stubHid(async () => [bootKeyboard]);
+    expect(await reconnectKnown()).toBeNull();
+  });
+
+  it('treats a failing getDevices() as nothing to reconnect', async () => {
+    vi.spyOn(console, 'debug').mockImplementation(() => undefined);
+    stubHid(() => Promise.reject(new DOMException('blocked', 'SecurityError')));
+    expect(await reconnectKnown()).toBeNull();
   });
 });
