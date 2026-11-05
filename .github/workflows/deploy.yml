@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, claude/sleepy-archimedes-i4z9fx]
   workflow_dispatch:
 
 permissions:
