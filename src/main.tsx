@@ -8,6 +8,7 @@ import './styles/components.css';
 import './styles/feedback.css';
 import './styles/keyboard.css';
 import './styles/pages.css';
+import './styles/editors.css';
 
 initTheme();
 render(<App />, document.getElementById('app')!);

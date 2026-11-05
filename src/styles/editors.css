@@ -1,0 +1,317 @@
+/* ---------- advanced keys ---------- */
+.kind-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+.kind-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+}
+.kind-card:hover {
+  border-color: var(--accent);
+}
+.kind-card__title {
+  font-weight: 600;
+}
+.kind-card .help {
+  margin: 0;
+}
+.badge--kind {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.badge--socd,
+.badge--rs {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+.badge--mt,
+.badge--tgl {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.binding-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.binding {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.binding__detail {
+  font-size: 0.9rem;
+  min-width: 0;
+}
+.wizard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.wizard__subtitle {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.wizard__actions {
+  margin-top: 12px;
+}
+.action-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.action-field__label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-width: 7em;
+}
+.action-field__value {
+  min-width: 8em;
+}
+.dks-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-x: auto;
+}
+.dks-grid__row {
+  display: grid;
+  grid-template-columns: minmax(200px, 1.6fr) repeat(4, minmax(72px, 1fr));
+  gap: 6px;
+  align-items: center;
+  min-width: 560px;
+}
+.dks-grid__head span {
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+}
+.dks-grid__head small {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+.dks-grid .action-field {
+  margin: 0;
+}
+.dks-grid .action-field__label {
+  min-width: 0;
+}
+.dks-cell {
+  width: 100%;
+  min-height: 40px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border);
+  background: var(--bg-sunken);
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.dks-cell--tap {
+  border-style: solid;
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.dks-cell--hold {
+  border-style: solid;
+  border-color: var(--success);
+  background: var(--success-soft);
+  color: var(--success);
+}
+.dks-cell--cont {
+  margin-left: -6px;
+  width: calc(100% + 6px);
+  border-left-color: transparent;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.choice {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+.choice.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.choice > span {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- macros ---------- */
+.macros-layout {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  gap: var(--gap);
+  align-items: start;
+}
+.macro-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.macro-list__item {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  text-align: left;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.macro-list__item span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.macro-list__item:hover {
+  background: var(--surface-hover);
+}
+.macro-list__item.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.macro-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.macro-editor__head,
+.macro-editor__opts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.macro-editor__head h3 {
+  margin: 0;
+}
+.macro-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 460px;
+  overflow-y: auto;
+}
+.macro-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+}
+.macro-step.is-release {
+  border-left-color: var(--text-muted);
+}
+.macro-step__n {
+  width: 2em;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.macro-step select {
+  max-width: 9.5em;
+  min-height: 32px;
+  padding: 4px 8px;
+}
+.macro-step > .btn-row {
+  margin-left: auto;
+  gap: 2px;
+}
+.macro-step__delay {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+.macro-step__delay input {
+  width: 5.5em;
+}
+.macro-editor__save {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+/* ---------- settings ---------- */
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 4px 32px;
+}
+.danger-zone .field {
+  max-width: 320px;
+}
+.copy-profile {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.calibration .kbd {
+  margin: 12px 0;
+}
+
+@media (max-width: 700px) {
+  .macros-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .macro-list {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .macro-list__item {
+    min-width: 120px;
+  }
+  .binding {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

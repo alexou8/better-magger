@@ -192,6 +192,9 @@
   color: var(--text);
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
 }
+.field > .segmented {
+  align-self: flex-start;
+}
 .segmented--compact button {
   padding: 4px 10px;
   min-width: 32px;

@@ -46,7 +46,7 @@ export function MtWizard({ session: s, profile, layer, keymaps, editing, onDone 
   };
 
   return (
-    <WizardFrame kind="mt" editing={!!editing} canSave={!problem} saving={saving} problem={problem} onSave={onSave} onCancel={onDone}>
+    <WizardFrame kind="mt" layer={layer} editing={!!editing} canSave={!problem} saving={saving} problem={problem} onSave={onSave} onCancel={onDone}>
       <h4>1. Pick the key</h4>
       <TargetKeyboard
         session={s}

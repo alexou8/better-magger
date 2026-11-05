@@ -20,7 +20,10 @@ export function KeyCapture({ onCapture }: Props) {
     if (!listening) return;
     let mods = 0;
     let lastMod: number | null = null;
+    let finished = false; // listeners stay attached until the re-render; ignore the trailing keyups
     const done = (a: KeyAction) => {
+      if (finished) return;
+      finished = true;
       setListening(false);
       onCapture(a);
     };

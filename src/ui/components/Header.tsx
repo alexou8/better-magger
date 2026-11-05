@@ -10,7 +10,7 @@ export function Header({ session }: { session: KeyboardSession }) {
   return (
     <header class="header">
       <div class="header__device">
-        <span class="status-dot" title="Connected" aria-label="Connected" />
+        <span class="status-dot" role="img" title="Connected" aria-label="Connected" />
         <div>
           <h1 class="header__model">
             {model.name}

@@ -138,3 +138,7 @@
   border-radius: 999px;
   background: linear-gradient(90deg, hsl(10 70% 45%), hsl(110 70% 45%), hsl(210 70% 45%));
 }
+.kbd__key:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}

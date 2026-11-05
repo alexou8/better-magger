@@ -1,9 +1,11 @@
 import type { ComponentChildren } from 'preact';
 import type { AdvancedKind } from '../../../core/types';
 import { KIND_INFO } from '../../lib/advanced';
+import { LAYERS } from '../../lib/layers';
 
 interface Props {
   kind: AdvancedKind;
+  layer: number;
   editing: boolean;
   canSave: boolean;
   saving: boolean;
@@ -14,14 +16,17 @@ interface Props {
 }
 
 /** Shared title, explanation and Save/Cancel bar for the advanced-key wizards. */
-export function WizardFrame({ kind, editing, canSave, saving, problem, onSave, onCancel, children }: Props) {
+export function WizardFrame({ kind, layer, editing, canSave, saving, problem, onSave, onCancel, children }: Props) {
   const info = KIND_INFO[kind];
   return (
     <section class="card wizard" aria-label={`${editing ? 'Edit' : 'New'} ${info.name}`}>
       <header class="wizard__header">
         <h3>
           {editing ? 'Edit' : 'New'} {info.name}
-          <span class="wizard__subtitle"> · {info.title}</span>
+          <span class="wizard__subtitle">
+            {' '}
+            · {info.title} · {LAYERS[layer].name} layer
+          </span>
         </h3>
         <p class="help">
           {info.description} <em>Example: {info.example}</em>

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'preact/hooks';
 import type { DeviceModel, KeyAction } from '../../../core/types';
-import { actionsEqual } from '../../../data/keycodes';
-import { categoriesFor, type PickerKey } from '../../lib/keys';
+import { actionsEqual, pickerCategories, type PickerCategory } from '../../../data/keycodes';
+import { activeProfile } from '../../state/session';
 import { ComboBuilder } from './ComboBuilder';
 import { KeyCapture } from './KeyCapture';
 
@@ -15,7 +15,8 @@ const COMBO_TAB = '__combo';
 
 /** Category tabs + search + "press a key" capture + shortcut builder. */
 export function ActionPicker({ model, onPick, current }: Props) {
-  const categories = useMemo(() => categoriesFor(model), [model]);
+  const profile = activeProfile.value; // FN layer keys are numbered per profile
+  const categories = useMemo(() => pickerCategories(model, profile), [model, profile]);
   const [tab, setTab] = useState(categories[0]?.id ?? COMBO_TAB);
   const [query, setQuery] = useState('');
 
@@ -23,7 +24,7 @@ export function ActionPicker({ model, onPick, current }: Props) {
   const results = useMemo(() => {
     if (!q) return null;
     const seen = new Set<string>();
-    const out: PickerKey[] = [];
+    const out: PickerCategory['keys'] = [];
     for (const c of categories) {
       for (const k of c.keys) {
         const id = `${k.action.type}/${k.action.code1}/${k.action.code2}`;
@@ -36,7 +37,7 @@ export function ActionPicker({ model, onPick, current }: Props) {
     return out;
   }, [q, categories]);
 
-  const grid = (keys: PickerKey[]) =>
+  const grid = (keys: PickerCategory['keys']) =>
     keys.length ? (
       <div class="picker__grid">
         {keys.map((k) => {

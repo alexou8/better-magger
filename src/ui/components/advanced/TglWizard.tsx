@@ -39,7 +39,7 @@ export function TglWizard({ session: s, profile, layer, keymaps, editing, onDone
   };
 
   return (
-    <WizardFrame kind="tgl" editing={!!editing} canSave={!problem} saving={saving} problem={problem} onSave={onSave} onCancel={onDone}>
+    <WizardFrame kind="tgl" layer={layer} editing={!!editing} canSave={!problem} saving={saving} problem={problem} onSave={onSave} onCancel={onDone}>
       <h4>1. Pick the key</h4>
       <TargetKeyboard
         session={s}

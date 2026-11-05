@@ -1,4 +1,4 @@
-import { signal, computed } from '@preact/signals';
+import { signal } from '@preact/signals';
 import type { FirmwareInfo, KeyboardSession } from '../../core/types';
 
 export type ConnState = 'idle' | 'connecting' | 'connected' | 'lost';
@@ -17,5 +17,3 @@ export const firmware = signal<FirmwareInfo | null>(null);
 export const activeProfile = signal(0);
 /** Name of the last connected model, for the "reconnecting" banner. */
 export const lastModelName = signal<string | null>(null);
-
-export const model = computed(() => session.value?.model ?? null);

@@ -67,7 +67,7 @@ export function DksWizard({ session: s, profile, layer, keymaps, editing, onDone
   };
 
   return (
-    <WizardFrame kind="dks" editing={!!editing} canSave={!problem} saving={saving} problem={problem} onSave={onSave} onCancel={onDone}>
+    <WizardFrame kind="dks" layer={layer} editing={!!editing} canSave={!problem} saving={saving} problem={problem} onSave={onSave} onCancel={onDone}>
       <h4>1. Pick the key</h4>
       <TargetKeyboard
         session={s}

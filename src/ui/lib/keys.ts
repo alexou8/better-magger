@@ -1,36 +1,7 @@
 import type { DeviceModel, KeyAction } from '../../core/types';
 import { describeAction, pickerCategories } from '../../data/keycodes';
 
-export interface PickerKey {
-  action: KeyAction;
-  label: string;
-}
-
-export interface PickerCategory {
-  id: string;
-  name: string;
-  keys: PickerKey[];
-}
-
 export const MACRO_COUNT = 16;
-export const ACTION_MACRO = 112;
-
-export function macroAction(i: number): KeyAction {
-  return { type: ACTION_MACRO, code1: i, code2: 0 };
-}
-
-/** Picker categories from the keycode table, plus a Macros tab when the model supports macros. */
-export function categoriesFor(model: DeviceModel): PickerCategory[] {
-  const cats = pickerCategories(model);
-  if (model.features.macros && !cats.some((c) => c.keys.some((k) => k.action.type === ACTION_MACRO))) {
-    cats.push({
-      id: 'macros',
-      name: 'Macros',
-      keys: Array.from({ length: MACRO_COUNT }, (_, i) => ({ action: macroAction(i), label: `M${i + 1}` })),
-    });
-  }
-  return cats;
-}
 
 /** Plain (unmodified) keyboard keys as { usage, label }, for the combo builder and macro editor. */
 export function basicKeys(model: DeviceModel): { usage: number; label: string }[] {

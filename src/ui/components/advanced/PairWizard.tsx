@@ -64,7 +64,7 @@ export function PairWizard({ kind, session: s, profile, layer, keymaps, editing,
   if (b !== null) tags[b] = 'B';
 
   return (
-    <WizardFrame kind={kind} editing={!!editing} canSave={!problem} saving={saving} problem={problem} onSave={onSave} onCancel={onDone}>
+    <WizardFrame kind={kind} layer={layer} editing={!!editing} canSave={!problem} saving={saving} problem={problem} onSave={onSave} onCancel={onDone}>
       <h4>1. Pick the two keys</h4>
       {!editing && (
         <div class="segmented" role="radiogroup" aria-label="Which key to pick">

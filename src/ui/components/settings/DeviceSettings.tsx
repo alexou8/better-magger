@@ -1,5 +1,6 @@
 import type { BaseSettings, KeyboardSession } from '../../../core/types';
 import { setCached } from '../../state/cache';
+import { session } from '../../state/session';
 import { save } from '../../state/toast';
 import { Toggle } from '../Toggle';
 
@@ -22,11 +23,25 @@ export function DeviceSettings({ session: s, profile, settings }: Props) {
   const write = (what: string, patch: Patch) =>
     void save(what, async () => setCached(profile, 'settings', await s.writeSettings(profile, patch)));
 
+  /** Polling-rate changes re-enumerate the keyboard, so a dropped reply is expected; auto-reconnect follows. */
+  const writePolling = (pollingRate: number) =>
+    void save(
+      'polling rate',
+      async () => {
+        try {
+          setCached(profile, 'settings', await s.writeSettings(profile, { pollingRate }));
+        } catch (err) {
+          if (session.peek() === s) throw err;
+        }
+      },
+      { success: 'Polling rate changed. The keyboard may reconnect.' },
+    );
+
   return (
     <div class="settings-grid">
       <label class="field">
         <span class="field__label">Polling rate</span>
-        <select value={settings.pollingRate} onChange={(e) => write('polling rate', { pollingRate: Number(e.currentTarget.value) })}>
+        <select value={settings.pollingRate} onChange={(e) => writePolling(Number(e.currentTarget.value))}>
           {f.pollingRates.map((r) => (
             <option key={r.value} value={r.value}>
               {r.hz.toLocaleString()} Hz

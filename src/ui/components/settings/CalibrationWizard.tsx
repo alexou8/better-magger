@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import type { KeyboardSession, LayoutKey } from '../../../core/types';
 import { useTravelEvents } from '../../hooks/useTravelEvents';
 import { save } from '../../state/toast';
@@ -17,6 +17,11 @@ export function CalibrationWizard({ session: s }: { session: KeyboardSession }) 
     return !!x && (x.raw >= threshold || !!x.calibrationStatus);
   };
   const count = keys.filter(done).length;
+
+  // Leaving the page mid-calibration must not leave the keyboard in calibration mode.
+  const running = useRef(false);
+  running.current = step === 'running';
+  useEffect(() => () => void (running.current && s.endCalibration().catch(() => undefined)), []);
 
   const start = async () => {
     if (await save('calibration start', () => s.startCalibration(), { success: 'Calibration started' })) setStep('running');
