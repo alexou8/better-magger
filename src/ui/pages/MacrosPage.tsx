@@ -8,12 +8,20 @@ import { basicKeys, MACRO_COUNT } from '../lib/keys';
 import { MACRO_STEP_CAPACITY, summarizeMacro, totalSteps } from '../lib/macro';
 import { setCached, useTable } from '../state/cache';
 import { save } from '../state/toast';
+import { macroDrafts } from '../state/macroDrafts';
 
 export function MacrosPage({ session: s, profile }: PageProps) {
   const macros = useTable('macros');
   const keys = useMemo(() => basicKeys(s.model), [s.model]);
-  const [current, setCurrent] = useState(0);
-  const [draft, setDraft] = useState<MacroStep[] | null>(null);
+  const drafts = useMemo(() => macroDrafts(s, profile), [s, profile]);
+  const current = drafts.current.value;
+  const draft = drafts.steps.value.get(current) ?? null;
+  const setDraft = (steps: MacroStep[] | null) => {
+    const next = new Map(drafts.steps.peek());
+    if (steps === null) next.delete(current);
+    else next.set(current, steps);
+    drafts.steps.value = next;
+  };
   const [saving, setSaving] = useState(false);
 
   if (macros.error) return <LoadError message={macros.error} onRetry={macros.reload} />;
@@ -25,9 +33,7 @@ export function MacrosPage({ session: s, profile }: PageProps) {
   const dirty = draft !== null;
 
   const choose = (i: number) => {
-    if (dirty && !confirm('Discard unsaved changes to this macro?')) return;
-    setDraft(null);
-    setCurrent(i);
+    drafts.current.value = i;
   };
 
   const onSave = async () => {
@@ -38,7 +44,7 @@ export function MacrosPage({ session: s, profile }: PageProps) {
       setCached(profile, 'macros', next);
     });
     setSaving(false);
-    if (ok) setDraft(null);
+    if (ok && drafts.steps.peek().get(current) === draft) setDraft(null);
   };
 
   const capacity = MACRO_STEP_CAPACITY - (totalSteps(all) - (all[current]?.steps.length ?? 0));
@@ -51,12 +57,13 @@ export function MacrosPage({ session: s, profile }: PageProps) {
           <p class="help">A macro plays a sequence of key presses with one key. Record one, tidy it up, save, then assign it on the Keymap page.</p>
         </div>
       </header>
+      <p class="help">Unsaved drafts stay here when you switch pages or profiles. Save each macro to apply it to the keyboard; * marks a draft.</p>
       <div class="macros-layout">
         <ul class="macro-list" aria-label="Macros">
           {Array.from({ length: MACRO_COUNT }, (_, i) => (
             <li key={i}>
               <button type="button" class={`macro-list__item${i === current ? ' is-active' : ''}`} aria-current={i === current} onClick={() => choose(i)}>
-                <b>M{i + 1}</b>
+                <b>M{i + 1}{drafts.steps.value.has(i) ? ' *' : ''}</b>
                 <span class="muted">{all[i] ? summarizeMacro(all[i], keyLabel) : 'Empty'}</span>
               </button>
             </li>
@@ -64,6 +71,7 @@ export function MacrosPage({ session: s, profile }: PageProps) {
         </ul>
         <section class="card">
           <MacroEditor
+            key={current}
             name={`M${current + 1}`}
             steps={steps}
             keys={keys}

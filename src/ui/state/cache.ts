@@ -24,6 +24,8 @@ interface EntryState {
 
 const entries = new Map<string, Signal<EntryState>>();
 const inflight = new Map<string, Promise<unknown>>();
+/** Per-table revision, so invalidation or a write wins over an older device read. */
+const revisions = new Map<string, number>();
 /** Bumped when the cache is cleared so late replies from an old session are dropped. */
 let generation = 0;
 
@@ -72,14 +74,15 @@ export function loadTable<K extends TableId>(
   const running = inflight.get(key);
   if (running) return running as Promise<TableTypes[K]>;
   const gen = generation;
+  const revision = revisions.get(key) ?? 0;
   pendingReads.value++;
   const p = read(s, profile, table, layer)
     .then((data) => {
-      if (gen === generation) e.value = { data };
+      if (gen === generation && revision === (revisions.get(key) ?? 0)) e.value = { data };
       return data;
     })
     .catch((err: unknown) => {
-      if (gen === generation) e.value = { ...e.peek(), error: err instanceof Error ? err.message : String(err) };
+      if (gen === generation && revision === (revisions.get(key) ?? 0)) e.value = { ...e.peek(), error: err instanceof Error ? err.message : String(err) };
       throw err;
     })
     .finally(() => {
@@ -95,14 +98,21 @@ export function getCached<K extends TableId>(profile: number, table: K, layer = 
 }
 
 export function setCached<K extends TableId>(profile: number, table: K, value: TableTypes[K], layer = 0): void {
-  entry(keyOf(profile, table, layer)).value = { data: value };
+  const key = keyOf(profile, table, layer);
+  revisions.set(key, (revisions.get(key) ?? 0) + 1);
+  inflight.delete(key);
+  entry(key).value = { data: value };
 }
 
 /** Drops cached data for one profile (or everything) so it is re-read on next use. */
 export function invalidate(profile?: number): void {
   if (profile === undefined) generation++;
   for (const [key, e] of entries) {
-    if (profile === undefined || key.startsWith(`${profile}/`)) e.value = {};
+    if (profile === undefined || key.startsWith(`${profile}/`)) {
+      revisions.set(key, (revisions.get(key) ?? 0) + 1);
+      inflight.delete(key);
+      e.value = {};
+    }
   }
   if (profile === undefined) inflight.clear();
 }

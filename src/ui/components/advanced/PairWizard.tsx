@@ -5,6 +5,8 @@ import { assignPair } from '../../state/advancedOps';
 import { useTable } from '../../state/cache';
 import { save, showToast } from '../../state/toast';
 import { Toggle } from '../Toggle';
+import { LoadError } from '../LoadError';
+import { Skeleton } from '../Skeleton';
 import { TargetKeyboard } from './TargetKeyboard';
 import { WizardFrame } from './WizardFrame';
 import { targetProblem, type WizardProps } from './wizardProps';
@@ -23,6 +25,9 @@ export function PairWizard({ kind, session: s, profile, layer, keymaps, editing,
   const [priority, setPriority] = useState<SocdPriority | null>(null);
   const [matchTriggers, setMatchTriggers] = useState(true);
   const [saving, setSaving] = useState(false);
+
+  if (kind === 'socd' && triggers.error) return <LoadError message={triggers.error} onRetry={triggers.reload} />;
+  if (kind === 'socd' && !triggers.data) return <Skeleton lines={3} />;
 
   const currentPriority: SocdPriority =
     priority ?? (editing && triggers.data ? socdFromNibble(triggers.data[editing.index].priority) : 'last');
@@ -86,6 +91,7 @@ export function PairWizard({ kind, session: s, profile, layer, keymaps, editing,
       {kind === 'socd' && (
         <>
           <h4>2. When both keys are held</h4>
+          <p class="help">Fixed-key priority is experimental; verify the result on your keyboard before relying on it.</p>
           <div class="choice-list" role="radiogroup">
             {SOCD_OPTIONS.map((o) => (
               <label key={o.id} class={`choice${currentPriority === o.id ? ' is-active' : ''}`}>

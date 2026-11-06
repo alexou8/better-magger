@@ -21,7 +21,7 @@ async function demo(pid = 0xfc67, timeoutMs?: number) {
   open.push(session);
   const events: SessionEvent[] = [];
   session.on((e) => events.push(e));
-  return { session, kb: device.keyboard, events, model, layout };
+  return { session, kb: device.keyboard, events, model, layout, device };
 }
 
 afterEach(async () => {
@@ -48,7 +48,7 @@ describe('layout index resolution', () => {
     expect(new Set(indices).size).toBe(indices.length);
   });
 
-  it('normalises modifiers and Fn, assigns duplicates in order, falls back to demo slots', () => {
+  it('normalises modifiers and Fn, assigns duplicates in order, leaves unknown real positions disabled', () => {
     const def = getLayoutDef('K68_JIS');
     const keymap: KeyAction[] = Array.from({ length: 128 }, () => ({ type: 0, code1: 0, code2: 0 }));
     const spaces = def.keys.filter((k) => k.code === 44);
@@ -65,7 +65,8 @@ describe('layout index resolution', () => {
     expect(at(229)).toEqual([6]);
     expect(at(255)).toEqual([7]);
     const esc = def.keys.findIndex((k) => k.code === 41);
-    expect(indices[esc]).toBe(def.keys[esc].demoIndex);
+    expect(indices[esc]).toBe(-1);
+    expect(resolveIndices(def, keymap, true)[esc]).toBe(def.keys[esc].demoIndex);
   });
 
   it('falls back to built-in positions when the default keymap cannot be read', async () => {
@@ -80,6 +81,32 @@ describe('layout index resolution', () => {
     const session = await openSession({ transport, model, layout, productName: 'x', isDemo: true });
     open.push(session);
     expect(session.layout.keys.map((k) => k.index)).toEqual(layout.keys.map((k) => k.demoIndex));
+  });
+
+  it('fails a real connection and releases the device when physical key positions cannot be read', async () => {
+    vi.spyOn(console, 'debug').mockImplementation(() => undefined);
+    const model = findModel(0xfc67)!;
+    const layout = getLayoutDef(model.layoutId);
+    const device = new MockHidDevice(model, layout, { latencyMs: [0, 0] });
+    device.keyboard.dropNextReplies(2);
+    const transport = new HidTransport(device.asHidDevice(), { hid: null, timeoutMs: 20 });
+    await transport.open();
+    await expect(openSession({ transport, model, layout, productName: 'physical keyboard', isDemo: false }))
+      .rejects.toThrow(/Could not read the keyboard's physical key positions/);
+    expect(device.opened).toBe(false);
+    expect(transport.isOpen).toBe(false);
+  });
+
+  it('rejects an unrecognised real keymap instead of enabling guessed demo positions', async () => {
+    const model = findModel(0xfc67)!;
+    const layout = getLayoutDef(model.layoutId);
+    const device = new MockHidDevice(model, layout, { latencyMs: [0, 0] });
+    device.keyboard.table('defaultKeymap', 0).fill(0);
+    const transport = new HidTransport(device.asHidDevice(), { hid: null });
+    await transport.open();
+    await expect(openSession({ transport, model, layout, productName: 'physical keyboard', isDemo: false }))
+      .rejects.toThrow(/unrecognised default keymap/);
+    expect(device.opened).toBe(false);
   });
 });
 
@@ -114,6 +141,15 @@ describe('func block read-modify-write', () => {
     const s = await session.writeSettings(0, { pollingRate: 3 });
     expect(s.pollingRate).toBe(3);
     expect(kb.table('func', 0)[4] & 0x0f).toBe(3);
+  });
+
+  it('surfaces a failed polling-rate send when the device has not disconnected', async () => {
+    const { session, kb, device } = await demo();
+    await session.readSettings(0);
+    vi.spyOn(device, 'sendReport').mockRejectedValueOnce(new Error('USB transfer failed'));
+    await expect(session.writeSettings(0, { pollingRate: 3 })).rejects.toThrow(/USB transfer failed/);
+    expect(kb.table('func', 0)[4] & 0x0f).toBe(1);
+    expect((await session.readSettings(0)).pollingRate).toBe(1);
   });
 
   it('re-reads the func block after a failed write instead of patching a stale copy', async () => {
@@ -187,6 +223,18 @@ describe('tables', () => {
     expect(await session.getFirmware()).toEqual({ version: model.latestFw, display: '1.09', updateAvailable: false });
     await session.selectProfile(2);
     expect(await session.getActiveProfile()).toBe(2);
+  });
+
+  it.each([4, 255])('rejects malformed active profile %i on a real session instead of selecting profile zero', async (profile) => {
+    const model = findModel(0xfc67)!;
+    const layout = getLayoutDef(model.layoutId);
+    const device = new MockHidDevice(model, layout, { latencyMs: [0, 0] });
+    const transport = new HidTransport(device.asHidDevice(), { hid: null });
+    await transport.open();
+    const session = await openSession({ transport, model, layout, productName: 'physical keyboard', isDemo: false });
+    open.push(session);
+    device.keyboard.activeProfile = profile;
+    await expect(session.getActiveProfile()).rejects.toThrow(`Profile ${profile} is not available`);
   });
 });
 

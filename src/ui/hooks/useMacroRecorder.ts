@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'preact/hooks';
+import { useLayoutEffect, useRef } from 'preact/hooks';
 import type { MacroStep } from '../../core/types';
 import { hidUsageFromKeyboardEvent } from '../../data/keycodes';
 import { isModifierUsage } from '../lib/keys';
@@ -11,7 +11,8 @@ export function useMacroRecorder(active: boolean, onSteps: (steps: MacroStep[]) 
   const cb = useRef(onSteps);
   cb.current = onSteps;
 
-  useEffect(() => {
+  // Install before paint: the first keystroke after clicking Record must be captured.
+  useLayoutEffect(() => {
     if (!active) return;
     const steps: MacroStep[] = [];
     let last = 0;

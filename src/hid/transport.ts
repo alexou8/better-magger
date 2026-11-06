@@ -1,7 +1,7 @@
 /**
- * One HIDDevice, one serial command queue. Each request waits for its own reply; unsolicited
- * reports (travel, profile/OS/lighting changes, dongle link) are routed to event listeners and
- * never mistaken for replies (fixes PROTOCOL.md §7.1/§7.2).
+ * One HIDDevice, one serial command queue. Known unsolicited reports are routed to events.
+ * Request header matching is enabled per command after its replies demonstrate echoed headers;
+ * non-echoing firmware retains serial reply handling (PROTOCOL.md §8).
  */
 import { classifyReport, type InputKind } from '../core/protocol';
 
@@ -31,12 +31,14 @@ export interface TransportOptions {
 interface Pending {
   signature: string;
   cmd: number;
+  offset: number;
   resolve(reply: Uint8Array): void;
   reject(error: Error): void;
 }
 
 const hex = (n: number) => '0x' + n.toString(16).toUpperCase().padStart(2, '0');
 const signatureOf = (r: Uint8Array) => `${r[1]}:${r[5]}:${r[6]}`;
+const offsetOf = (r: Uint8Array) => r[5] | (r[6] << 8);
 
 function describe(frame: Uint8Array): string {
   return `command ${hex(frame[1])} (offset ${frame[5] | (frame[6] << 8)})`;
@@ -46,8 +48,10 @@ export class HidTransport {
   private queue: Promise<unknown> = Promise.resolve();
   private pending: Pending | null = null;
   private readonly listeners = new Set<(e: TransportEvent) => void>();
-  /** Signatures (cmd/offset) of attempts that timed out; a late reply to them is dropped. */
+  /** Recent cmd/offset signatures, including completed requests that might reply twice. */
   private stale = new Map<string, number>();
+  /** Learn per command: read payloads and write acknowledgements may use different headers. */
+  private replyModes = new Map<number, { command: boolean; offset: boolean }>();
   private state: 'idle' | 'open' | 'closed' = 'idle';
   private closedReason = new Error('Keyboard is not connected');
   private readonly hid: EventTarget | null;
@@ -104,7 +108,10 @@ export class HidTransport {
     for (let i = 0; i < attempts; i++) {
       if (this.state !== 'open') throw this.closedReason;
       const reply = await this.attempt(frame, o.timeoutMs ?? this.timeoutMs);
-      if (reply) return reply;
+      if (reply) {
+        this.stale.set(signatureOf(frame), Date.now() + STALE_TTL_MS);
+        return reply;
+      }
       this.stale.set(signatureOf(frame), Date.now() + STALE_TTL_MS);
       if (i + 1 < attempts) console.debug(`No reply to ${describe(frame)}, retrying`);
     }
@@ -121,6 +128,7 @@ export class HidTransport {
       const pending: Pending = {
         signature: signatureOf(frame),
         cmd: frame[1],
+        offset: offsetOf(frame),
         resolve: (r) => (done(), resolve(r)),
         reject: (e) => (done(), reject(e)),
       };
@@ -151,12 +159,22 @@ export class HidTransport {
       return;
     }
     const signature = signatureOf(report);
-    if (signature !== pending.signature && this.isStale(signature)) {
-      console.debug('Dropped late reply to an earlier timed-out request', report.slice(0, 8));
+    const matches = signature === pending.signature;
+    const mode = this.replyModes.get(pending.cmd);
+    const commandMatches = report[1] === pending.cmd;
+    // A zero offset can be a fixed legacy header. It proves nothing about offset echoes.
+    // Only a matching nonzero offset enables offset matching for this command.
+    const knownOtherCommand = !commandMatches && this.replyModes.get(report[1])?.command && this.isStale(signature);
+    if ((mode?.command && !commandMatches) || (mode?.offset && !matches) || knownOtherCommand) {
+      console.debug('Dropped reply that does not match the pending request', report.slice(0, 8));
       return;
     }
-    // Replies are assumed to echo the command in byte 1 (UNVERIFIED); accept regardless.
-    if (report[1] !== pending.cmd) console.debug(`Reply byte1 ${hex(report[1])} does not echo command ${hex(pending.cmd)}`);
+    if (!mode) {
+      this.replyModes.set(pending.cmd, { command: commandMatches, offset: matches && pending.offset !== 0 });
+      if (!commandMatches) console.debug(`Command ${hex(pending.cmd)} does not echo request headers; using serial legacy reply handling`);
+    } else if (mode.command && matches && pending.offset !== 0) {
+      mode.offset = true;
+    }
     pending.resolve(report);
   }
 

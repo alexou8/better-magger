@@ -3,6 +3,7 @@ import { disconnect } from '../state/connection';
 import { firmware } from '../state/session';
 import { ProfileSwitcher } from './ProfileSwitcher';
 import { ThemeToggle } from './ThemeToggle';
+import { pendingWrites } from '../state/toast';
 
 export function Header({ session }: { session: KeyboardSession }) {
   const fw = firmware.value;
@@ -17,7 +18,7 @@ export function Header({ session }: { session: KeyboardSession }) {
             {session.isDemo && <span class="badge badge--demo">Demo</span>}
           </h1>
           <p class="header__meta">
-            {fw ? `Firmware ${fw.display}` : 'Firmware …'}
+            {fw ? `Firmware ${fw.display}` : 'Reading firmware…'}
             {fw?.updateAvailable && (
               <a class="badge badge--update" href="https://luminkey.club" target="_blank" rel="noopener noreferrer" title="Update with the official LUMINKEY updater">
                 Update available
@@ -27,6 +28,7 @@ export function Header({ session }: { session: KeyboardSession }) {
         </div>
       </div>
       <div class="header__actions">
+        <span class="header__save-status" role="status">{pendingWrites.value > 0 ? 'Saving…' : session.isDemo ? 'Demo · no hardware changes' : 'Changes apply immediately'}</span>
         <span class="header__profile-label" aria-hidden="true">
           {model.features.profiles > 1 ? 'Profile' : ''}
         </span>

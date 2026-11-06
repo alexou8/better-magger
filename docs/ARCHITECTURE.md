@@ -10,6 +10,9 @@ Static web app (Vite + Preact + TypeScript), deployed to GitHub Pages. Talks to 
 
 Core layer (src/hid, src/core, src/data) exports, and the UI may import ONLY these:
 
+- `src/core/types.ts` for types; `src/core/protocol.ts` exposes the pure `encodeMacros` preflight for backup
+  memory validation. Device I/O continues through the session contract.
+
 - `src/core/connect.ts`
   - `isWebHidSupported(): boolean`
   - `requestKeyboard(): Promise<ConnectResult>` — shows the browser picker (needs a user gesture)
@@ -32,11 +35,14 @@ Core layer (src/hid, src/core, src/data) exports, and the UI may import ONLY the
   - `SLEEP_OPTIONS_MIN: number[]` (0 = never)
 
 ## Design principles (fixes vs. the official driver)
-- One serial command queue per device; replies matched to requests; timeouts reject with an error and
+- One serial command queue per device; reply command/offset matching learned per command, with a legacy
+  serial path for non-echoing firmware; timeouts reject with an error and
   are retried once; unsolicited reports routed to events — never mistaken for replies.
 - Cached func block per profile, all func-block writes serialised read-modify-write.
 - Correct masks (stability/debounce, key_mode & 0x0F, dead-zone encoding).
 - Choose the right HID collection (vendor/config collection, 64-byte output) instead of `[0]`.
+- Physical layout and active-profile reads must succeed before the UI permits editing. Simulator fallback
+  key positions must never be used on a real device. See `docs/HARDWARE_VALIDATION.md` for verification limits.
 - Every change is applied immediately to the keyboard with visible "Saved"/error feedback; no silent failures.
 - Firmware flashing is intentionally NOT implemented (brick risk). We detect bootloader mode and link to
   the official updater.

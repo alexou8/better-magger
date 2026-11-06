@@ -5,6 +5,7 @@ import { assignTgl } from '../../state/advancedOps';
 import { useTable } from '../../state/cache';
 import { save, showToast } from '../../state/toast';
 import { Skeleton } from '../Skeleton';
+import { LoadError } from '../LoadError';
 import { ActionField } from './ActionField';
 import { TargetKeyboard } from './TargetKeyboard';
 import { WizardFrame } from './WizardFrame';
@@ -24,6 +25,7 @@ export function TglWizard({ session: s, profile, layer, keymaps, editing, onDone
     if (!editing && index !== null) setAction(map[index]);
   }, [index]);
 
+  if (tgl.error) return <LoadError message={tgl.error} onRetry={tgl.reload} />;
   if (editing && !tgl.data) return <Skeleton lines={2} />;
 
   const problem = targetProblem(map, index, editing);

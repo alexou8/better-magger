@@ -67,10 +67,10 @@ export interface SessionInit {
 
 /**
  * Binds layout keys to protocol slots like the official app: for each key in layout order,
- * the first not-yet-used slot whose N() code equals the key's code. Unresolved keys fall back
- * to their demo index when that slot is still free, else -1.
+ * the first not-yet-used slot whose N() code equals the key's code. Unresolved keys stay -1;
+ * synthetic simulator positions can be enabled explicitly for demo data.
  */
-export function resolveIndices(def: LayoutDef, defaults: KeyAction[]): number[] {
+export function resolveIndices(def: LayoutDef, defaults: KeyAction[], demoFallback = false): number[] {
   const used = new Set<number>();
   const codes = defaults.map(actionCode);
   const indices = def.keys.map((k) => {
@@ -79,7 +79,7 @@ export function resolveIndices(def: LayoutDef, defaults: KeyAction[]): number[] 
     return slot;
   });
   return indices.map((slot, i) => {
-    if (slot >= 0) return slot;
+    if (slot >= 0 || !demoFallback) return slot;
     const demo = def.keys[i].demoIndex;
     if (used.has(demo)) return -1;
     used.add(demo);
@@ -99,8 +99,13 @@ class Mutex {
 
 export async function openSession(init: SessionInit): Promise<KeyboardSession> {
   const session = new Session(init);
-  await session.bindLayout();
-  return session;
+  try {
+    await session.bindLayout();
+    return session;
+  } catch (e) {
+    await session.close();
+    throw e;
+  }
 }
 
 class Session implements KeyboardSession {
@@ -123,7 +128,7 @@ class Session implements KeyboardSession {
     this.productName = init.productName;
     this.isDemo = init.isDemo;
     this.def = init.layout;
-    this.layout = buildLayout(init.layout, init.layout.keys.map((k) => k.demoIndex));
+    this.layout = buildLayout(init.layout);
     this.unsubscribeTransport = this.transport.onEvent(this.onTransportEvent);
   }
 
@@ -131,10 +136,16 @@ class Session implements KeyboardSession {
     try {
       this.defaultLayer0 = await this.readDefaultKeymap(0, 0);
     } catch (e) {
+      if (!this.isDemo) throw new Error(`Could not read the keyboard's physical key positions. Reconnect and try again. ${e instanceof Error ? e.message : String(e)}`);
       console.warn('Could not read the default keymap; using built-in key positions', e);
+      this.layout = buildLayout(this.def, this.def.keys.map((k) => k.demoIndex));
       return;
     }
-    this.layout = buildLayout(this.def, resolveIndices(this.def, this.defaultLayer0));
+    const indices = resolveIndices(this.def, this.defaultLayer0, this.isDemo);
+    if (!this.isDemo && !indices.some((index) => index >= 0)) {
+      throw new Error('The keyboard returned an unrecognised default keymap. Reconnect or check its firmware with the official driver.');
+    }
+    this.layout = buildLayout(this.def, indices);
   }
 
   // ---------------------------------------------------------------- info / profiles
@@ -145,7 +156,8 @@ class Session implements KeyboardSession {
 
   async getActiveProfile(): Promise<number> {
     const [profile] = await this.readBytes(CMD.ACTIVE_PROFILE, 0, 32);
-    return this.clampProfile(profile);
+    this.checkProfile(profile);
+    return profile;
   }
 
   /** Profiles the model does not offer fall back to 0, like the official getBase(). */
@@ -213,6 +225,7 @@ class Session implements KeyboardSession {
         try {
           await this.transport.request(frame, { replyOptional: true, retries: 0 });
         } catch (e) {
+          if (this.transport.isOpen) throw e;
           console.debug('Ignoring error after polling-rate change (keyboard re-enumerates)', e);
         }
       }

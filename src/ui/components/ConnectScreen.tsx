@@ -17,7 +17,7 @@ export function ConnectScreen() {
   const notice = connectNotice.value;
 
   return (
-    <main class="connect" id="main">
+    <main class="connect" id="main" tabIndex={-1}>
       <div class="connect__top">
         <ThemeToggle />
       </div>
@@ -35,7 +35,7 @@ export function ConnectScreen() {
         <h1 class="hero__title">Better Magger</h1>
         <p class="hero__lead">
           A friendly configurator for LUMINKEY Magger hall-effect keyboards. Remap keys, tune actuation and Rapid
-          Trigger, set up lighting and macros, all saved straight to your keyboard.
+          Trigger, set up lighting and macros. Your model is detected automatically over USB.
         </p>
 
         {supported ? (
@@ -119,7 +119,7 @@ export function ConnectScreen() {
               </li>
             ))}
           </ul>
-          <p class="help">Settings are applied to the keyboard immediately and stay there, even on other computers.</p>
+          <p class="help">Changes are sent to your keyboard immediately. Export a profile backup before making extensive changes.</p>
         </section>
       </div>
     </main>

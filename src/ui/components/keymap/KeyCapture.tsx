@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useLayoutEffect, useState } from 'preact/hooks';
 import type { KeyAction } from '../../../core/types';
 import { hidUsageFromKeyboardEvent } from '../../../data/keycodes';
 import { actionForUsage, isModifierUsage } from '../../lib/keys';
@@ -16,7 +16,7 @@ const TIMEOUT_MS = 15000;
 export function KeyCapture({ onCapture }: Props) {
   const [listening, setListening] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!listening) return;
     let mods = 0;
     let lastMod: number | null = null;

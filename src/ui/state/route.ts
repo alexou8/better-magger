@@ -12,6 +12,7 @@ function fromHash(): PageId {
 export const page = signal<PageId>(fromHash());
 
 window.addEventListener('hashchange', () => {
+  if (location.hash === '#main') return; // The skip link must not change the selected section.
   page.value = fromHash();
 });
 

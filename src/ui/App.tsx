@@ -42,7 +42,7 @@ function Workspace({ s }: { s: KeyboardSession }) {
       <Header session={s} />
       <div class="workspace">
         <Nav pages={pages} current={current} />
-        <main class="page" id="main">
+        <main class="page" id="main" tabIndex={-1}>
           {/* keyed so page-local state (selection, drafts) resets on profile change */}
           <Page key={`${current}/${profile}`} session={s} profile={profile} />
         </main>

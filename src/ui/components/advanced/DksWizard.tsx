@@ -7,6 +7,7 @@ import { useTable } from '../../state/cache';
 import { save, showToast } from '../../state/toast';
 import { RawMmSlider } from '../RawMmSlider';
 import { Skeleton } from '../Skeleton';
+import { LoadError } from '../LoadError';
 import { DksGrid, type DksLine } from './DksGrid';
 import { TargetKeyboard } from './TargetKeyboard';
 import { WizardFrame } from './WizardFrame';
@@ -40,6 +41,7 @@ export function DksWizard({ session: s, profile, layer, keymaps, editing, onDone
     }
   }, [index]);
 
+  if (dks.error) return <LoadError message={dks.error} onRetry={dks.reload} />;
   if (editing && !dks.data) return <Skeleton lines={4} />;
 
   const setPoint = (i: number, v: number) => {

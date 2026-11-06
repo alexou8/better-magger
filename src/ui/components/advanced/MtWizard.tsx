@@ -5,6 +5,7 @@ import { assignMt } from '../../state/advancedOps';
 import { useTable } from '../../state/cache';
 import { save, showToast } from '../../state/toast';
 import { Skeleton } from '../Skeleton';
+import { LoadError } from '../LoadError';
 import { ActionField } from './ActionField';
 import { TargetKeyboard } from './TargetKeyboard';
 import { WizardFrame } from './WizardFrame';
@@ -31,6 +32,7 @@ export function MtWizard({ session: s, profile, layer, keymaps, editing, onDone 
     if (!editing && index !== null) setTap(map[index]);
   }, [index]);
 
+  if (mt.error) return <LoadError message={mt.error} onRetry={mt.reload} />;
   if (editing && !mt.data) return <Skeleton lines={3} />;
 
   const problem = targetProblem(map, index, editing);

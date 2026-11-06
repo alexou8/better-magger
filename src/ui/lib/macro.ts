@@ -1,8 +1,8 @@
 import type { Macro, MacroStep } from '../../core/types';
 import { MODIFIER_USAGES } from './keys';
 
-/** 2048-byte table: 64 bytes of offsets, then 4 bytes per action (PROTOCOL.md §4.9). */
-export const MACRO_STEP_CAPACITY = (2048 - 64) / 4;
+/** 2048-byte table: 64 bytes of offsets, then 4 bytes per action, reserving one shared empty terminator (PROTOCOL.md §4.9). */
+export const MACRO_STEP_CAPACITY = (2048 - 64) / 4 - 1;
 
 export const MOUSE_BUTTONS: { code: number; label: string }[] = [
   { code: 1, label: 'Left click' },

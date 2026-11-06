@@ -56,12 +56,12 @@ export function MacroEditor({ name, steps, keys, capacity, dirty, saving, onChan
 
       <div class="macro-editor__opts">
         <label class="check">
-          <input type="checkbox" checked={fixed} onChange={(e) => setFixed(e.currentTarget.checked)} />
+          <input type="checkbox" disabled={recording} checked={fixed} onChange={(e) => setFixed(e.currentTarget.checked)} />
           Record with a fixed delay
         </label>
         <label class="inline-field">
           <span>Delay</span>
-          <input type="number" min={0} max={65535} value={fixedMs} onChange={(e) => setFixedMs(Math.max(0, Number(e.currentTarget.value) || 0))} />
+          <input type="number" disabled={recording} min={0} max={65535} value={fixedMs} onChange={(e) => setFixedMs(Math.max(0, Math.min(65535, Math.round(Number(e.currentTarget.value) || 0))))} />
           <span>ms</span>
         </label>
       </div>

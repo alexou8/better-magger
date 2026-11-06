@@ -429,3 +429,29 @@ Magger 60 (114/115/117/118) uses the same protocol and units as Magger68 Plus/Ul
 
 Recommended implementation: a single serial queue, per-command reply matching with timeout+retry,
 cached tables per profile, writes as whole chunks, and explicit event routing for 0xA0–0xAA.
+
+## 8. Implementation and hardware verification boundary
+
+The current transport learns whether each command echoes CMD from its first accepted reply.
+OFF matching is enabled only after a reply matches a nonzero requested offset; a zero offset alone
+does not prove echoing, because legacy headers may always contain zero. Learning is per command
+so generic write acknowledgements and command-only headers can coexist with echoed table reads.
+Known duplicate and late replies are dropped once sufficient header evidence exists. Firmware
+whose replies do not echo these fields retains serial reply
+handling after unsolicited-event routing; full request correlation is not established for that
+firmware. There is no sequence number, so repeated requests with the same CMD/OFF cannot distinguish
+a delayed duplicate from a new reply. Real hardware captures are still needed to establish reply
+headers across supported firmware revisions.
+
+Real sessions require a readable, recognisable default keymap. Physical keys without a matching
+default action stay unresolved (disabled); synthetic demo positions are never substituted for
+real-device positions. Failure to read the map aborts the connection and releases the HID device.
+
+The desktop notes are a useful independent source for VID/PID and report size, but their §5
+reports a payload offset of 7 while the web driver directly slices at 8; the desktop config notes
+also have shifted byte indices. Those static-analysis discrepancies are not proof that desktop
+and web formats differ. The implementation follows the observed web-driver indexing. Simulator
+tests validate internal consistency, not physical keyboard compatibility or persistence after
+unplugging. Verify connection, physical key mapping, an exported backup, a reversible key remap,
+settings readback, reconnection, and persistence on the actual keyboard before claiming those
+flows have been hardware-tested.

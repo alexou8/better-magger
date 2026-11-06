@@ -26,7 +26,7 @@ export function AdvancedPage({ session: s, profile }: PageProps) {
   const [wizard, setWizard] = useState<{ kind: AdvancedKind; editing: Binding | null } | null>(null);
 
   const used = tables.slice(0, f.layers);
-  const failed = used.find((t) => t.error);
+  const failed = [...used, mt, tgl].find((t) => t.error);
   if (failed) return <LoadError message={failed.error!} onRetry={failed.reload} />;
   if (used.some((t) => !t.data)) return <Skeleton keyboard lines={3} />;
   const keymaps = used.map((t) => t.data as KeyAction[]);

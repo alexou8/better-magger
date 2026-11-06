@@ -101,10 +101,83 @@ describe('HidTransport', () => {
       if (n === 3) dev.input(reply(f, 0x33), 60);
     }, 100);
     await transport.open();
-    const first = await transport.request(encodeFrame(0x08, 0, 56));
+    const first = await transport.request(encodeFrame(0x08, 56, 56));
     expect(first[8]).toBe(0xee);
-    const second = await transport.request(encodeFrame(0x08, 56, 56));
+    const second = await transport.request(encodeFrame(0x08, 112, 56));
     expect(second[8]).toBe(0x33);
+  });
+
+  it('drops a duplicate successful reply instead of consuming the next chunk', async () => {
+    vi.spyOn(console, 'debug').mockImplementation(() => undefined);
+    const { transport } = setup((f, n, dev) => {
+      if (n === 1) {
+        dev.input(reply(f, 0x11));
+        dev.input(reply(f, 0xee), 10);
+      } else dev.input(reply(f, 0x22), 15);
+    }, 100);
+    await transport.open();
+    expect((await transport.request(encodeFrame(0x08, 56, 56)))[8]).toBe(0x11);
+    expect((await transport.request(encodeFrame(0x08, 112, 56)))[8]).toBe(0x22);
+    await transport.close();
+  });
+
+  it('matches command and offset once that command has demonstrated echoed headers', async () => {
+    vi.spyOn(console, 'debug').mockImplementation(() => undefined);
+    const { transport } = setup((f, n, dev) => {
+      if (n === 2) {
+        dev.input(reply(encodeFrame(0x04, 112, 56), 0xee));
+        dev.input(reply(encodeFrame(0x08, 168, 56), 0xee), 2);
+      }
+      dev.input(reply(f, n), 3);
+    });
+    await transport.open();
+    expect((await transport.request(encodeFrame(0x08, 56, 56)))[8]).toBe(1);
+    expect((await transport.request(encodeFrame(0x08, 112, 56)))[8]).toBe(2);
+    await transport.close();
+  });
+
+  it('does not mistake command-only replies at fixed offset zero for offset echoes', async () => {
+    const { transport } = setup((f, n, dev) => dev.input(reply(encodeFrame(f[1], 0, f[4]), n)));
+    await transport.open();
+    for (const [i, offset] of [0, 56, 112].entries()) {
+      expect((await transport.request(encodeFrame(0x08, offset, 56)))[8]).toBe(i + 1);
+    }
+    await transport.close();
+  });
+
+  it('drops known cross-command duplicates while learning a new command', async () => {
+    vi.spyOn(console, 'debug').mockImplementation(() => undefined);
+    const { transport } = setup((f, n, dev) => {
+      if (n === 1) {
+        dev.input(reply(f, 1));
+        dev.input(reply(f, 0xee), 10);
+      } else dev.input(reply(f, 2), 15);
+    }, 100);
+    await transport.open();
+    expect((await transport.request(encodeFrame(0x08, 0, 56)))[8]).toBe(1);
+    expect((await transport.request(encodeFrame(0x05, 0, 56)))[8]).toBe(2);
+    await transport.close();
+  });
+
+  it('keeps non-echoing legacy replies usable across offsets', async () => {
+    vi.spyOn(console, 'debug').mockImplementation(() => undefined);
+    const { transport } = setup((_f, n, dev) => dev.input([0xaa, 0, 0, 0, 0, 0, 0, 0, n]));
+    await transport.open();
+    expect((await transport.request(encodeFrame(0x08, 0, 56)))[8]).toBe(1);
+    expect((await transport.request(encodeFrame(0x08, 56, 56)))[8]).toBe(2);
+    await transport.close();
+  });
+
+  it('learns write acknowledgements separately from read replies', async () => {
+    vi.spyOn(console, 'debug').mockImplementation(() => undefined);
+    const { transport } = setup((f, n, dev) => {
+      dev.input(f[1] === 0x09 ? [0xaa, 0, 0, 0, 0, 0, 0, 0, n] : reply(f, n));
+    });
+    await transport.open();
+    expect((await transport.request(encodeFrame(0x08, 0, 56)))[8]).toBe(1);
+    expect((await transport.request(encodeFrame(0x09, 56, 3, [16, 0, 4])))[8]).toBe(2);
+    expect((await transport.request(encodeFrame(0x09, 59, 3, [16, 0, 5])))[8]).toBe(3);
+    await transport.close();
   });
 
   it('rejects the pending request and reports disconnection', async () => {
