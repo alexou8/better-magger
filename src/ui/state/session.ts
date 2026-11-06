@@ -15,5 +15,7 @@ export const connectNotice = signal<ConnectNotice | null>(null);
 export const firmware = signal<FirmwareInfo | null>(null);
 /** 0-based active profile on the keyboard. */
 export const activeProfile = signal(0);
+/** Requested profile while the keyboard acknowledges a switch; editors must stay inert. */
+export const profileTarget = signal<number | null>(null);
 /** Name of the last connected model, for the "reconnecting" banner. */
 export const lastModelName = signal<string | null>(null);

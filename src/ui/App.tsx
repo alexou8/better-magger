@@ -16,7 +16,7 @@ import { PerformancePage } from './pages/PerformancePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { initConnection } from './state/connection';
 import { page, type PageId } from './state/route';
-import { activeProfile, session } from './state/session';
+import { activeProfile, profileTarget, session } from './state/session';
 
 export interface PageProps {
   session: KeyboardSession;
@@ -34,7 +34,9 @@ const PAGES: Record<PageId, ComponentType<PageProps>> = {
 
 function Workspace({ s }: { s: KeyboardSession }) {
   const pages = pagesFor(s.model);
-  const current = pages.some((p) => p.id === page.value) ? page.value : 'keymap';
+  const current = pages.some((p) => p.id === page.value)
+    ? page.value
+    : 'keymap';
   const Page = PAGES[current];
   const profile = activeProfile.value;
   return (
@@ -42,7 +44,13 @@ function Workspace({ s }: { s: KeyboardSession }) {
       <Header session={s} />
       <div class="workspace">
         <Nav pages={pages} current={current} />
-        <main class="page" id="main" tabIndex={-1}>
+        <main
+          class="page"
+          id="main"
+          tabIndex={-1}
+          inert={profileTarget.value !== null}
+          aria-busy={profileTarget.value !== null}
+        >
           {/* keyed so page-local state (selection, drafts) resets on profile change */}
           <Page key={`${current}/${profile}`} session={s} profile={profile} />
         </main>
@@ -60,7 +68,11 @@ export function App() {
         Skip to content
       </a>
       <BusyBar />
-      {s ? <Workspace key={`${s.model.pid}/${s.isDemo}`} s={s} /> : <ConnectScreen />}
+      {s ? (
+        <Workspace key={`${s.model.pid}/${s.isDemo}`} s={s} />
+      ) : (
+        <ConnectScreen />
+      )}
       <Footer />
       <Toasts />
     </div>

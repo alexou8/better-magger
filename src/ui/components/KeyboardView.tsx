@@ -1,4 +1,5 @@
-import { useLayoutEffect, useRef, useState } from 'preact/hooks';
+import { useId, useLayoutEffect, useRef, useState } from 'preact/hooks';
+import type { HTMLAttributes } from 'preact';
 import type { Layout, LayoutKey } from '../../core/types';
 
 export interface KeyVisual {
@@ -36,11 +37,29 @@ interface Box {
 const DRAG_THRESHOLD = 6;
 
 /** Physical keyboard drawn from layout units; keys are buttons keyed by protocol index. */
-export function KeyboardView({ layout, selected, onSelect, multi = false, visual, ariaLabel }: Props) {
+export function KeyboardView({
+  layout,
+  selected,
+  onSelect,
+  multi = false,
+  visual,
+  ariaLabel,
+}: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
+  const [focusedId, setFocusedId] = useState<number | null>(null);
+  const helpId = useId();
+  const enabledKeys = layout.keys.filter((k) => k.index >= 0);
+  const tabStop =
+    enabledKeys.find((k) => k.id === focusedId)?.id ?? enabledKeys[0]?.id;
   const [box, setBox] = useState<Box | null>(null);
-  const drag = useRef<{ x: number; y: number; id: number; active: boolean; additive: boolean } | null>(null);
+  const drag = useRef<{
+    x: number;
+    y: number;
+    id: number;
+    active: boolean;
+    additive: boolean;
+  } | null>(null);
   const suppressClick = useRef(false);
 
   useLayoutEffect(() => {
@@ -54,7 +73,7 @@ export function KeyboardView({ layout, selected, onSelect, multi = false, visual
 
   const unit = width / layout.width;
   const gap = Math.max(2, unit * 0.07);
-  const fontSize = Math.min(14, Math.max(8, unit * 0.21));
+  const fontSize = Math.min(14, Math.max(11, unit * 0.23));
 
   const select = (next: Set<number>) => onSelect?.(next);
 
@@ -74,10 +93,15 @@ export function KeyboardView({ layout, selected, onSelect, multi = false, visual
   };
 
   const onPointerDown = (e: PointerEvent) => {
-    if (!multi || e.button !== 0) return;
+    if (!multi || e.button !== 0 || e.pointerType === 'touch') return;
     suppressClick.current = false;
     const p = local(e);
-    drag.current = { ...p, id: e.pointerId, active: false, additive: e.shiftKey || e.ctrlKey || e.metaKey };
+    drag.current = {
+      ...p,
+      id: e.pointerId,
+      active: false,
+      additive: e.shiftKey || e.ctrlKey || e.metaKey,
+    };
   };
 
   const onPointerMove = (e: PointerEvent) => {
@@ -101,35 +125,64 @@ export function KeyboardView({ layout, selected, onSelect, multi = false, visual
     }
     suppressClick.current = true;
     setTimeout(() => (suppressClick.current = false), 0);
-    const [l, r] = [Math.min(box.x0, box.x1) / unit, Math.max(box.x0, box.x1) / unit];
-    const [t, b] = [Math.min(box.y0, box.y1) / unit, Math.max(box.y0, box.y1) / unit];
+    const [l, r] = [
+      Math.min(box.x0, box.x1) / unit,
+      Math.max(box.x0, box.x1) / unit,
+    ];
+    const [t, b] = [
+      Math.min(box.y0, box.y1) / unit,
+      Math.max(box.y0, box.y1) / unit,
+    ];
     const next = new Set(box.additive ? selected : []);
     for (const k of layout.keys) {
-      if (k.index >= 0 && k.x < r && k.x + k.w > l && k.y < b && k.y + k.h > t) next.add(k.index);
+      if (k.index >= 0 && k.x < r && k.x + k.w > l && k.y < b && k.y + k.h > t)
+        next.add(k.index);
     }
     setBox(null);
-    if (wrap.current?.hasPointerCapture(e.pointerId)) wrap.current.releasePointerCapture(e.pointerId);
+    if (wrap.current?.hasPointerCapture(e.pointerId))
+      wrap.current.releasePointerCapture(e.pointerId);
     select(next);
   };
 
-  /** Arrow keys move focus to the nearest key in that direction; Ctrl+A selects all. */
+  /** One Tab stop; arrows explore spatially, Shift extends selection, Ctrl+A selects all. */
   const onKeyDown = (e: KeyboardEvent) => {
+    if (!onSelect) return;
     if (multi && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
       e.preventDefault();
-      select(new Set(layout.keys.filter((k) => k.index >= 0).map((k) => k.index)));
+      select(
+        new Set(layout.keys.filter((k) => k.index >= 0).map((k) => k.index)),
+      );
       return;
     }
-    const dir = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
+    const dir = {
+      ArrowLeft: [-1, 0],
+      ArrowRight: [1, 0],
+      ArrowUp: [0, -1],
+      ArrowDown: [0, 1],
+    }[e.key];
     const target = e.target as HTMLElement;
     const id = Number(target.dataset.keyId);
-    if (!dir || Number.isNaN(id)) return;
+    if (Number.isNaN(id) || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === 'Home' || e.key === 'End') {
+      const edge =
+        e.key === 'Home' ? enabledKeys[0] : enabledKeys[enabledKeys.length - 1];
+      if (edge) {
+        e.preventDefault();
+        wrap.current
+          ?.querySelector<HTMLElement>(`[data-key-id="${edge.id}"]`)
+          ?.focus();
+      }
+      return;
+    }
+    if (!dir) return;
+    e.preventDefault();
     const from = layout.keys.find((k) => k.id === id);
     if (!from) return;
     const cx = from.x + from.w / 2;
     const cy = from.y + from.h / 2;
     let best: LayoutKey | null = null;
     let bestScore = Infinity;
-    for (const k of layout.keys) {
+    for (const k of enabledKeys) {
       const dx = k.x + k.w / 2 - cx;
       const dy = k.y + k.h / 2 - cy;
       const along = dx * dir[0] + dy * dir[1];
@@ -141,39 +194,53 @@ export function KeyboardView({ layout, selected, onSelect, multi = false, visual
       }
     }
     if (best) {
-      e.preventDefault();
-      wrap.current?.querySelector<HTMLElement>(`[data-key-id="${best.id}"]`)?.focus();
+      wrap.current
+        ?.querySelector<HTMLElement>(`[data-key-id="${best.id}"]`)
+        ?.focus();
+      if (multi && e.shiftKey)
+        select(new Set([...selected, from.index, best.index]));
     }
   };
 
   return (
-    <div
-      ref={wrap}
-      class={`kbd${multi ? ' kbd--multi' : ''}`}
-      style={{ height: `${layout.height * unit}px` }}
-      role="group"
-      aria-label={ariaLabel}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerCancel={() => {
-        drag.current = null;
-        setBox(null);
-      }}
-      onKeyDown={onKeyDown}
-    >
-      {unit > 0 &&
-        layout.keys.map((k) => {
-          const v = visual?.(k) ?? {};
-          const isSel = selected.has(k.index);
-          const label = v.label ?? k.label;
-          return (
-            <button
-              type="button"
-              key={k.id}
-              data-key-id={k.id}
-              class={`kbd__key${isSel ? ' is-selected' : ''}${k.index < 0 ? ' is-disabled' : ''}${v.className ? ` ${v.className}` : ''}`}
-              style={{
+    <div class="keyboard-scroll">
+      <div
+        ref={wrap}
+        class={`kbd${multi ? ' kbd--multi' : ''}`}
+        style={{ height: `${layout.height * unit}px` }}
+        role="group"
+        aria-label={ariaLabel}
+        aria-describedby={onSelect ? helpId : undefined}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={() => {
+          drag.current = null;
+          setBox(null);
+        }}
+        onKeyDown={onKeyDown}
+      >
+        {onSelect && (
+          <span id={helpId} class="visually-hidden">
+            Use arrow keys to explore keys, Home and End to jump, and Enter or
+            Space to select.
+            {multi
+              ? ' Hold Shift with arrows to select more keys. Control or Command plus A selects all keys.'
+              : ''}
+          </span>
+        )}
+        {unit > 0 &&
+          layout.keys.map((k) => {
+            const v = visual?.(k) ?? {};
+            const isSel = selected.has(k.index);
+            const label = v.label ?? k.label;
+            const keyProps: Pick<
+              HTMLAttributes<HTMLElement>,
+              'class' | 'style' | 'aria-label' | 'title'
+            > & { 'data-key-id': number } = {
+              'data-key-id': k.id,
+              class: `kbd__key${isSel ? ' is-selected' : ''}${k.index < 0 ? ' is-disabled' : ''}${v.className ? ` ${v.className}` : ''}`,
+              style: {
                 left: `${k.x * unit + gap / 2}px`,
                 top: `${k.y * unit + gap / 2}px`,
                 width: `${k.w * unit - gap}px`,
@@ -181,30 +248,55 @@ export function KeyboardView({ layout, selected, onSelect, multi = false, visual
                 fontSize: `${fontSize}px`,
                 ...(v.color ? { '--key-bg': v.color } : {}),
                 ...(v.textColor ? { '--key-fg': v.textColor } : {}),
-              }}
-              disabled={k.index < 0}
-              aria-pressed={onSelect ? isSel : undefined}
-              aria-label={`${k.label}${label !== k.label ? `: ${label}` : ''}${v.sub ? `, ${v.sub}` : ''}${v.title ? `, ${v.title}` : ''}`}
-              title={v.title ?? (label !== k.label ? `${k.label} → ${label}` : k.label)}
-              onClick={(e) => onKeyClick(k, e)}
-            >
-              <span class="kbd__label">{label}</span>
-              {v.sub && <span class="kbd__sub">{v.sub}</span>}
-              {v.depth !== undefined && <span class="kbd__depth" style={{ height: `${Math.round(v.depth * 100)}%` }} />}
-            </button>
-          );
-        })}
-      {box && (
-        <div
-          class="kbd__box"
-          style={{
-            left: `${Math.min(box.x0, box.x1)}px`,
-            top: `${Math.min(box.y0, box.y1)}px`,
-            width: `${Math.abs(box.x1 - box.x0)}px`,
-            height: `${Math.abs(box.y1 - box.y0)}px`,
-          }}
-        />
-      )}
+              },
+              'aria-label': `${k.label}${label !== k.label ? `: ${label}` : ''}${v.sub ? `, ${v.sub}` : ''}${v.title ? `, ${v.title}` : ''}${isSel && !onSelect ? ', selected' : ''}`,
+              title:
+                v.title ??
+                (label !== k.label ? `${k.label} → ${label}` : k.label),
+            };
+            const content = (
+              <>
+                <span class="kbd__label">{label}</span>
+                {v.sub && <span class="kbd__sub">{v.sub}</span>}
+                {v.depth !== undefined && (
+                  <span
+                    class="kbd__depth"
+                    style={{ height: `${Math.round(v.depth * 100)}%` }}
+                  />
+                )}
+              </>
+            );
+            return onSelect ? (
+              <button
+                {...keyProps}
+                key={k.id}
+                type="button"
+                tabIndex={k.id === tabStop ? 0 : -1}
+                onFocus={() => setFocusedId(k.id)}
+                disabled={k.index < 0}
+                aria-pressed={isSel}
+                onClick={(e) => onKeyClick(k, e)}
+              >
+                {content}
+              </button>
+            ) : (
+              <span {...keyProps} key={k.id} role="img">
+                {content}
+              </span>
+            );
+          })}
+        {box && (
+          <div
+            class="kbd__box"
+            style={{
+              left: `${Math.min(box.x0, box.x1)}px`,
+              top: `${Math.min(box.y0, box.y1)}px`,
+              width: `${Math.abs(box.x1 - box.x0)}px`,
+              height: `${Math.abs(box.y1 - box.y0)}px`,
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }

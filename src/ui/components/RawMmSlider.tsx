@@ -19,7 +19,17 @@ function decimals(rawPerMm: number): number {
 }
 
 /** Slider + number input showing millimetres while editing raw device units. */
-export function RawMmSlider({ id, label, raw, min, max, rawPerMm, onChange, help, disabled }: Props) {
+export function RawMmSlider({
+  id,
+  label,
+  raw,
+  min,
+  max,
+  rawPerMm,
+  onChange,
+  help,
+  disabled,
+}: Props) {
   const digits = decimals(rawPerMm);
   const fmt = (r: number) => rawToMm(r, rawPerMm).toFixed(digits);
   const [text, setText] = useState(fmt(raw));
@@ -35,7 +45,7 @@ export function RawMmSlider({ id, label, raw, min, max, rawPerMm, onChange, help
 
   return (
     <div class="field">
-      <label class="field__label" for={id}>
+      <label id={`${id}-label`} class="field__label" for={id}>
         {label}
       </label>
       <div class="slider">
@@ -47,6 +57,7 @@ export function RawMmSlider({ id, label, raw, min, max, rawPerMm, onChange, help
           step={1}
           value={raw}
           disabled={disabled}
+          aria-describedby={help ? `${id}-help` : undefined}
           aria-valuetext={`${fmt(raw)} millimetres`}
           onInput={(e) => onChange(Number(e.currentTarget.value))}
         />
@@ -54,7 +65,9 @@ export function RawMmSlider({ id, label, raw, min, max, rawPerMm, onChange, help
           <input
             type="number"
             inputMode="decimal"
-            aria-label={`${label} in millimetres`}
+            id={`${id}-number`}
+            aria-labelledby={`${id}-label ${id}-unit`}
+            aria-describedby={help ? `${id}-help` : undefined}
             min={fmt(min)}
             max={fmt(max)}
             step={(1 / rawPerMm).toFixed(digits)}
@@ -62,12 +75,20 @@ export function RawMmSlider({ id, label, raw, min, max, rawPerMm, onChange, help
             disabled={disabled}
             onInput={(e) => setText(e.currentTarget.value)}
             onChange={(e) => commit(e.currentTarget.value)}
-            onKeyDown={(e) => e.key === 'Enter' && commit(e.currentTarget.value)}
+            onKeyDown={(e) =>
+              e.key === 'Enter' && commit(e.currentTarget.value)
+            }
           />
-          <span class="slider__unit">mm</span>
+          <span id={`${id}-unit`} class="slider__unit">
+            mm
+          </span>
         </span>
       </div>
-      {help && <p class="help">{help}</p>}
+      {help && (
+        <p id={`${id}-help`} class="help">
+          {help}
+        </p>
+      )}
     </div>
   );
 }

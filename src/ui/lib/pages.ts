@@ -1,20 +1,46 @@
 import type { DeviceModel } from '../../core/types';
 import type { PageId } from '../state/route';
+import type { IconName } from '../components/Icon';
 
 export interface PageInfo {
   id: PageId;
   name: string;
-  icon: string;
+  icon: IconName;
   help: string;
 }
 
 const ALL: PageInfo[] = [
-  { id: 'keymap', name: 'Keymap', icon: '⌨', help: 'Change what each key does' },
-  { id: 'performance', name: 'Performance', icon: '⇣', help: 'Actuation point & Rapid Trigger' },
-  { id: 'advanced', name: 'Advanced keys', icon: '✦', help: 'DKS, Mod-Tap, Toggle, SOCD…' },
-  { id: 'lighting', name: 'Lighting', icon: '☀', help: 'Effects, colours, per-key RGB' },
-  { id: 'macros', name: 'Macros', icon: '↻', help: 'Record key sequences' },
-  { id: 'settings', name: 'Settings', icon: '⚙', help: 'Polling rate, calibration, backup' },
+  {
+    id: 'keymap',
+    name: 'Keymap',
+    icon: 'keyboard',
+    help: 'Give every key a job',
+  },
+  {
+    id: 'performance',
+    name: 'Performance',
+    icon: 'performance',
+    help: 'Find your feel',
+  },
+  {
+    id: 'advanced',
+    name: 'Advanced keys',
+    icon: 'advanced',
+    help: 'Go beyond one action',
+  },
+  {
+    id: 'lighting',
+    name: 'Lighting',
+    icon: 'lighting',
+    help: 'Set the atmosphere',
+  },
+  { id: 'macros', name: 'Macros', icon: 'macros', help: 'Build a sequence' },
+  {
+    id: 'settings',
+    name: 'Settings',
+    icon: 'settings',
+    help: 'Look after your setup',
+  },
 ];
 
 /** Pages the connected model actually supports. */

@@ -24,11 +24,13 @@ export function MacrosPage({ session: s, profile }: PageProps) {
   };
   const [saving, setSaving] = useState(false);
 
-  if (macros.error) return <LoadError message={macros.error} onRetry={macros.reload} />;
+  if (macros.error)
+    return <LoadError message={macros.error} onRetry={macros.reload} />;
   const all = macros.data;
   if (!all) return <Skeleton lines={6} />;
 
-  const keyLabel = (usage: number) => keys.find((k) => k.usage === usage)?.label ?? `Key ${usage}`;
+  const keyLabel = (usage: number) =>
+    keys.find((k) => k.usage === usage)?.label ?? `Key ${usage}`;
   const steps = draft ?? all[current]?.steps ?? [];
   const dirty = draft !== null;
 
@@ -37,7 +39,9 @@ export function MacrosPage({ session: s, profile }: PageProps) {
   };
 
   const onSave = async () => {
-    const next: Macro[] = Array.from({ length: MACRO_COUNT }, (_, i) => (i === current ? { steps } : all[i] ?? { steps: [] }));
+    const next: Macro[] = Array.from({ length: MACRO_COUNT }, (_, i) =>
+      i === current ? { steps } : (all[i] ?? { steps: [] }),
+    );
     setSaving(true);
     const ok = await save('macro', async () => {
       await s.writeMacros(profile, next);
@@ -47,29 +51,59 @@ export function MacrosPage({ session: s, profile }: PageProps) {
     if (ok && drafts.steps.peek().get(current) === draft) setDraft(null);
   };
 
-  const capacity = MACRO_STEP_CAPACITY - (totalSteps(all) - (all[current]?.steps.length ?? 0));
+  const capacity =
+    MACRO_STEP_CAPACITY - (totalSteps(all) - (all[current]?.steps.length ?? 0));
 
   return (
     <div class="page-macros">
       <header class="page__header">
         <div>
+          <p class="section-kicker">Recorded sequences</p>
           <h2>Macros</h2>
-          <p class="help">A macro plays a sequence of key presses with one key. Record one, tidy it up, save, then assign it on the Keymap page.</p>
+          <p class="help">
+            A macro plays a sequence of key presses with one key. Record one,
+            tidy it up, save, then assign it on the Keymap page.
+          </p>
         </div>
+        <span class="secondary-count">
+          {totalSteps(all)} / {MACRO_STEP_CAPACITY} saved steps
+        </span>
       </header>
-      <p class="help">Unsaved drafts stay here when you switch pages or profiles. Save each macro to apply it to the keyboard; * marks a draft.</p>
+      <p class="help macro-draft-note">
+        Unsaved drafts stay here when you switch pages or profiles. Save each
+        macro to apply it to the keyboard; * marks a draft.
+      </p>
       <div class="macros-layout">
-        <ul class="macro-list" aria-label="Macros">
-          {Array.from({ length: MACRO_COUNT }, (_, i) => (
-            <li key={i}>
-              <button type="button" class={`macro-list__item${i === current ? ' is-active' : ''}`} aria-current={i === current} onClick={() => choose(i)}>
-                <b>M{i + 1}{drafts.steps.value.has(i) ? ' *' : ''}</b>
-                <span class="muted">{all[i] ? summarizeMacro(all[i], keyLabel) : 'Empty'}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-        <section class="card">
+        <div class="macro-bank">
+          <div class="secondary-heading">
+            <h3>Macro slots</h3>
+            <span class="secondary-count">{MACRO_COUNT}</span>
+          </div>
+          <ul class="macro-list" aria-label="Macros">
+            {Array.from({ length: MACRO_COUNT }, (_, i) => (
+              <li key={i}>
+                <button
+                  type="button"
+                  class={`macro-list__item${i === current ? ' is-active' : ''}`}
+                  aria-current={i === current}
+                  onClick={() => choose(i)}
+                >
+                  <b>
+                    M{i + 1}
+                    {drafts.steps.value.has(i) ? ' *' : ''}
+                  </b>
+                  <span class="muted">
+                    {all[i] ? summarizeMacro(all[i], keyLabel) : 'Empty'}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <section
+          class="macro-editor-panel"
+          aria-label={`Edit macro M${current + 1}`}
+        >
           <MacroEditor
             key={current}
             name={`M${current + 1}`}

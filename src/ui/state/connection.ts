@@ -1,8 +1,26 @@
 import { batch } from '@preact/signals';
-import type { ConnectResult, KeyboardSession, SessionEvent } from '../../core/types';
-import { isWebHidSupported, onDeviceAttached, openDemo, reconnectKnown, requestKeyboard } from '../../core/connect';
+import type {
+  ConnectResult,
+  KeyboardSession,
+  SessionEvent,
+} from '../../core/types';
+import {
+  isWebHidSupported,
+  onDeviceAttached,
+  openDemo,
+  reconnectKnown,
+  requestKeyboard,
+} from '../../core/connect';
 import { getCached, invalidate, setCached } from './cache';
-import { activeProfile, connectNotice, connState, firmware, lastModelName, session } from './session';
+import {
+  activeProfile,
+  connectNotice,
+  connState,
+  firmware,
+  lastModelName,
+  profileTarget,
+  session,
+} from './session';
 import { errorMessage, showToast } from './toast';
 
 let unsubscribe: (() => void) | null = null;
@@ -13,13 +31,23 @@ let intent = 0;
 let explicitConnection = false;
 const operations = new Set<number>();
 const unusedSessions = new Set<KeyboardSession>();
+let profileTransition = 0;
+
+function clearProfileTransition(): void {
+  ++profileTransition;
+  profileTarget.value = null;
+}
 
 async function releaseUnused(): Promise<void> {
   // Core connects can share one session. Wait until every result has a chance to claim it.
   if (operations.size) return;
   const unused = [...unusedSessions];
   unusedSessions.clear();
-  await Promise.all(unused.filter((s) => s !== session.peek()).map((s) => s.close().catch(() => undefined)));
+  await Promise.all(
+    unused
+      .filter((s) => s !== session.peek())
+      .map((s) => s.close().catch(() => undefined)),
+  );
 }
 
 function beginConnection(explicit: boolean): number {
@@ -59,12 +87,21 @@ async function adopt(s: KeyboardSession, token: number): Promise<boolean> {
     if (token !== intent || disconnected) {
       off();
       unusedSessions.add(s);
-      if (disconnected && token === intent) throw new Error('The keyboard disconnected while connecting. Plug it back in and try again.');
+      if (disconnected && token === intent)
+        throw new Error(
+          'The keyboard disconnected while connecting. Plug it back in and try again.',
+        );
       return false;
     }
     profile = reportedProfile ?? profile;
-    if (!Number.isInteger(profile) || profile < 0 || profile >= s.model.features.profiles) {
-      throw new Error('The keyboard reported an invalid active profile. Reconnect before editing.');
+    if (
+      !Number.isInteger(profile) ||
+      profile < 0 ||
+      profile >= s.model.features.profiles
+    ) {
+      throw new Error(
+        'The keyboard reported an invalid active profile. Reconnect before editing.',
+      );
     }
     const previous = session.peek();
     unsubscribe?.();
@@ -74,6 +111,7 @@ async function adopt(s: KeyboardSession, token: number): Promise<boolean> {
     batch(() => {
       session.value = s;
       activeProfile.value = profile;
+      clearProfileTransition();
       connState.value = 'connected';
       connectNotice.value = null;
       firmware.value = null;
@@ -114,7 +152,12 @@ function handleEvent(e: SessionEvent): void {
       invalidate(activeProfile.peek());
       break;
     case 'wirelessLink':
-      showToast(e.connected ? 'info' : 'error', e.connected ? 'Keyboard linked to the receiver' : 'Keyboard lost its link to the receiver');
+      showToast(
+        e.connected ? 'info' : 'error',
+        e.connected
+          ? 'Keyboard linked to the receiver'
+          : 'Keyboard lost its link to the receiver',
+      );
       break;
     case 'disconnected':
       handleLost();
@@ -137,11 +180,14 @@ function handleLost(): void {
   invalidate();
   batch(() => {
     session.value = null;
+    clearProfileTransition();
     connState.value = 'lost';
   });
   // Polling-rate changes and replugs re-enumerate the device; try a few silent reconnects.
   clearRetries();
-  retryTimers = [1000, 3000, 6000].map((ms) => setTimeout(() => void tryReconnect(), ms));
+  retryTimers = [1000, 3000, 6000].map((ms) =>
+    setTimeout(() => void tryReconnect(), ms),
+  );
   void releaseUnused();
 }
 
@@ -158,7 +204,7 @@ async function handleResult(r: ConnectResult, token: number): Promise<boolean> {
       connectNotice.value = {
         tone: 'warn',
         title: `${r.modelName} is in firmware-update mode`,
-        body: 'The keyboard is waiting for a firmware update, so it can\'t be configured right now. Unplug it and plug it back in to start normally, or finish the update with the official LUMINKEY updater.',
+        body: "The keyboard is waiting for a firmware update, so it can't be configured right now. Unplug it and plug it back in to start normally, or finish the update with the official LUMINKEY updater.",
       };
       break;
     case 'unsupported':
@@ -169,7 +215,11 @@ async function handleResult(r: ConnectResult, token: number): Promise<boolean> {
       };
       break;
     case 'error':
-      connectNotice.value = { tone: 'error', title: 'Could not connect', body: r.message };
+      connectNotice.value = {
+        tone: 'error',
+        title: 'Could not connect',
+        body: r.message,
+      };
       break;
     case 'cancelled':
       break;
@@ -193,7 +243,8 @@ export async function connectKeyboard(): Promise<void> {
 
 /** Silently reopens an already-authorised keyboard. */
 export function tryReconnect(): Promise<boolean> {
-  if (session.peek() || !isWebHidSupported() || explicitConnection) return Promise.resolve(Boolean(session.peek()));
+  if (session.peek() || !isWebHidSupported() || explicitConnection)
+    return Promise.resolve(Boolean(session.peek()));
   if (reconnecting) return reconnecting;
   const token = beginConnection(false);
   const attempt: Promise<boolean> = Promise.resolve().then(async () => {
@@ -201,7 +252,10 @@ export function tryReconnect(): Promise<boolean> {
       const r = await reconnectKnown();
       return r ? await handleResult(r, token) : false;
     } catch (err) {
-      await handleResult({ status: 'error', message: errorMessage(err) }, token);
+      await handleResult(
+        { status: 'error', message: errorMessage(err) },
+        token,
+      );
       return false;
     } finally {
       if (reconnecting === attempt) reconnecting = null;
@@ -236,6 +290,7 @@ export async function disconnect(): Promise<void> {
   invalidate();
   batch(() => {
     session.value = null;
+    clearProfileTransition();
     connState.value = 'idle';
     firmware.value = null;
   });
@@ -252,8 +307,31 @@ export function initConnection(): () => void {
 
 export async function switchProfile(profile: number): Promise<void> {
   const s = session.peek();
-  if (!s || profile === activeProfile.peek()) return;
-  if (!Number.isInteger(profile) || profile < 0 || profile >= s.model.features.profiles) throw new Error('Invalid profile');
-  await s.selectProfile(profile);
-  if (session.peek() === s) activeProfile.value = profile;
+  if (!s) return;
+  if (
+    !Number.isInteger(profile) ||
+    profile < 0 ||
+    profile >= s.model.features.profiles
+  )
+    throw new Error('Invalid profile');
+  if (profileTarget.peek() !== null)
+    throw new Error(
+      'A profile change is already in progress. Wait for it to finish.',
+    );
+  if (profile === activeProfile.peek()) return;
+  const transition = ++profileTransition;
+  profileTarget.value = profile;
+  try {
+    await s.selectProfile(profile);
+    if (session.peek() === s && transition === profileTransition) {
+      batch(() => {
+        activeProfile.value = profile;
+        profileTarget.value = null;
+      });
+    }
+  } finally {
+    // An old request must not unlock a replacement session's transition.
+    if (session.peek() === s && transition === profileTransition)
+      profileTarget.value = null;
+  }
 }

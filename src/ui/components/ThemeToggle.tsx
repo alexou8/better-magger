@@ -1,4 +1,5 @@
 import { theme, toggleTheme } from '../state/theme';
+import { Icon } from './Icon';
 
 export function ThemeToggle() {
   const dark = theme.value === 'dark';
@@ -10,7 +11,7 @@ export function ThemeToggle() {
       aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'}
       title={dark ? 'Light theme' : 'Dark theme'}
     >
-      {dark ? '☀' : '☾'}
+      <Icon name={dark ? 'sun' : 'moon'} size={18} />
     </button>
   );
 }
