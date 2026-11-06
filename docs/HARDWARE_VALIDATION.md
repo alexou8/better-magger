@@ -23,8 +23,13 @@ USB product IDs to identify the variant automatically.
 3. Export each profile to a file before editing; verify JSON contains the expected model and tables.
 4. Remap one spare key to an ordinary letter. Type in a text editor, reload/reconnect and verify the remap reads
    back correctly. Undo or restore that key. Repeat once on an FN layer and another profile.
-5. Change lighting brightness. Observe it, navigate away/back and reconnect to check readback.
-6. Adjust one key's actuation/RT. Check real behavior and the live travel view, then restore the original setting.
+5. Change lighting brightness, speed, direction and colour. Observe the physical keys, navigate away/back
+   and reconnect to check readback. Compare the illustrative preview, allowing differences in animation timing
+   and colour rendering. Paint a few Custom keys and verify their colours persist. Check Tachyon mode separately.
+6. Adjust one key's actuation/RT. Verify the displayed millimetres and selected switch travel against the installed
+   switches. Check real behavior and the measured Live key view. The manual switch preview must not alter any
+   device setting. On a spare profile, check actuation clamping when selecting a shorter-travel switch, then
+   restore the original switch type and trigger settings. Calibrate only when appropriate for the physical device.
 7. Record a short macro, save and assign it to a spare key. Check the resulting text, delays and key release.
 8. Try one advanced binding at a time and restore it afterward. Test both directions of pair bindings.
    Fixed-key SOCD priority is experimental; its priority nibble interpretation is not established by captures.

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'preact/hooks';
 import type { KeyTrigger, LayoutKey } from '../../core/types';
-import { rawToMm } from '../../core/units';
+import { rawToMm, formatMm } from '../../core/units';
 import type { PageProps } from '../App';
 import { KeyboardView, type KeyVisual } from '../components/KeyboardView';
 import { LoadError } from '../components/LoadError';
@@ -199,6 +199,16 @@ export function PerformancePage({ session: s, profile }: PageProps) {
                   />
                 </div>
               </div>
+              <div class="travel-scale" aria-label="Actuation measurements">
+                <span>0 mm · Released</span>
+                <strong>{formatMm(first.actuation / lim.rawPerMm)} · Registers</strong>
+                <span>{formatMm(fullTravel(model, first.switchType) / lim.rawPerMm)} · Fully pressed</span>
+              </div>
+              {live && <p class="help live-depth">
+                {depths.get(sel[0])
+                  ? `${s.isDemo ? 'Demo depth' : 'Measured now'}: ${formatMm(depths.get(sel[0])!.raw / lim.rawPerMm)} · ${s.layout.keys.find(k => k.index === sel[0])?.label ?? 'First selected key'}`
+                  : s.isDemo ? 'Demo generates sample presses automatically. Waiting for this key…' : 'Waiting for a travel sample. Press the selected key on your keyboard.'}
+              </p>}
               <TriggerEditor
                 model={model}
                 trigger={first}

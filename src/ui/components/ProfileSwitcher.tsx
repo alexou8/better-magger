@@ -1,9 +1,11 @@
+import type { KeyboardSession } from '../../core/types';
+import { profileName } from '../state/profileNames';
 import { useId } from 'preact/hooks';
 import { switchProfile } from '../state/connection';
 import { activeProfile, profileTarget } from '../state/session';
 import { save } from '../state/toast';
 
-export function ProfileSwitcher({ count }: { count: number }) {
+export function ProfileSwitcher({ count, session }: { count: number; session: KeyboardSession }) {
   const id = useId();
   const busy = profileTarget.value !== null;
   if (count <= 1) return null;
@@ -44,7 +46,8 @@ export function ProfileSwitcher({ count }: { count: number }) {
             });
           }}
           class={activeProfile.value === i ? 'is-active' : ''}
-          title={`Profile ${i + 1}`}
+          aria-label={`Profile ${i + 1}${profileName(session, i) ? `: ${profileName(session, i)}` : ''}`}
+          title={`Profile ${i + 1}${profileName(session, i) ? `: ${profileName(session, i)}` : ''}`}
           onClick={() => {
             if (profileTarget.peek() !== null) return;
             void save('profile', () => switchProfile(i), {
@@ -54,6 +57,7 @@ export function ProfileSwitcher({ count }: { count: number }) {
         >
           <span class="visually-hidden">Profile </span>
           {i + 1}
+          {profileName(session, i) && <span class="profile-label">{profileName(session, i)}</span>}
         </button>
       ))}
     </div>

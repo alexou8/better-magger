@@ -1,3 +1,4 @@
+import { ProfileName } from '../components/settings/ProfileName';
 import type { PageProps } from '../App';
 import { LoadError } from '../components/LoadError';
 import { BackupRestore } from '../components/settings/BackupRestore';
@@ -68,6 +69,7 @@ export function SettingsPage({ session: s, profile }: PageProps) {
           </div>
         </header>
         <div class="settings-section__body">
+          <ProfileName session={s} profile={profile} />
           <BackupRestore session={s} profile={profile} />
           {f.profiles > 1 && (
             <div class="settings-profile-copy">

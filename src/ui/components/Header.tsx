@@ -69,7 +69,7 @@ export function Header({ session }: { session: KeyboardSession }) {
           <span class="header__profile-label" aria-hidden="true">
             {model.features.profiles > 1 ? 'Profile' : ''}
           </span>
-          <ProfileSwitcher count={model.features.profiles} />
+          <ProfileSwitcher count={model.features.profiles} session={session} />
         </div>
         <ThemeToggle />
         <button

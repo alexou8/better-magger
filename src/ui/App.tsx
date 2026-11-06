@@ -67,7 +67,9 @@ export function App() {
       <a class="skip-link" href="#main">
         Skip to content
       </a>
-      <BusyBar />
+      <section aria-label="Keyboard activity">
+        <BusyBar />
+      </section>
       {s ? (
         <Workspace key={`${s.model.pid}/${s.isDemo}`} s={s} />
       ) : (

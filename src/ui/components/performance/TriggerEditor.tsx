@@ -1,3 +1,4 @@
+import { SwitchPreview } from './SwitchPreview';
 import type { DeviceModel, KeyMode, KeyTrigger } from '../../../core/types';
 import { rtMode } from '../../../core/units';
 import { RawMmSlider } from '../RawMmSlider';
@@ -144,8 +145,10 @@ export function TriggerEditor({
 
       {f.switchTypes.length > 0 && (
         <label class="field">
-          <span class="field__label">Switch type</span>
+          <span class="field__label" id="switch-type-label">Switch type</span>
           <select
+            aria-labelledby="switch-type-label"
+            aria-describedby="switch-type-help"
             value={t.switchType}
             onChange={(e) =>
               onChange((k) => ({
@@ -160,11 +163,14 @@ export function TriggerEditor({
               </option>
             ))}
           </select>
-          <span class="help">
+          <span class="help" id="switch-type-help">
             Match the switches installed so travel is measured correctly.
           </span>
         </label>
       )}
+
+      <SwitchPreview key={t.switchType} model={model} trigger={t} />
+      <p class="help">After physically changing switches, match the switch type here and calibrate in Settings. Choosing a type applies to the selected keys and may reduce actuation to fit their travel.</p>
 
       <details class="disclosure">
         <summary>Dead zones (advanced)</summary>

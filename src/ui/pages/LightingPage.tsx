@@ -1,3 +1,4 @@
+import { LightingPreview } from '../components/lighting/LightingPreview';
 import type { LightingSettings } from '../../core/types';
 import {
   DIRECTION_LABELS,
@@ -87,6 +88,7 @@ export function LightingPage({ session: s, profile }: PageProps) {
       )}
 
       <div class="lighting-workbench">
+        <LightingPreview session={s} light={light} locked={locked} />
         <section
           class="lighting-library"
           aria-labelledby="effect-library-title"
@@ -96,7 +98,7 @@ export function LightingPage({ session: s, profile }: PageProps) {
             <span class="secondary-count">{LIGHT_EFFECTS.length} patterns</span>
           </div>
           <p class="help lighting-library__note">
-            Static illustrations show pattern structure, not a live preview.
+            Choose a pattern to see it on the keyboard above.
           </p>
           <EffectGallery
             value={light.effect}

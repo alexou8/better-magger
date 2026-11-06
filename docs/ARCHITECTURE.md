@@ -46,3 +46,18 @@ Core layer (src/hid, src/core, src/data) exports, and the UI may import ONLY the
 - Every change is applied immediately to the keyboard with visible "Saved"/error feedback; no silent failures.
 - Firmware flashing is intentionally NOT implemented (brick risk). We detect bootloader mode and link to
   the official updater.
+
+
+## Browser previews and profile labels
+
+- `ui/lib/lightingPreview.ts` calculates illustrative RGB values from the current lighting settings, key
+  geometry and elapsed time. `LightingPreview` renders the session layout as SVG and reads the shared colours
+  cache only for Custom. Its 80 ms timer stops when paused, hidden, reduced-motion or Tachyon mode is active;
+  the effect cleanup removes timers and media/visibility listeners. It never writes settings itself.
+- `SwitchPreview` is a manual first-actuation demonstration. Its slider is component-local and cannot write
+  triggers. Real measurements continue to come from `useLiveTravel`; the first selected key's current sample
+  is displayed separately. Both views use the model's raw-per-mm scale and selected switch travel.
+- `ui/state/profileNames.ts` uses versioned localStorage keys scoped by demo/device, PID and profile index.
+  A signal-backed in-memory map supports blocked storage and updates header labels immediately. Names are
+  browser preferences, outside the firmware/session and backup contracts; multiple devices of the same model
+  share labels in that browser. Clearing a name restores its numbered label. No migration of backups is needed.

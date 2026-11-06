@@ -22,12 +22,34 @@ Demo mode is separate from your keyboard and resets when disconnected or reloade
 The interface uses a shared [design system](design-system/better-magger/MASTER.md), adapted with
 [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill): paper/graphite themes, restrained
 copper accents, self-hosted IBM Plex fonts and SVG diagrams. Keymap and Performance pair the physical keyboard
-with an action/tuning inspector; Lighting uses static pattern illustrations and native radios.
+with an action/tuning inspector; Lighting pairs native effect radios with an animated preview on your actual layout.
 
 Keyboard access: Tab enters the keyboard once, arrow keys explore it, Enter/Space selects, Shift+arrows selects
 multiple keys, and Home/End jumps to the ends. Profile/layer radios and action categories also support arrow
 keys. Small screens scroll the keyboard internally so keys remain usable. Reduced motion and both themes
 are covered by browser accessibility checks; automated scans do not establish complete WCAG conformance.
+
+## Make the keyboard feel right
+
+- **Lighting:** choose a pattern and watch the keyboard preview change with brightness, speed, colour and
+  direction. Custom shows the colours saved by Paint keys. Pause the illustration any time; reduced-motion
+  preferences pause it automatically. Patterns are illustrative, including automatic sample taps for reactive
+  effects; actual firmware timing and colours may differ. Tachyon mode pauses the preview and locks lighting controls.
+- **Performance:** select one key or several, then choose the **switch type actually installed**. The travel
+  ruler labels released, actuation (where the press registers), and fully pressed in millimetres. Drag
+  **Preview press depth** to explore the illustrated switch without changing settings. This explains first
+  actuation rather than Rapid Trigger. **Live key view** reads measured travel from the keyboard instead;
+  demo mode generates sample presses. Changing switch type applies immediately and clamps actuation to fit
+  its travel and bottom dead zone. Calibrate in Settings after physically changing switches.
+- **Profile names:** in Settings, enter a name such as “Everyday” or “Gaming” and click **Save profile name**.
+  The name appears beside its number in the header. Names belong to this browser and keyboard model;
+  demo and real-device names are separate. They are not written to firmware or included in profile backups
+  or copies. Clear the field and save to restore the number. With blocked storage, names last for the session.
+
+Reference access was rechecked in Chromium: both [LUMINKEY](https://luminkey.club/) and
+[Wootility](https://wootility.io/) load in this environment. Wootility's demo provides a useful reference for
+named profiles, selection-first tuning and millimetre measurements. LUMINKEY's configuration screens require
+a connected device, so the effect and switch capabilities here use the researched model tables.
 
 ## Verification status
 
@@ -103,6 +125,8 @@ npm run check    # tests + build + browser tests
 Run `npm run build` before standalone browser tests. To use an installed Chromium instead of downloading one,
 set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to its path. Browser tests cover remapping/undo, profile isolation,
 advanced bindings, macro recording/drafts, backup/restore, performance, lighting, model variants and narrow screens.
+Additional regressions cover naming and blocked storage, animated/paused/reduced-motion previews, custom colours,
+profile isolation, switch travel limits and preview controls on narrow screens.
 
 Code map: `src/hid` (WebHID transport), `src/core` (protocol codec, session, connection, demo keyboard),
 `src/data` (generated device/layout/keycode/lighting tables — `node scripts/gen-data.mjs`), `src/ui` (Preact app).

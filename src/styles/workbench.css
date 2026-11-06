@@ -381,3 +381,47 @@
 .segmented button[aria-disabled='true'] {
   cursor: progress;
 }
+
+/* Workbench additions keep the existing material palette and typography. */
+.profile-label {
+  display: inline-block;
+  vertical-align: bottom;
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-inline-start: .35rem;
+}
+.header__profile { max-width: 100%; min-width: 0; }
+.header__profile .segmented { flex-wrap: wrap; }
+.profile-name-form { display: grid; gap: .65rem; margin-bottom: 2rem; max-width: 36rem; }
+.profile-name-form .field { margin: 0; }
+.profile-name-form button { justify-self: start; }
+.lighting-preview-panel { border: 1px solid var(--border); padding: clamp(1rem, 2vw, 1.5rem); margin-bottom: 1.5rem; border-radius: var(--radius); }
+.lighting-preview-panel .secondary-heading { flex-wrap: wrap; gap: 1rem; }
+.lighting-preview { display: block; width: 100%; max-height: 19rem; margin: 1rem 0; background: #191b1d; border-radius: 6px; }
+.lighting-preview rect { stroke: #757575; stroke-width: .7; }
+.lighting-preview text { font: 8px 'IBM Plex Mono', monospace; fill: white; stroke: #171717; stroke-width: 2px; paint-order: stroke; }
+.travel-scale { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 1rem; padding: 0 1.25rem 1.25rem; font: .75rem 'IBM Plex Mono', monospace; }
+.switch-preview { border-block: 1px solid var(--border); padding-block: 1rem; margin-block: 1rem; }
+.switch-preview__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; }
+.switch-preview__head h4 { overflow-wrap: anywhere; }
+.switch-preview__body { display: flex; align-items: center; gap: 1rem; }
+.switch-preview__body svg { width: 100px; flex-shrink: 0; }
+.switch-housing { fill: var(--surface); stroke: var(--text-muted); }
+.switch-spring { fill: none; stroke: var(--text-muted); stroke-width: 2; }
+.switch-stem { fill: var(--accent); }
+.switch-cap { fill: var(--surface); stroke: var(--accent); stroke-width: 2; }
+@media (max-width: 600px) { .profile-label { max-width: 4rem; } }
+.live-depth { padding-inline: 1.25rem; }
+
+.lighting-workbench { grid-template-areas: "preview controls" "library controls"; }
+.lighting-workbench > .lighting-preview-panel { grid-area: preview; margin-bottom: 0; }
+.lighting-workbench > .lighting-library { grid-area: library; }
+.lighting-workbench > .lighting-controls { grid-area: controls; }
+@media (max-width: 760px) {
+  .lighting-workbench { grid-template-areas: "preview" "controls" "library"; }
+}
+
+.header__profile .segmented { min-width: 0; max-width: 100%; }
+.header__profile .segmented button { min-width: 38px; max-width: 100%; }

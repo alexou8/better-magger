@@ -7,10 +7,11 @@ export function readPref(key: string): string | null {
   }
 }
 
-export function writePref(key: string, value: string): void {
+export function writePref(key: string, value: string): boolean {
   try {
     localStorage.setItem(key, value);
+    return true;
   } catch {
-    /* preference simply isn't remembered */
+    return false;
   }
 }
