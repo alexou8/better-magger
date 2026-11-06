@@ -375,3 +375,9 @@
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr));
   }
 }
+.page[aria-busy='true'] {
+  opacity: 0.55;
+}
+.segmented button[aria-disabled='true'] {
+  cursor: progress;
+}

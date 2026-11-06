@@ -111,7 +111,7 @@ Protocol notes: `research/PROTOCOL.md`.
 ## Deploying to GitHub Pages
 
 The workflow in `.github/workflows/deploy.yml` runs unit tests, TypeScript/build and Chromium browser tests on
-pushes and pull requests. Only successful runs on the repository's **default branch** deploy; feature branches
+pushes and pull requests. Only successful runs on **main** deploy; feature branches
 and pull requests cannot publish over the live site. One-time setup: in the repo's
 **Settings → Pages**, set **Source** to **GitHub Actions**.
 

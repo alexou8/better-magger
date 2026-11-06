@@ -12,7 +12,7 @@ export function Footer() {
       </span>
       <span class="footer__links">
         <a
-          href="https://github.com/alexou8/better-magger/blob/claude/sleepy-archimedes-i4z9fx/docs/HARDWARE_VALIDATION.md"
+          href="https://github.com/alexou8/better-magger/blob/main/docs/HARDWARE_VALIDATION.md"
           target="_blank"
           rel="noopener noreferrer"
         >

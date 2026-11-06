@@ -1,16 +1,18 @@
 import { useId } from 'preact/hooks';
 import { switchProfile } from '../state/connection';
-import { activeProfile } from '../state/session';
+import { activeProfile, profileTarget } from '../state/session';
 import { save } from '../state/toast';
 
 export function ProfileSwitcher({ count }: { count: number }) {
   const id = useId();
+  const busy = profileTarget.value !== null;
   if (count <= 1) return null;
   return (
     <div
       class="segmented segmented--compact"
       role="radiogroup"
       aria-label="Profile"
+      aria-busy={busy}
     >
       {Array.from({ length: count }, (_, i) => (
         <button
@@ -19,6 +21,8 @@ export function ProfileSwitcher({ count }: { count: number }) {
           key={i}
           id={`${id}-profile-${i}`}
           aria-checked={activeProfile.value === i}
+          aria-disabled={busy}
+          data-pending={profileTarget.value === i ? true : undefined}
           tabIndex={activeProfile.value === i ? 0 : -1}
           onKeyDown={(e) => {
             const next =
@@ -33,6 +37,7 @@ export function ProfileSwitcher({ count }: { count: number }) {
                       : null;
             if (next === null || e.altKey || e.ctrlKey || e.metaKey) return;
             e.preventDefault();
+            if (profileTarget.peek() !== null) return;
             document.getElementById(`${id}-profile-${next}`)?.focus();
             void save('profile', () => switchProfile(next), {
               success: `Switched to profile ${next + 1}`,
@@ -40,11 +45,12 @@ export function ProfileSwitcher({ count }: { count: number }) {
           }}
           class={activeProfile.value === i ? 'is-active' : ''}
           title={`Profile ${i + 1}`}
-          onClick={() =>
+          onClick={() => {
+            if (profileTarget.peek() !== null) return;
             void save('profile', () => switchProfile(i), {
               success: `Switched to profile ${i + 1}`,
-            })
-          }
+            });
+          }}
         >
           <span class="visually-hidden">Profile </span>
           {i + 1}

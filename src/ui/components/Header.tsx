@@ -1,6 +1,6 @@
 import type { KeyboardSession } from '../../core/types';
 import { disconnect } from '../state/connection';
-import { firmware } from '../state/session';
+import { firmware, profileTarget } from '../state/session';
 import { ProfileSwitcher } from './ProfileSwitcher';
 import { ThemeToggle } from './ThemeToggle';
 import { pendingWrites } from '../state/toast';
@@ -85,11 +85,13 @@ export function Header({ session }: { session: KeyboardSession }) {
         <span class="header__status-mark" aria-hidden="true">
           {pendingWrites.value > 0 ? '···' : '↳'}
         </span>
-        {pendingWrites.value > 0
-          ? 'Saving changes…'
-          : session.isDemo
-            ? 'Demo workspace. Your keyboard stays untouched.'
-            : 'Changes apply directly to your keyboard.'}
+        {profileTarget.value !== null
+          ? `Switching to profile ${profileTarget.value + 1}…`
+          : pendingWrites.value > 0
+            ? 'Saving changes…'
+            : session.isDemo
+              ? 'Demo workspace. Your keyboard stays untouched.'
+              : 'Changes apply directly to your keyboard.'}
         <span class="header__status-detail">
           {session.isDemo ? 'Explore freely' : 'Back up profiles in Settings'}
         </span>

@@ -176,6 +176,9 @@ test('macro drafts survive navigation; saved macro is exported and restored', as
   const backupPath = test.info().outputPath('profile.json');
   await download.saveAs(backupPath);
   await page.getByRole('radio', { name: 'Profile 2', exact: true }).click();
+  await expect(
+    page.getByRole('button', { name: 'Import into profile 2…', exact: true }),
+  ).toBeVisible();
   page.once('dialog', (dialog) => dialog.accept());
   await page.locator('input[type=file]').setInputFiles(backupPath);
   await expect(
@@ -183,6 +186,37 @@ test('macro drafts survive navigation; saved macro is exported and restored', as
   ).toBeVisible();
   await section(page, 'Macros');
   await expect(page.locator('.macro-steps > li')).toHaveCount(2);
+});
+
+test('profile switching blocks edits until the new profile is ready', async ({
+  page,
+}) => {
+  await demo(page);
+  await page.evaluate(() => {
+    const original = window.setTimeout;
+    // Delay just the next simulated HID reply, not app rendering or test waits.
+    window.setTimeout = ((
+      handler: TimerHandler,
+      timeout?: number,
+      ...args: unknown[]
+    ) => {
+      if (timeout !== undefined && timeout >= 2 && timeout <= 5) {
+        window.setTimeout = original;
+        return original(handler, 500, ...args);
+      }
+      return original(handler, timeout, ...args);
+    }) as typeof window.setTimeout;
+  });
+  const target = page.getByRole('radio', { name: 'Profile 2', exact: true });
+  await target.click();
+  await expect(page.locator('#main')).toHaveAttribute('inert', '');
+  await expect(target).toHaveAttribute('aria-disabled', 'true');
+  await expect(page.locator('.header__status')).toContainText(
+    'Switching to profile 2…',
+  );
+  await expect(target).toHaveAttribute('aria-checked', 'true');
+  await expect(page.locator('#main')).not.toHaveAttribute('inert', '');
+  await expect(target).toBeFocused();
 });
 
 for (const model of ['Magger68', 'Magger68 Pro', 'Magger68 Ultra JIS']) {

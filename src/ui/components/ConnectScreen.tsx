@@ -217,7 +217,7 @@ export function ConnectScreen() {
           <p class="help">
             Unofficial software. Export a backup before extensive changes.{' '}
             <a
-              href="https://github.com/alexou8/better-magger/blob/claude/sleepy-archimedes-i4z9fx/docs/HARDWARE_VALIDATION.md"
+              href="https://github.com/alexou8/better-magger/blob/main/docs/HARDWARE_VALIDATION.md"
               target="_blank"
               rel="noopener noreferrer"
             >

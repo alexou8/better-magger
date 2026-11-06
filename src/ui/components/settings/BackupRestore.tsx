@@ -1,7 +1,17 @@
 import { useRef, useState } from 'preact/hooks';
 import type { KeyboardSession } from '../../../core/types';
-import { applyProfile, downloadJson, gatherProfile, parseBackup } from '../../lib/backup';
+import {
+  applyProfile,
+  downloadJson,
+  gatherProfile,
+  parseBackup,
+} from '../../lib/backup';
 import { save, showToast } from '../../state/toast';
+import {
+  activeProfile,
+  profileTarget,
+  session as currentSession,
+} from '../../state/session';
 
 interface Props {
   session: KeyboardSession;
@@ -13,7 +23,8 @@ export function BackupRestore({ session: s, profile }: Props) {
   const file = useRef<HTMLInputElement>(null);
   const [progress, setProgress] = useState<string | null>(null);
 
-  const onProgress = (verb: string) => (done: number, total: number) => setProgress(`${verb}… ${Math.round((100 * done) / total)}%`);
+  const onProgress = (verb: string) => (done: number, total: number) =>
+    setProgress(`${verb}… ${Math.round((100 * done) / total)}%`);
 
   const exportProfile = async () => {
     await save(
@@ -21,7 +32,10 @@ export function BackupRestore({ session: s, profile }: Props) {
       async () => {
         const b = await gatherProfile(s, profile, onProgress('Reading'));
         const date = new Date().toISOString().slice(0, 10);
-        downloadJson(`${s.model.name.replace(/\s+/g, '-')}-profile${profile + 1}-${date}.json`, b);
+        downloadJson(
+          `${s.model.name.replace(/\s+/g, '-')}-profile${profile + 1}-${date}.json`,
+          b,
+        );
       },
       { success: 'Backup downloaded' },
     );
@@ -31,22 +45,51 @@ export function BackupRestore({ session: s, profile }: Props) {
   const importFile = async (f: File) => {
     const parsed = parseBackup(await f.text(), s.model);
     if (!parsed.ok) return void showToast('error', parsed.error);
-    if (!confirm(`Replace everything in profile ${profile + 1} with “${f.name}”?`)) return;
-    await save('restore', () => applyProfile(s, profile, parsed.backup, onProgress('Writing')), { success: `Profile ${profile + 1} restored` });
+    if (
+      currentSession.peek() !== s ||
+      activeProfile.peek() !== profile ||
+      profileTarget.peek() !== null
+    ) {
+      showToast(
+        'error',
+        'The profile changed while opening the file. Choose the backup again for the current profile.',
+      );
+      return;
+    }
+    if (
+      !confirm(`Replace everything in profile ${profile + 1} with “${f.name}”?`)
+    )
+      return;
+    await save(
+      'restore',
+      () => applyProfile(s, profile, parsed.backup, onProgress('Writing')),
+      { success: `Profile ${profile + 1} restored` },
+    );
     setProgress(null);
   };
 
   return (
     <div class="backup">
       <p class="help">
-        Save profile {profile + 1} (keymap, actuation, lighting, macros and advanced keys) to a file, or load one back.
-        Backups only load on the same keyboard model.
+        Save profile {profile + 1} (keymap, actuation, lighting, macros and
+        advanced keys) to a file, or load one back. Backups only load on the
+        same keyboard model.
       </p>
       <div class="btn-row">
-        <button type="button" class="btn" disabled={!!progress} onClick={() => void exportProfile()}>
+        <button
+          type="button"
+          class="btn"
+          disabled={!!progress}
+          onClick={() => void exportProfile()}
+        >
           Export profile {profile + 1}
         </button>
-        <button type="button" class="btn" disabled={!!progress} onClick={() => file.current?.click()}>
+        <button
+          type="button"
+          class="btn"
+          disabled={!!progress}
+          onClick={() => file.current?.click()}
+        >
           Import into profile {profile + 1}…
         </button>
         <input
