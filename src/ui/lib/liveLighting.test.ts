@@ -14,7 +14,7 @@ it('never overlaps slow reads and ignores an in-flight reply after cancellation'
   await vi.advanceTimersByTimeAsync(5000);
   expect(read).toHaveBeenCalledTimes(1);
   complete([[1, 2, 3]]);
-  await vi.advanceTimersByTimeAsync(299);
+  await vi.advanceTimersByTimeAsync(0);
   expect(onFrame).toHaveBeenCalledWith([[1, 2, 3]]);
   expect(read).toHaveBeenCalledTimes(1);
   await vi.advanceTimersByTimeAsync(1);
@@ -35,7 +35,7 @@ it('yields to writes/profile transitions and supports a single still snapshot', 
   await vi.advanceTimersByTimeAsync(500);
   expect(read).not.toHaveBeenCalled();
   busy = false;
-  await vi.advanceTimersByTimeAsync(100);
+  await vi.advanceTimersByTimeAsync(8);
   expect(read).toHaveBeenCalledTimes(1);
   await vi.advanceTimersByTimeAsync(5000);
   expect(read).toHaveBeenCalledTimes(1);
@@ -50,4 +50,38 @@ it('stops after a failed read instead of filling the command queue with retries'
   await vi.advanceTimersByTimeAsync(10000);
   expect(read).toHaveBeenCalledTimes(1);
   expect(onError).toHaveBeenCalledWith(failure);
+});
+
+
+it('sustains about 30 updates per second including USB time, without the old 300 ms gap', async () => {
+  vi.useFakeTimers();
+  const onFrame = vi.fn();
+  const starts: number[] = [];
+  stop = watchLiveLighting({
+    read: async () => {
+      starts.push(performance.now());
+      await new Promise(resolve => setTimeout(resolve, 21));
+      return [[1, 2, 3]];
+    },
+    onFrame, onError: vi.fn(), canRead: () => true,
+  });
+  await vi.advanceTimersByTimeAsync(1000);
+  expect(onFrame.mock.calls.length).toBeGreaterThanOrEqual(29);
+  expect(onFrame.mock.calls.length).toBeLessThanOrEqual(31);
+  expect(starts[1] - starts[0]).toBeLessThan(35);
+});
+
+it('does not burst or accumulate reads to catch up after a slow keyboard', async () => {
+  vi.useFakeTimers();
+  const starts: number[] = [];
+  stop = watchLiveLighting({
+    read: async () => {
+      starts.push(performance.now());
+      await new Promise(resolve => setTimeout(resolve, 120));
+      return [[1, 2, 3]];
+    },
+    onFrame: vi.fn(), onError: vi.fn(), canRead: () => true,
+  });
+  await vi.advanceTimersByTimeAsync(500);
+  expect(starts).toEqual([0, 121, 242, 363, 484]);
 });

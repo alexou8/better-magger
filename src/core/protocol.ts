@@ -267,8 +267,8 @@ export function encodeActions(actions: KeyAction[]): Uint8Array {
   return out;
 }
 
-export function decodeColors(bytes: Uint8Array): [number, number, number][] {
-  return Array.from({ length: KEY_SLOTS }, (_, i) => [bytes[3 * i], bytes[3 * i + 1], bytes[3 * i + 2]]);
+export function decodeColors(bytes: Uint8Array, count = KEY_SLOTS): [number, number, number][] {
+  return Array.from({ length: count }, (_, i) => [bytes[3 * i], bytes[3 * i + 1], bytes[3 * i + 2]]);
 }
 
 export function encodeColors(colors: [number, number, number][]): Uint8Array {

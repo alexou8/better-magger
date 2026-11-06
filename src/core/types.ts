@@ -196,8 +196,9 @@ export interface KeyboardSession {
   readTriggers(profile: number): Promise<KeyTrigger[]>; // 128 entries
   writeTriggers(profile: number, changes: { index: number; trigger: KeyTrigger }[]): Promise<void>;
 
-  /** Current LED output of the active keyboard, sampled with command 0xDE; no profile offset. */
-  readLiveColors(signal?: AbortSignal): Promise<[number, number, number][]>;
+  /** Current LED output of the active keyboard, sampled with command 0xDE; no profile offset.
+   * slotCount limits the leading slots read (default 128), including gaps in physical slot numbering. */
+  readLiveColors(signal?: AbortSignal, slotCount?: number): Promise<[number, number, number][]>;
   readKeyColors(profile: number): Promise<[number, number, number][]>; // 128 entries
   writeKeyColors(profile: number, changes: { index: number; rgb: [number, number, number] }[]): Promise<void>;
 

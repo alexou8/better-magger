@@ -324,11 +324,13 @@ repeat) **UNVERIFIED**.
 ### 4.10 Per-key RGB — 0x0A/0x0B, live colours — 0xDE
 * Custom colours (used by effect 0 "Custom"): OFF `512*P + 3*index`, RGB per key; read 384 B.
 * Single key write: `[11,0,chk, 3, lo, hi, 0, R,G,B]` with OFF `512*P + 3*index`.
-* 0xDE: read 384 B (OFF 0..383) = current LED colours (live preview; polled every 300 ms).
+* 0xDE: read 384 B (OFF 0..383) = current LED colours (live preview; the official driver polls every 300 ms).
   This is global output for the active keyboard, not a profile-strided table or the saved Custom colours.
-  Better Magger now exposes it as `readLiveColors(signal?)`: seven serial chunks, cancellable between chunks,
-  no extra brightness scaling, no effect-reset writes. These are sampled frames, not an atomic hardware
-  timestamp or zero-latency stream. Physical support still needs confirmation per model/firmware.
+  Better Magger exposes it as `readLiveColors(signal?, slotCount?)`: up to seven serial chunks,
+  cancellable between chunks, no extra brightness scaling, no effect-reset writes. These are sampled frames, not an atomic hardware
+  timestamp or zero-latency stream. The UI targets 30 updates per second, accounting for USB read time,
+  and stops after the highest visible slot rather than reading unused trailing slots. Physical support still
+  needs confirmation per model/firmware.
 
 ### 4.11 App data — 0xF1 read, 0xF2 write
 Per profile 1024 B at OFF `1024*P`; records start at +56 (read drops the first 56 bytes, write

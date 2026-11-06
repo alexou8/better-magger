@@ -32,7 +32,7 @@ export function LightingPage({ session: s, profile }: PageProps) {
       ).then((ok) => ok || settings.reload());
     },
     (a, b) => ({ ...a, ...b }),
-    150,
+    40,
   );
 
   if (settings.error)

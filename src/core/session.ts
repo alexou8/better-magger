@@ -279,16 +279,19 @@ class Session implements KeyboardSession {
     }
   }
 
-  async readLiveColors(signal?: AbortSignal): Promise<[number, number, number][]> {
+  async readLiveColors(signal?: AbortSignal, slotCount = KEY_SLOTS): Promise<[number, number, number][]> {
+    if (!Number.isInteger(slotCount) || slotCount < 1 || slotCount > KEY_SLOTS) {
+      throw new RangeError(`LED slot count must be between 1 and ${KEY_SLOTS}`);
+    }
     const parts: Uint8Array[] = [];
-    for (const frame of readFrames(CMD.LIVE_COLORS, 0, KEY_SLOTS * 3)) {
+    for (const frame of readFrames(CMD.LIVE_COLORS, 0, slotCount * 3)) {
       signal?.throwIfAborted();
       // Optional preview reads must not repeatedly block edits on unsupported firmware.
       const reply = await this.transport.request(frame, { retries: 0, timeoutMs: 750 });
       signal?.throwIfAborted();
       parts.push(replyPayload(reply, frame[4]));
     }
-    return decodeColors(concatBytes(parts));
+    return decodeColors(concatBytes(parts), slotCount);
   }
 
   async readKeyColors(profile: number): Promise<[number, number, number][]> {

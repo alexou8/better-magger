@@ -32,7 +32,7 @@ are covered by browser accessibility checks; automated scans do not establish co
 ## Make the keyboard feel right
 
 - **Lighting:** the default **Keyboard LEDs** preview reads the keyboard’s actual LED output, including the
-  running animation, brightness and reactive effects. Samples update about every 300 ms plus USB read time;
+  running animation, brightness and reactive effects. The preview targets 30 updates per second, paced by USB read speed;
   this follows the keyboard with a short delay rather than forcing its animation to restart. Pause freezes
   only the view. Reduced-motion preferences show a still sample, with **Refresh snapshot** to update it.
   If a firmware cannot return LED data, use **Illustration** for an independent pattern preview instead.

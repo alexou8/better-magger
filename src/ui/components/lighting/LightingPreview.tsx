@@ -83,7 +83,7 @@ export function LightingPreview({ session, light, locked }: Props) {
       </svg>
       <p class="help">
         {hardware
-          ? `${session.isDemo ? 'Synthetic LED output from the demo keyboard.' : 'Reads the keyboard’s current LED colours.'} Updates about every 300 ms with a small sampling delay; screen colours may look different. Pause freezes only this view.`
+          ? `${session.isDemo ? 'Synthetic LED output from the demo keyboard.' : 'Reads the keyboard’s current LED colours.'} Follows live LED output at up to 30 updates per second, depending on USB speed. Screen colours may look different. Pause freezes only this view.`
           : 'Illustrative patterns, independent of the keyboard’s timing. Reactive patterns play sample taps automatically.'}
         {reduced ? ' Motion is paused to match your reduced-motion preference.' : ''}
         {!hardware && locked ? ' Illustration is unavailable while Tachyon mode is on.' : ''}

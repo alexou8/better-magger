@@ -106,3 +106,20 @@ test('recent colours can be reused and persist after reloading', async ({ page }
   await page.getByRole('radio', { name: /Custom/ }).click();
   await expect(page.getByRole('button', { name: 'Recent colour #aabbcc', exact: true })).toBeVisible();
 });
+
+
+test('live RGB paints frequent fresh samples instead of waiting 300 ms between frames', async ({ page }) => {
+  await section(page, 'Lighting');
+  const preview = page.getByRole('region', { name: 'Lighting preview', exact: true });
+  await expect(preview.getByRole('status')).toHaveText('Demo LED stream');
+  const paintedFrames = await preview.locator('svg').evaluate(async svg => {
+    let frames = 0;
+    const observer = new MutationObserver(() => { frames++; });
+    observer.observe(svg, { attributes: true, subtree: true, attributeFilter: ['fill'] });
+    await new Promise(resolve => setTimeout(resolve, 1200));
+    observer.disconnect();
+    return frames;
+  });
+  // Broad tolerance for slow CI, while rejecting the old ~3 fps behaviour.
+  expect(paintedFrames).toBeGreaterThanOrEqual(12);
+});

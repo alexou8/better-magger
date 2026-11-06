@@ -314,3 +314,31 @@ describe('current LED readback', () => {
     expect(send).toHaveBeenCalledTimes(1);
   });
 });
+
+
+describe('low-latency visible LED reads', () => {
+  it('skips trailing unused slots while preserving sparse physical indices', async () => {
+    const { session, device } = await demo();
+    const slots = Math.max(...session.layout.keys.map(key => key.index)) + 1;
+    expect(slots).toBe(83);
+    await session.writeSettings(0, { lighting: { effect: 0, brightness: 100 } });
+    await session.writeKeyColors(0, [{ index: 82, rgb: [9, 20, 200] }]);
+    const send = vi.spyOn(device, 'sendReport');
+    const output = await session.readLiveColors(undefined, slots);
+    expect(output).toHaveLength(slots);
+    expect(output[82]).toEqual([9, 20, 200]);
+    const frames = send.mock.calls.map(([, data]) => parseFrame(new Uint8Array(data as ArrayBuffer)));
+    expect(frames.map(frame => [frame.cmd, frame.offset, frame.length])).toEqual([
+      [0xde, 0, 56], [0xde, 56, 56], [0xde, 112, 56], [0xde, 168, 56], [0xde, 224, 25],
+    ]);
+  });
+
+  it('rejects invalid LED lengths before sending a request', async () => {
+    const { session, device } = await demo();
+    const send = vi.spyOn(device, 'sendReport');
+    for (const count of [0, -1, 129, 1.5, NaN]) {
+      await expect(session.readLiveColors(undefined, count)).rejects.toThrow(/LED slot count/);
+    }
+    expect(send).not.toHaveBeenCalled();
+  });
+});

@@ -11,6 +11,8 @@ export function useLiveColors(s: KeyboardSession, enabled: boolean, continuous: 
   const [attempt, setAttempt] = useState(0);
   const snapshot = useRef<Rgb[] | null>(null);
   const previousAttempt = useRef(-1);
+  // Read through the highest visible physical slot, including any gaps. Preserve slot-to-key mapping.
+  const slotCount = Math.max(1, ...s.layout.keys.map(key => key.index + 1));
   const switching = profileTarget.value !== null;
   useEffect(() => {
     if (!enabled || switching) return;
@@ -19,12 +21,12 @@ export function useLiveColors(s: KeyboardSession, enabled: boolean, continuous: 
     if (!continuous && snapshot.current && !refresh) return;
     setError(null);
     return watchLiveLighting({
-      read: signal => s.readLiveColors(signal),
+      read: signal => s.readLiveColors(signal, slotCount),
       onFrame: frame => { snapshot.current = frame; setColors(frame); },
       onError: err => setError(errorMessage(err)),
       canRead: () => pendingWrites.peek() === 0 && profileTarget.peek() === null,
       once: !continuous,
     });
-  }, [s, enabled, continuous, attempt, switching]);
+  }, [s, enabled, continuous, attempt, switching, slotCount]);
   return { colors, error, refresh: () => setAttempt(n => n + 1) };
 }

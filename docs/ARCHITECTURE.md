@@ -50,11 +50,13 @@ Core layer (src/hid, src/core, src/data) exports, and the UI may import ONLY the
 
 ## Browser previews and profile labels
 
-- `KeyboardSession.readLiveColors(signal?)` reads global command `0xDE` at offsets 0..383 in seven
-  serial chunks. It returns output RGB (already brightness-scaled), rather than the saved Custom table
+- `KeyboardSession.readLiveColors(signal?, slotCount?)` reads global command `0xDE` at offsets 0..383 in up to seven
+  serial chunks. The preview reads only through its highest visible slot, preserving gaps in slot numbering.
+  It returns output RGB (already brightness-scaled), rather than the saved Custom table
   (`0x0A`). It never writes settings and has no per-profile offset. Cancellation is checked between chunks;
   each optional preview request has a 750 ms timeout with no automatic retries.
-- `ui/lib/liveLighting.ts` schedules a new read 300 ms after the previous one finishes. It never overlaps
+- `ui/lib/liveLighting.ts` targets a 33 ms start-to-start frame budget, subtracting USB read time.
+  Slow reads restart after a 1 ms yield; busy writes are checked again within 8 ms. It never overlaps
   reads, yields to pending writes/profile transitions, stops after an error and drops cancelled replies.
   `useLiveColors` owns its lifecycle; hidden tabs stop reads, reduced motion takes one sample, and paused
   views can refresh one snapshot. Profile/page unmounts cancel the old reader.
@@ -74,3 +76,5 @@ Core layer (src/hid, src/core, src/data) exports, and the UI may import ONLY the
   A signal-backed in-memory map supports blocked storage and updates header labels immediately. Names are
   browser preferences, outside the firmware/session and backup contracts; multiple devices of the same model
   share labels in that browser. Clearing a name restores its numbered label. No migration of backups is needed.
+
+Lighting controls coalesce input over 40 ms to keep hardware changes responsive without sending every slider event.
