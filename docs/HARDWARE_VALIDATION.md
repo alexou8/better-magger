@@ -24,8 +24,13 @@ USB product IDs to identify the variant automatically.
 4. Remap one spare key to an ordinary letter. Type in a text editor, reload/reconnect and verify the remap reads
    back correctly. Undo or restore that key. Repeat once on an FN layer and another profile.
 5. Change lighting brightness, speed, direction and colour. Observe the physical keys, navigate away/back
-   and reconnect to check readback. Compare the illustrative preview, allowing differences in animation timing
-   and colour rendering. Paint a few Custom keys and verify their colours persist. Check Tachyon mode separately.
+   and reconnect to check readback. With **Keyboard LEDs** selected, compare Static and Custom keys first,
+   then animation direction and reactive key presses. Verify output follows the physical keys with sampling
+   delay, and brightness is not scaled twice. Check lighting/profile changes made through keyboard shortcuts.
+   Paint a few Custom keys and verify persistence. Pause must freeze only the screen; navigating away or
+   hiding the tab must stop preview reads. Test reduced-motion snapshots and manual refresh. Check Tachyon
+   separately: readback should reflect actual LEDs even while lighting controls are locked. If command 0xDE
+   fails on this firmware, record the error and verify Retry or Illustration remains usable.
 6. Adjust one key's actuation/RT. Verify the displayed millimetres and selected switch travel against the installed
    switches. Check real behavior and the measured Live key view. The manual switch preview must not alter any
    device setting. On a spare profile, check actuation clamping when selecting a shorter-travel switch, then

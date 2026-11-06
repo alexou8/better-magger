@@ -22,6 +22,7 @@ const DATA_OFFSET = 8;
 
 export const CMD = {
   FIRMWARE: 0x03,
+  LIVE_COLORS: 0xde,
   ACTIVE_PROFILE: 0x04,
   SELECT_PROFILE: 0x0e,
   CALIBRATION_START: 0xa8,

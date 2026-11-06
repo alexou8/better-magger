@@ -25,6 +25,15 @@ export function SelectionToolbar({ layout, selected, onSelect }: Props) {
         <button type="button" class="btn btn--small" onClick={() => onSelect(new Set(usable.map((k) => k.index)))}>
           All
         </button>
+        {[
+          { name: 'WASD', codes: [26, 4, 22, 7] },
+          { name: 'Arrows', codes: [79, 80, 81, 82] },
+        ].map(group => {
+          const keys = usable.filter(k => group.codes.includes(k.code));
+          return keys.length > 0 && <button type="button" key={group.name} class="btn btn--small"
+            title={`Select ${group.name} keys without changing their settings`}
+            onClick={() => onSelect(new Set(keys.map(k => k.index)))}>{group.name}</button>;
+        })}
         <button type="button" class="btn btn--small" disabled={!selected.size} onClick={() => onSelect(new Set())}>
           None
         </button>

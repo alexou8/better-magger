@@ -1,3 +1,4 @@
+import { recentColors, rememberColor } from '../../state/recentColors';
 import { rgbToHex, hexToRgb, SWATCHES, type Rgb } from '../../lib/color';
 
 interface Props {
@@ -17,7 +18,7 @@ export function ColorPicker({ id, label, value, onChange, disabled }: Props) {
         {label}
       </label>
       <div class="color-picker">
-        <input id={id} type="color" value={hex} disabled={disabled} onInput={(e) => onChange(hexToRgb(e.currentTarget.value))} />
+        <input id={id} type="color" value={hex} disabled={disabled} onInput={(e) => onChange(hexToRgb(e.currentTarget.value))} onChange={(e) => rememberColor(hexToRgb(e.currentTarget.value))} />
         <code>{hex.toUpperCase()}</code>
         <div class="swatches">
           {SWATCHES.map((c) => (
@@ -28,11 +29,19 @@ export function ColorPicker({ id, label, value, onChange, disabled }: Props) {
               style={{ background: rgbToHex(c) }}
               aria-label={`Colour ${rgbToHex(c)}`}
               disabled={disabled}
-              onClick={() => onChange(c)}
+              onClick={() => { rememberColor(c); onChange(c); }}
             />
           ))}
         </div>
       </div>
+      {recentColors.value.length > 0 && <div class="recent-colors">
+        <span class="index-label">Recently used</span>
+        <div class="swatches" role="group" aria-label="Recently used colours">
+          {recentColors.value.map(hex => <button type="button" key={hex} class="swatch"
+            style={{ background: hex }} aria-label={`Recent colour ${hex}`} disabled={disabled}
+            onClick={() => { const rgb = hexToRgb(hex); rememberColor(rgb); onChange(rgb); }} />)}
+        </div>
+      </div>}
     </div>
   );
 }

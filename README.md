@@ -31,16 +31,22 @@ are covered by browser accessibility checks; automated scans do not establish co
 
 ## Make the keyboard feel right
 
-- **Lighting:** choose a pattern and watch the keyboard preview change with brightness, speed, colour and
-  direction. Custom shows the colours saved by Paint keys. Pause the illustration any time; reduced-motion
-  preferences pause it automatically. Patterns are illustrative, including automatic sample taps for reactive
-  effects; actual firmware timing and colours may differ. Tachyon mode pauses the preview and locks lighting controls.
+- **Lighting:** the default **Keyboard LEDs** preview reads the keyboard’s actual LED output, including the
+  running animation, brightness and reactive effects. Samples update about every 300 ms plus USB read time;
+  this follows the keyboard with a short delay rather than forcing its animation to restart. Pause freezes
+  only the view. Reduced-motion preferences show a still sample, with **Refresh snapshot** to update it.
+  If a firmware cannot return LED data, use **Illustration** for an independent pattern preview instead.
+  Demo mode reads synthetic LED output through the same protocol; real hardware still needs validation.
+  Recently used colours are remembered in this browser and can be reused in the colour picker or key painter.
 - **Performance:** select one key or several, then choose the **switch type actually installed**. The travel
   ruler labels released, actuation (where the press registers), and fully pressed in millimetres. Drag
   **Preview press depth** to explore the illustrated switch without changing settings. This explains first
   actuation rather than Rapid Trigger. **Live key view** reads measured travel from the keyboard instead;
   demo mode generates sample presses. Changing switch type applies immediately and clamps actuation to fit
   its travel and bottom dead zone. Calibrate in Settings after physically changing switches.
+  Use **WASD** or **Arrows** to select physical key groups, even after remapping. In Rapid Trigger,
+  **Match release to press** gives each selected key the same press and release distance (and precision)
+  without changing the other keys. Press and release remain independently adjustable afterward.
 - **Profile names:** in Settings, enter a name such as “Everyday” or “Gaming” and click **Save profile name**.
   The name appears beside its number in the header. Names belong to this browser and keyboard model;
   demo and real-device names are separate. They are not written to firmware or included in profile backups
@@ -125,8 +131,9 @@ npm run check    # tests + build + browser tests
 Run `npm run build` before standalone browser tests. To use an installed Chromium instead of downloading one,
 set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to its path. Browser tests cover remapping/undo, profile isolation,
 advanced bindings, macro recording/drafts, backup/restore, performance, lighting, model variants and narrow screens.
-Additional regressions cover naming and blocked storage, animated/paused/reduced-motion previews, custom colours,
-profile isolation, switch travel limits and preview controls on narrow screens.
+Additional regressions cover naming and blocked storage, LED readback/chunking/cancellation, pause/reduced-motion
+snapshots, custom colours, physical key-group selection, RT sensitivity matching, recent colours, profile isolation,
+switch travel limits and preview controls on narrow screens.
 
 Code map: `src/hid` (WebHID transport), `src/core` (protocol codec, session, connection, demo keyboard),
 `src/data` (generated device/layout/keycode/lighting tables — `node scripts/gen-data.mjs`), `src/ui` (Preact app).

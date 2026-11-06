@@ -50,10 +50,23 @@ Core layer (src/hid, src/core, src/data) exports, and the UI may import ONLY the
 
 ## Browser previews and profile labels
 
-- `ui/lib/lightingPreview.ts` calculates illustrative RGB values from the current lighting settings, key
-  geometry and elapsed time. `LightingPreview` renders the session layout as SVG and reads the shared colours
-  cache only for Custom. Its 80 ms timer stops when paused, hidden, reduced-motion or Tachyon mode is active;
-  the effect cleanup removes timers and media/visibility listeners. It never writes settings itself.
+- `KeyboardSession.readLiveColors(signal?)` reads global command `0xDE` at offsets 0..383 in seven
+  serial chunks. It returns output RGB (already brightness-scaled), rather than the saved Custom table
+  (`0x0A`). It never writes settings and has no per-profile offset. Cancellation is checked between chunks;
+  each optional preview request has a 750 ms timeout with no automatic retries.
+- `ui/lib/liveLighting.ts` schedules a new read 300 ms after the previous one finishes. It never overlaps
+  reads, yields to pending writes/profile transitions, stops after an error and drops cancelled replies.
+  `useLiveColors` owns its lifecycle; hidden tabs stop reads, reduced motion takes one sample, and paused
+  views can refresh one snapshot. Profile/page unmounts cancel the old reader.
+- `LightingPreview` defaults to keyboard output and renders it without additional brightness scaling or
+  guessed timing. Unsupported readback shows an error with Retry and an explicit Illustration alternative.
+  Tachyon locks settings but does not invent black LED output: the readback shows what the device reports.
+- Illustration mode remains separate: `ui/lib/lightingPreview.ts` calculates approximate patterns from
+  settings, geometry and time. Its timer stops on pause, hidden tabs, reduced motion or Tachyon mode.
+- `ui/state/recentColors.ts` keeps six unique validated hex colours in a versioned browser preference.
+  Picker input remembers final colour changes, and blocked storage falls back to the in-memory signal.
+- Selection toolbar groups use physical layout codes rather than current assignments. Matching RT sensitivity
+  copies each selected key's press value and precision to release, preserving its other trigger settings.
 - `SwitchPreview` is a manual first-actuation demonstration. Its slider is component-local and cannot write
   triggers. Real measurements continue to come from `useLiveTravel`; the first selected key's current sample
   is displayed separately. Both views use the model's raw-per-mm scale and selected switch travel.

@@ -81,3 +81,8 @@ export function actuationColor(model: DeviceModel, raw: number): string {
   const f = Math.min(1, Math.max(0, (raw - lim.minActuationRaw) / Math.max(1, lim.maxRaw - lim.minActuationRaw)));
   return `hsl(${Math.round(10 + f * 200)} 70% 45% / 0.55)`;
 }
+
+/** Same physical distance and precision in both directions, independently for each selected key. */
+export function matchReleaseToPress(t: KeyTrigger): KeyTrigger {
+  return { ...t, releasePrecision: t.pressPrecision, rtRelease: t.rtPress };
+}

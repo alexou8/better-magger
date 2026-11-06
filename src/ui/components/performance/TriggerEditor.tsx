@@ -2,7 +2,7 @@ import { SwitchPreview } from './SwitchPreview';
 import type { DeviceModel, KeyMode, KeyTrigger } from '../../../core/types';
 import { rtMode } from '../../../core/units';
 import { RawMmSlider } from '../RawMmSlider';
-import { convertRt, maxActuation, MODES } from '../../lib/trigger';
+import { convertRt, maxActuation, MODES, matchReleaseToPress } from '../../lib/trigger';
 import { useId } from 'preact/hooks';
 
 interface Props {
@@ -140,6 +140,10 @@ export function TriggerEditor({
             onChange={(v) => onChange((k) => ({ ...k, rtRelease: v }))}
           />
           {precisionChoice && precisionSelect('release', t.releasePrecision)}
+          <button type="button" class="btn" onClick={() => onChange(matchReleaseToPress)}>
+            Match release to press
+          </button>
+          <p class="help">Use the same movement distance in both directions. This copies each selected key’s press sensitivity and precision to its release; you can still adjust them separately.</p>
         </div>
       )}
 

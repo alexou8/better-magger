@@ -279,6 +279,18 @@ class Session implements KeyboardSession {
     }
   }
 
+  async readLiveColors(signal?: AbortSignal): Promise<[number, number, number][]> {
+    const parts: Uint8Array[] = [];
+    for (const frame of readFrames(CMD.LIVE_COLORS, 0, KEY_SLOTS * 3)) {
+      signal?.throwIfAborted();
+      // Optional preview reads must not repeatedly block edits on unsupported firmware.
+      const reply = await this.transport.request(frame, { retries: 0, timeoutMs: 750 });
+      signal?.throwIfAborted();
+      parts.push(replyPayload(reply, frame[4]));
+    }
+    return decodeColors(concatBytes(parts));
+  }
+
   async readKeyColors(profile: number): Promise<[number, number, number][]> {
     this.checkProfile(profile);
     return decodeColors(await this.readTable(TABLES.colors, profile, 0, TABLES.colors.size));

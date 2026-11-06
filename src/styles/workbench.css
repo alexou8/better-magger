@@ -425,3 +425,8 @@
 
 .header__profile .segmented { min-width: 0; max-width: 100%; }
 .header__profile .segmented button { min-width: 38px; max-width: 100%; }
+.preview-actions { display: flex; flex-wrap: wrap; gap: .65rem; align-items: end; min-width: 0; }
+.preview-source { display: grid; gap: .35rem; max-width: 100%; }
+.preview-status { margin-block: .75rem; }
+.preview-actions .field__label { margin: 0; }
+.recent-colors { display: grid; gap: .5rem; margin-top: .75rem; }

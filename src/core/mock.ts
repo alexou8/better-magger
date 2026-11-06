@@ -13,6 +13,8 @@ import {
   REPORT_SIZE,
   TABLES,
   concatBytes,
+  decodeSettings,
+  decodeColors,
   encodeActions,
   encodeColors,
   encodeFirmware,
@@ -64,6 +66,7 @@ export class SimulatedKeyboard {
   private readonly memory = new Map<TableName, Uint8Array>();
   private readonly injected: Uint8Array[] = [];
   private dropReplies = 0;
+  private ledFrame: Uint8Array = new Uint8Array(KEY_SLOTS * 3);
   private calibrating = false;
   private presses: Press[] = [];
   private timer: ReturnType<typeof setInterval> | null = null;
@@ -116,6 +119,9 @@ export class SimulatedKeyboard {
 
   private execute(cmd: number, offset: number, length: number, data: Uint8Array): ArrayLike<number> {
     switch (cmd) {
+      case CMD.LIVE_COLORS:
+        if (offset === 0) this.ledFrame = this.sampleLeds();
+        return this.ledFrame.subarray(offset, offset + length);
       case CMD.FIRMWARE:
         return encodeFirmware(this.model.latestFw);
       case CMD.ACTIVE_PROFILE:
@@ -141,6 +147,21 @@ export class SimulatedKeyboard {
     mem.set(data.subarray(0, Math.min(length, mem.length - offset)), offset);
     if (table.name === 'func') this.updateSimulation();
     return [];
+  }
+
+  /** Synthetic LED output: readback exercises the same wire path as a real keyboard. */
+  private sampleLeds(): Uint8Array {
+    const light = decodeSettings(this.table('func', this.activeProfile)).lighting;
+    const custom = decodeColors(this.table('colors', this.activeProfile).subarray(0, KEY_SLOTS * 3));
+    const t = Date.now() / 1000 * (.35 + light.speed * .3);
+    const rgb = Array.from({ length: KEY_SLOTS }, (_, index) => {
+      if (light.effect === 0) return custom[index];
+      const rainbow = light.multicolor || light.effect === 1 || light.effect === 5;
+      const color = rainbow ? hueToRgb((index * 7 + (light.effect === 3 ? 0 : t * 50)) % 360) : [light.r, light.g, light.b];
+      const level = light.effect === 3 || light.effect === 1 ? 1 : .1 + .9 * (Math.sin(t * 6 + (light.effect === 4 ? 0 : index / 3)) + 1) / 2;
+      return color.map(v => Math.round(v * level)) as [number, number, number];
+    }).map(color => color.map(v => Math.round(v * light.brightness / 100)) as [number, number, number]);
+    return encodeColors(rgb);
   }
 
   private reset(): void {

@@ -57,6 +57,7 @@ test('blocked storage keeps profile naming usable for the session', async ({ pag
 test('lighting animates, pauses, responds to brightness and restores per profile', async ({ page }) => {
   await demo(page);
   await section(page, 'Lighting');
+  await page.getByLabel('Preview source', { exact: true }).selectOption('illustration');
   const preview = page.getByRole('region', { name: 'Lighting preview', exact: true });
   const key = preview.locator('rect').first();
   await page.getByRole('radio', { name: /Breathe/ }).click();
@@ -78,6 +79,7 @@ test('reduced motion shows a still preview and custom colours match the painter'
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await demo(page);
   await section(page, 'Lighting');
+  await page.getByLabel('Preview source', { exact: true }).selectOption('illustration');
   const preview = page.getByRole('region', { name: 'Lighting preview', exact: true });
   await expect(preview.getByRole('button', { name: 'Pause preview', exact: true })).toBeDisabled();
   const key = preview.locator('rect').first();

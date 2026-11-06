@@ -4,7 +4,7 @@ import { getLayoutDef } from '../data/layouts';
 import { ALL_MODELS, findModel } from '../data/models';
 import { HidTransport } from '../hid/transport';
 import { MockHidDevice } from './mock';
-import { decodeSettings } from './protocol';
+import { decodeSettings, CMD, parseFrame } from './protocol';
 import { openSession, resolveIndices } from './session';
 import type { KeyAction, KeyboardSession, SessionEvent } from './types';
 import { defaultTrigger } from './units';
@@ -270,5 +270,47 @@ describe('events', () => {
     const { session, events } = await demo();
     await session.factoryReset();
     await waitFor(() => events.some((e) => e.kind === 'resetDone'));
+  });
+});
+
+
+describe('current LED readback', () => {
+  it('reads 384 global bytes across chunk boundaries without changing saved colours', async () => {
+    const { session, kb, device } = await demo();
+    await session.selectProfile(2);
+    await session.writeSettings(2, { lighting: { effect: 0, brightness: 50 } });
+    await session.writeKeyColors(2, [{ index: 18, rgb: [200, 60, 4] }, { index: 127, rgb: [8, 100, 240] }]);
+    const before = kb.table('colors', 2).slice();
+    const send = vi.spyOn(device, 'sendReport');
+    const output = await session.readLiveColors();
+    expect(output).toHaveLength(128);
+    expect(output[18]).toEqual([100, 30, 2]);
+    expect(output[127]).toEqual([4, 50, 120]);
+    const frames = send.mock.calls.map(([, data]) => parseFrame(new Uint8Array(data as ArrayBuffer)));
+    expect(frames.map(f => [f.cmd, f.offset, f.length])).toEqual([0, 56, 112, 168, 224, 280, 336].map(offset => [CMD.LIVE_COLORS, offset, Math.min(56, 384 - offset)]));
+    expect(kb.table('colors', 2)).toEqual(before);
+    expect(kb.badFrames).toBe(0);
+  });
+
+  it('aborts an old read before sending the next chunk', async () => {
+    const { session, kb, device } = await demo();
+    const controller = new AbortController();
+    const handle = kb.handle.bind(kb);
+    vi.spyOn(kb, 'handle').mockImplementation(frame => {
+      const reports = handle(frame);
+      if (frame[1] === CMD.LIVE_COLORS) controller.abort();
+      return reports;
+    });
+    const send = vi.spyOn(device, 'sendReport');
+    await expect(session.readLiveColors(controller.signal)).rejects.toThrow(/abort/i);
+    expect(send).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not retry an unsupported LED command', async () => {
+    const { session, kb, device } = await demo();
+    kb.dropNextReplies(1);
+    const send = vi.spyOn(device, 'sendReport');
+    await expect(session.readLiveColors()).rejects.toThrow(/command 0xDE.*1 attempt/);
+    expect(send).toHaveBeenCalledTimes(1);
   });
 });
