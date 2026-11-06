@@ -11,10 +11,17 @@ import { Skeleton } from '../components/Skeleton';
 import { Toggle } from '../components/Toggle';
 import { useDebouncedWriter } from '../hooks/useDebouncedWriter';
 import { useLiveTravel } from '../hooks/useLiveTravel';
-import { actuationColor, applyPreset, clampTrigger, fullTravel, type Preset } from '../lib/trigger';
+import {
+  actuationColor,
+  applyPreset,
+  clampTrigger,
+  fullTravel,
+  type Preset,
+} from '../lib/trigger';
 import { setCached, useTable } from '../state/cache';
 import { save } from '../state/toast';
 import { applyTriggers } from '../state/writes';
+import { Icon } from '../components/Icon';
 
 type Changes = Map<number, KeyTrigger>;
 
@@ -40,15 +47,18 @@ export function PerformancePage({ session: s, profile }: PageProps) {
         return t ? [{ index, trigger: t }] : [];
       });
       before.current = new Map();
-      void save('key travel', () => s.writeTriggers(profile, list), { undo: () => applyTriggers(s, profile, undo) }).then(
-        (ok) => ok || triggers.reload(),
-      );
+      void save('key travel', () => s.writeTriggers(profile, list), {
+        undo: () => applyTriggers(s, profile, undo),
+      }).then((ok) => ok || triggers.reload());
     },
     (a, b) => new Map([...a, ...b]),
     250,
   );
 
-  const update = (fn: (t: KeyTrigger) => KeyTrigger, indices: Iterable<number> = selected) => {
+  const update = (
+    fn: (t: KeyTrigger) => KeyTrigger,
+    indices: Iterable<number> = selected,
+  ) => {
     if (!all) return;
     const next = all.slice();
     const changes: Changes = new Map();
@@ -64,7 +74,8 @@ export function PerformancePage({ session: s, profile }: PageProps) {
     flush(changes);
   };
 
-  const applyPresetToSelection = (p: Preset) => update((t) => applyPreset(model, t, p));
+  const applyPresetToSelection = (p: Preset) =>
+    update((t) => applyPreset(model, t, p));
 
   const visual = (k: LayoutKey): KeyVisual => {
     if (!all || k.index < 0) return {};
@@ -73,24 +84,37 @@ export function PerformancePage({ session: s, profile }: PageProps) {
     return {
       sub: `${rawToMm(t.actuation, lim.rawPerMm).toFixed(2)}${t.mode ? ' RT' : ''}`,
       color: actuationColor(model, t.actuation),
-      depth: live && sample ? Math.min(1, sample.raw / fullTravel(model, t.switchType)) : undefined,
+      depth:
+        live && sample
+          ? Math.min(1, sample.raw / fullTravel(model, t.switchType))
+          : undefined,
       title: `actuation ${rawToMm(t.actuation, lim.rawPerMm).toFixed(2)} mm${t.mode === 1 ? ', Rapid Trigger' : t.mode === 2 ? ', continuous Rapid Trigger' : ''}`,
     };
   };
 
   const sel = [...selected];
   const first = all && sel.length ? all[sel[0]] : null;
-  const mixed = !!all && !!first && sel.some((i) => !sameTrigger(all[i], first));
+  const mixed =
+    !!all && !!first && sel.some((i) => !sameTrigger(all[i], first));
 
   return (
     <div class="page-performance">
       <header class="page__header">
         <div>
+          <span class="page__eyebrow index-label">02 / Find your feel</span>
           <h2>Performance</h2>
-          <p class="help">Select keys, then set how deep they actuate and whether Rapid Trigger is on. Numbers on keys are actuation points in mm.</p>
+          <p class="help">
+            Tune how far each key travels before it responds. Start with one
+            key, then find your feel.
+          </p>
         </div>
         {model.features.liveTravel && (
-          <Toggle checked={live} onChange={setLive} label="Live key view" help="Shows how far each key is pressed right now" />
+          <Toggle
+            checked={live}
+            onChange={setLive}
+            label="Live key view"
+            help="Shows how far each key is pressed right now"
+          />
         )}
       </header>
       {triggers.error ? (
@@ -98,27 +122,121 @@ export function PerformancePage({ session: s, profile }: PageProps) {
       ) : !all ? (
         <Skeleton keyboard lines={3} />
       ) : (
-        <>
-          <section class="card card--flush">
-            <KeyboardView layout={s.layout} selected={selected} onSelect={setSelected} multi visual={visual} ariaLabel="Keys (actuation in millimetres)" />
-            <SelectionToolbar layout={s.layout} selected={selected} onSelect={setSelected} />
+        <div class="editor-workspace editor-workspace--performance">
+          <div class="keyboard-station">
+            <div class="station-heading">
+              <span class="index-label">Actuation map</span>
+              <span class="station-heading__detail">
+                Depth in mm <span aria-hidden="true">/</span> Profile{' '}
+                {profile + 1}
+              </span>
+            </div>
+            <div class="keyboard-deck">
+              <KeyboardView
+                layout={s.layout}
+                selected={selected}
+                onSelect={setSelected}
+                multi
+                visual={visual}
+                ariaLabel="Keys (actuation in millimetres)"
+              />
+              <div class="keyboard-deck__edge" aria-hidden="true">
+                <span>{model.name}</span>
+                <span>{live ? 'LIVE TRAVEL' : 'PERFORMANCE'}</span>
+                <span class="deck-indicator" />
+              </div>
+            </div>
+            <SelectionToolbar
+              layout={s.layout}
+              selected={selected}
+              onSelect={setSelected}
+            />
             <p class="legend">
-              <span class="legend__gradient" aria-hidden="true" /> shallow → deep actuation
+              <span class="legend__gradient" aria-hidden="true" /> shallow →
+              deep actuation
             </p>
-          </section>
-          <section class="card">
-            <h3>Presets</h3>
-            <PresetBar disabled={!sel.length} onApply={applyPresetToSelection} />
-            {!sel.length && <p class="help">Select keys first (or press “All” above).</p>}
-          </section>
+            <section class="preset-station">
+              <div class="station-heading">
+                <h3>A starting point</h3>
+                <span class="index-label">Then make it your own</span>
+              </div>
+              <PresetBar
+                disabled={!sel.length}
+                onApply={applyPresetToSelection}
+              />
+              {!sel.length && (
+                <p class="help">
+                  Select keys first, or choose All above. Presets change only
+                  the selected keys.
+                </p>
+              )}
+            </section>
+          </div>
           {first ? (
-            <section class="card">
-              <TriggerEditor model={model} trigger={first} count={sel.length} mixed={mixed} onChange={(fn) => update(fn)} />
+            <section
+              class="inspector performance-inspector"
+              aria-label="Tune selected keys"
+            >
+              <div class="actuation-readout">
+                <span class="index-label">Actuation point</span>
+                <div>
+                  <strong>
+                    {rawToMm(first.actuation, lim.rawPerMm).toFixed(2)}
+                  </strong>
+                  <span>mm</span>
+                </div>
+                <p>
+                  {sel.length === 1
+                    ? s.layout.keys.find((k) => k.index === sel[0])?.label
+                    : `${sel.length} keys selected`}
+                  {mixed ? ' · mixed values' : ''}
+                </p>
+                <div class="travel-ruler" aria-hidden="true">
+                  <span
+                    style={{
+                      left: `${Math.min(100, (first.actuation / fullTravel(model, first.switchType)) * 100)}%`,
+                    }}
+                  />
+                </div>
+              </div>
+              <TriggerEditor
+                model={model}
+                trigger={first}
+                count={sel.length}
+                mixed={mixed}
+                onChange={(fn) => update(fn)}
+              />
             </section>
           ) : (
-            <p class="empty-hint">Select one or more keys to adjust them.</p>
+            <section
+              class="inspector inspector--empty"
+              aria-label="Start tuning"
+            >
+              <span class="index-label">Fine-tune your feel</span>
+              <div class="empty-selection">
+                <span class="empty-selection__icon">
+                  <Icon name="performance" size={32} />
+                </span>
+                <h3>
+                  A little deeper.
+                  <br />
+                  Or a little faster.
+                </h3>
+                <p>
+                  Select a key to adjust actuation, Rapid Trigger and dead
+                  zones.
+                </p>
+              </div>
+              <div class="inspector__guide">
+                <span class="index-label">What the numbers mean</span>
+                <p>
+                  Lower actuation needs a lighter touch. Higher actuation gives
+                  your fingers more room.
+                </p>
+              </div>
+            </section>
           )}
-        </>
+        </div>
       )}
     </div>
   );

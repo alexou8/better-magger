@@ -17,6 +17,18 @@ It's an unofficial replacement for the official web driver at luminkey.club, and
 The browser requires permission on the first connection. Subsequent visits and USB replugs can reconnect silently.
 Demo mode is separate from your keyboard and resets when disconnected or reloaded.
 
+## Workbench interface
+
+The interface uses a shared [design system](design-system/better-magger/MASTER.md), adapted with
+[UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill): paper/graphite themes, restrained
+copper accents, self-hosted IBM Plex fonts and SVG diagrams. Keymap and Performance pair the physical keyboard
+with an action/tuning inspector; Lighting uses static pattern illustrations and native radios.
+
+Keyboard access: Tab enters the keyboard once, arrow keys explore it, Enter/Space selects, Shift+arrows selects
+multiple keys, and Home/End jumps to the ends. Profile/layer radios and action categories also support arrow
+keys. Small screens scroll the keyboard internally so keys remain usable. Reduced motion and both themes
+are covered by browser accessibility checks; automated scans do not establish complete WCAG conformance.
+
 ## Verification status
 
 The application builds and has automated protocol, session, connection, backup, cache and real-browser demo tests.

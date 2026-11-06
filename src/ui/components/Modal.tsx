@@ -14,8 +14,15 @@ export function Modal({ title, onClose, children, wide }: Props) {
 
   useEffect(() => {
     const d = ref.current;
+    const opener = document.activeElement;
     if (d && !d.open) d.showModal();
-    return () => d?.close();
+    return () => {
+      if (d?.open) d.close();
+      // Preact can remove the dialog before effect cleanup, so native close() may
+      // no longer restore focus. Keep the opener explicitly for Escape/backdrop.
+      if (opener instanceof HTMLElement && opener.isConnected)
+        opener.focus({ preventScroll: true });
+    };
   }, []);
 
   return (
@@ -32,7 +39,12 @@ export function Modal({ title, onClose, children, wide }: Props) {
       <div class="modal__inner">
         <header class="modal__header">
           <h2>{title}</h2>
-          <button type="button" class="btn btn--ghost btn--icon" aria-label="Close" onClick={onClose}>
+          <button
+            type="button"
+            class="btn btn--ghost btn--icon"
+            aria-label="Close"
+            onClick={onClose}
+          >
             ✕
           </button>
         </header>

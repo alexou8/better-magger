@@ -2,6 +2,7 @@ import { useLayoutEffect, useState } from 'preact/hooks';
 import type { KeyAction } from '../../../core/types';
 import { hidUsageFromKeyboardEvent } from '../../../data/keycodes';
 import { actionForUsage, isModifierUsage } from '../../lib/keys';
+import { Icon } from '../Icon';
 
 interface Props {
   onCapture: (a: KeyAction) => void;
@@ -55,14 +56,24 @@ export function KeyCapture({ onCapture }: Props) {
   return listening ? (
     <div class="capture is-listening" role="status" aria-live="assertive">
       <span class="capture__pulse" aria-hidden="true" />
-      <span>Press a key or combo on your keyboard… (Esc is assignable too)</span>
-      <button type="button" class="btn btn--small" onClick={() => setListening(false)}>
+      <span>
+        Press a key or combo on your keyboard… (Esc is assignable too)
+      </span>
+      <button
+        type="button"
+        class="btn btn--small"
+        onClick={() => setListening(false)}
+      >
         Cancel
       </button>
     </div>
   ) : (
-    <button type="button" class="btn capture" onClick={() => setListening(true)}>
-      ⌨ Press a key to assign
+    <button
+      type="button"
+      class="btn capture"
+      onClick={() => setListening(true)}
+    >
+      <Icon name="keyboard" size={17} /> Press a key to assign
     </button>
   );
 }

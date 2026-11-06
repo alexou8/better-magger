@@ -1,6 +1,10 @@
 import { render } from 'preact';
 import { App } from './ui/App';
 import { initTheme } from './ui/state/theme';
+import '@fontsource/ibm-plex-sans/latin-400.css';
+import '@fontsource/ibm-plex-sans/latin-500.css';
+import '@fontsource/ibm-plex-sans/latin-600.css';
+import '@fontsource/ibm-plex-mono/latin-400.css';
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/layout.css';
@@ -9,6 +13,8 @@ import './styles/feedback.css';
 import './styles/keyboard.css';
 import './styles/pages.css';
 import './styles/editors.css';
+import './styles/secondary.css';
+import './styles/workbench.css';
 
 initTheme();
 render(<App />, document.getElementById('app')!);

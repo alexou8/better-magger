@@ -83,7 +83,12 @@
 }
 .skeleton__block {
   border-radius: var(--radius);
-  background: linear-gradient(90deg, var(--surface) 0%, var(--surface-hover) 50%, var(--surface) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--surface) 0%,
+    var(--surface-hover) 50%,
+    var(--surface) 100%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.3s linear infinite;
 }
@@ -141,4 +146,64 @@
 .modal__header h2 {
   font-size: 1.15rem;
   margin: 0;
+}
+/* Feedback is compact and matter-of-fact, with no decorative motion. */
+.toast {
+  border-radius: 4px;
+  border-left: 3px solid var(--accent);
+  padding: 12px 14px;
+  animation: none;
+  box-shadow: var(--shadow);
+}
+.toast--success {
+  border-left-color: var(--success);
+}
+.toast__icon {
+  border-radius: 2px;
+  font-family: var(--mono);
+  color: var(--accent-text);
+}
+.toast--success .toast__icon {
+  color: var(--bg-elev);
+}
+.toast--error .toast__icon {
+  color: var(--bg-elev);
+}
+.toast__msg {
+  font-size: 0.8125rem;
+}
+.toasts {
+  bottom: 24px;
+  right: 24px;
+}
+.skeleton__block {
+  border-radius: 3px;
+}
+.modal {
+  border-radius: 4px;
+  border-color: var(--control-border);
+}
+.modal__inner {
+  padding: 24px;
+}
+.modal__header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+.modal__header h2 {
+  font-size: 1.375rem;
+}
+.progress {
+  border-radius: 2px;
+}
+@media (max-width: 720px) {
+  .toasts {
+    bottom: 12px;
+    right: 12px;
+    max-width: calc(100vw - 24px);
+  }
+  .modal__inner {
+    padding: 20px;
+  }
 }

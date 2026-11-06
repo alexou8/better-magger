@@ -2,6 +2,7 @@ import type { DeviceModel, KeyMode, KeyTrigger } from '../../../core/types';
 import { rtMode } from '../../../core/units';
 import { RawMmSlider } from '../RawMmSlider';
 import { convertRt, maxActuation, MODES } from '../../lib/trigger';
+import { useId } from 'preact/hooks';
 
 interface Props {
   model: DeviceModel;
@@ -13,7 +14,14 @@ interface Props {
 }
 
 /** Actuation, mode, RT sensitivity, dead zones and switch type for the selected keys. */
-export function TriggerEditor({ model, trigger: t, count, mixed, onChange }: Props) {
+export function TriggerEditor({
+  model,
+  trigger: t,
+  count,
+  mixed,
+  onChange,
+}: Props) {
+  const id = useId();
   const f = model.features;
   const lim = f.travel;
   const press = rtMode(model, t.pressPrecision);
@@ -23,14 +31,25 @@ export function TriggerEditor({ model, trigger: t, count, mixed, onChange }: Pro
   const setPrecision = (which: 'press' | 'release', id: number) =>
     onChange((k) =>
       which === 'press'
-        ? { ...k, pressPrecision: id, rtPress: convertRt(model, k.rtPress, k.pressPrecision, id) }
-        : { ...k, releasePrecision: id, rtRelease: convertRt(model, k.rtRelease, k.releasePrecision, id) },
+        ? {
+            ...k,
+            pressPrecision: id,
+            rtPress: convertRt(model, k.rtPress, k.pressPrecision, id),
+          }
+        : {
+            ...k,
+            releasePrecision: id,
+            rtRelease: convertRt(model, k.rtRelease, k.releasePrecision, id),
+          },
     );
 
   const precisionSelect = (which: 'press' | 'release', value: number) => (
     <label class="inline-field">
-      <span>Precision</span>
-      <select value={value} onChange={(e) => setPrecision(which, Number(e.currentTarget.value))}>
+      <span>{which === 'press' ? 'Press precision' : 'Release precision'}</span>
+      <select
+        value={value}
+        onChange={(e) => setPrecision(which, Number(e.currentTarget.value))}
+      >
         {f.rtPrecisionModes.map((m) => (
           <option key={m.id} value={m.id}>
             {m.stepMm} mm steps (up to {(m.maxRaw / m.rawPerMm).toFixed(1)} mm)
@@ -44,18 +63,37 @@ export function TriggerEditor({ model, trigger: t, count, mixed, onChange }: Pro
     <div class="trigger-editor">
       <p class="help">
         Editing {count} key{count === 1 ? '' : 's'}
-        {mixed && ' · keys have different values; showing the first, a change applies only that setting to all'}
+        {mixed &&
+          ' · keys have different values; showing the first, a change applies only that setting to all'}
       </p>
 
       <fieldset class="field">
         <legend class="field__label">Mode</legend>
-        <div class="segmented" role="radiogroup">
+        <div class="segmented" role="radiogroup" aria-label="Trigger mode">
           {MODES.map((m) => (
             <button
               type="button"
               role="radio"
               key={m.id}
+              id={`${id}-mode-${m.id}`}
               aria-checked={t.mode === m.id}
+              tabIndex={t.mode === m.id ? 0 : -1}
+              onKeyDown={(e) => {
+                const next =
+                  e.key === 'Home'
+                    ? 0
+                    : e.key === 'End'
+                      ? 2
+                      : e.key === 'ArrowRight' || e.key === 'ArrowDown'
+                        ? (m.id + 1) % 3
+                        : e.key === 'ArrowLeft' || e.key === 'ArrowUp'
+                          ? (m.id + 2) % 3
+                          : null;
+                if (next === null || e.altKey || e.ctrlKey || e.metaKey) return;
+                e.preventDefault();
+                onChange((k) => ({ ...k, mode: next as KeyMode }));
+                document.getElementById(`${id}-mode-${next}`)?.focus();
+              }}
               class={t.mode === m.id ? 'is-active' : ''}
               onClick={() => onChange((k) => ({ ...k, mode: m.id as KeyMode }))}
             >
@@ -107,14 +145,24 @@ export function TriggerEditor({ model, trigger: t, count, mixed, onChange }: Pro
       {f.switchTypes.length > 0 && (
         <label class="field">
           <span class="field__label">Switch type</span>
-          <select value={t.switchType} onChange={(e) => onChange((k) => ({ ...k, switchType: Number(e.currentTarget.value) }))}>
+          <select
+            value={t.switchType}
+            onChange={(e) =>
+              onChange((k) => ({
+                ...k,
+                switchType: Number(e.currentTarget.value),
+              }))
+            }
+          >
             {f.switchTypes.map((sw) => (
               <option key={sw.value} value={sw.value}>
                 {sw.name}
               </option>
             ))}
           </select>
-          <span class="help">Match the switches installed so travel is measured correctly.</span>
+          <span class="help">
+            Match the switches installed so travel is measured correctly.
+          </span>
         </label>
       )}
 

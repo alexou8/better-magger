@@ -1,5 +1,6 @@
 import { navigate, type PageId } from '../state/route';
 import type { PageInfo } from '../lib/pages';
+import { Icon } from './Icon';
 
 interface Props {
   pages: PageInfo[];
@@ -10,8 +11,9 @@ interface Props {
 export function Nav({ pages, current }: Props) {
   return (
     <nav class="nav" aria-label="Sections">
+      <span class="nav__eyebrow index-label">Your workspace</span>
       <ul>
-        {pages.map((p) => (
+        {pages.map((p, i) => (
           <li key={p.id}>
             <a
               href={`#/${p.id}`}
@@ -23,7 +25,10 @@ export function Nav({ pages, current }: Props) {
               }}
             >
               <span class="nav__icon" aria-hidden="true">
-                {p.icon}
+                <Icon name={p.icon} size={20} />
+              </span>
+              <span class="nav__number" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
               </span>
               <span class="nav__text">
                 <span class="nav__name">{p.name}</span>
@@ -33,6 +38,13 @@ export function Nav({ pages, current }: Props) {
           </li>
         ))}
       </ul>
+      <div class="nav__foot">
+        <span class="nav__foot-line" />
+        <span>
+          Small changes.
+          <br />A different feel.
+        </span>
+      </div>
     </nav>
   );
 }

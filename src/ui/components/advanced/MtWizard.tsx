@@ -13,7 +13,14 @@ import { targetProblem, type WizardProps } from './wizardProps';
 
 const LEFT_CTRL: KeyAction = { type: 16, code1: 1, code2: 0 };
 
-export function MtWizard({ session: s, profile, layer, keymaps, editing, onDone }: WizardProps) {
+export function MtWizard({
+  session: s,
+  profile,
+  layer,
+  keymaps,
+  editing,
+  onDone,
+}: WizardProps) {
   const map = keymaps[layer];
   const mt = useTable('mt');
   const [index, setIndex] = useState<number | null>(editing?.index ?? null);
@@ -39,36 +46,75 @@ export function MtWizard({ session: s, profile, layer, keymaps, editing, onDone 
 
   const onSave = async () => {
     if (index === null) return;
-    const slot = editing?.slot ?? freeSlots(usedSlots(keymaps, MT_TABLE_TYPES), 1)[0];
-    if (slot === undefined) return void showToast('error', 'All 32 Mod-Tap / SOCD / RS / OKS slots are in use. Delete one first.');
+    const slot =
+      editing?.slot ?? freeSlots(usedSlots(keymaps, MT_TABLE_TYPES), 1)[0];
+    if (slot === undefined)
+      return void showToast(
+        'error',
+        'All 32 Mod-Tap / SOCD / RS / OKS slots are in use. Delete one first.',
+      );
     setSaving(true);
-    const ok = await save('Mod-Tap', () => assignMt(s, profile, layer, index, slot, tap, hold, holdMs));
+    const ok = await save('Mod-Tap', () =>
+      assignMt(s, profile, layer, index, slot, tap, hold, holdMs),
+    );
     setSaving(false);
     if (ok) onDone();
   };
 
   return (
-    <WizardFrame kind="mt" layer={layer} editing={!!editing} canSave={!problem} saving={saving} problem={problem} onSave={onSave} onCancel={onDone}>
-      <h4>1. Pick the key</h4>
+    <WizardFrame
+      kind="mt"
+      layer={layer}
+      editing={!!editing}
+      canSave={!problem}
+      saving={saving}
+      problem={problem}
+      onSave={onSave}
+      onCancel={onDone}
+    >
+      <h3>1. Pick the key</h3>
       <TargetKeyboard
         session={s}
         map={map}
         selected={new Set(index === null ? [] : [index])}
-        onSelect={editing ? undefined : (next) => setIndex([...next][0] ?? null)}
+        onSelect={
+          editing ? undefined : (next) => setIndex([...next][0] ?? null)
+        }
         ariaLabel="Choose the key for Mod-Tap"
       />
-      <h4>2. Choose the two actions</h4>
+      <h3>2. Choose the two actions</h3>
       <div class="grid-2">
-        <ActionField model={s.model} label="When tapped" action={tap} onChange={setTap} />
-        <ActionField model={s.model} label="When held" action={hold} onChange={setHold} />
+        <ActionField
+          model={s.model}
+          label="When tapped"
+          action={tap}
+          onChange={setTap}
+        />
+        <ActionField
+          model={s.model}
+          label="When held"
+          action={hold}
+          onChange={setHold}
+        />
       </div>
-      <h4>3. Hold time</h4>
+      <h3>3. Hold time</h3>
       <div class="field">
         <label class="field__label" for="mt-hold">
           Hold longer than <b>{holdMs} ms</b> to get the hold action
         </label>
-        <input id="mt-hold" type="range" min={50} max={1000} step={10} value={holdMs} onInput={(e) => setHoldMs(Number(e.currentTarget.value))} />
-        <p class="help">200 ms suits most people. Lower is snappier but you may trigger the hold action by accident.</p>
+        <input
+          id="mt-hold"
+          type="range"
+          min={50}
+          max={1000}
+          step={10}
+          value={holdMs}
+          onInput={(e) => setHoldMs(Number(e.currentTarget.value))}
+        />
+        <p class="help">
+          200 ms suits most people. Lower is snappier but you may trigger the
+          hold action by accident.
+        </p>
       </div>
     </WizardFrame>
   );
